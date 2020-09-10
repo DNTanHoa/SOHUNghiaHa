@@ -1,0 +1,50 @@
+﻿@model SOHU.MVC.Models.ConfirmObjectViewModel
+<script>
+    var _fnCallBack = null;
+    var _closefnCallBack = null;
+    var _Data = null;
+    function Initialization(initData, fnCallBack, _closefnCallBack) {
+        _fnCallBack = fnCallBack;
+        _Data = initData;
+        $('#modal-confirm').on('shown.bs.modal', function () {
+
+        });
+
+        $('#modal-confirm').on('hidden.bs.modal', () => {
+            _closefnCallBack();
+        });
+
+        $('#modal-confirm').modal('show');
+    }
+
+    function onDelete() {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("Delete",Model.Object, new { ID = Model.Id})",
+            success: (res) => {
+                var messageType = res.split('-')[0];
+                var note = res.split('-')[1];
+                Notify(messageType.trim(), note);
+            }
+        })
+    }
+</script>
+<div class="modal fade" id="modal-confirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <h5 class="modal-title">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Delete this item?</h3>
+            </div>
+            <div class="modal-footer d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-danger w-100" onclick="onDelete()" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-dark w-100" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

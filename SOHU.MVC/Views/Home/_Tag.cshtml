@@ -1,0 +1,14 @@
+﻿@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Repositories
+@using SOHU.Data.Helpers
+@model IEnumerable<Config>
+@{
+    if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <a href="@item.CodenameSub"><span class="badge badge-dark badge-sm badge-pill text-uppercase px-2 py-1 mr-1">@item.CodeName</span></a>
+        }
+    }
+}

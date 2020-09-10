@@ -1,0 +1,72 @@
+﻿@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Repositories
+@using SOHU.Data.Helpers
+@model IEnumerable<Product>
+<link rel="stylesheet" href="~/css/theme-shop.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+<div>
+    <div class="row">
+        @{
+            if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                <div class="col-md-3">
+                    @{
+                        var url = item.MetaTitle + "-" + item.Id + ".html";
+                    }
+                    <div class="card card-body h-100">
+                        <a href="@url">
+                            <img class="card-img-top" src="@item.Image" alt="@item.Title">
+                        </a>
+                        <div class="card-body">
+                            <a href="@url"><h5 class="card-title">@item.Title</h5></a>
+                            <p class="card-text text-primary h5">@item.Price?.ToString("N2")</p>
+                        </div>
+                        <div class="card-footer p-0">
+                            <div class="row">
+                                <div class="col-md-6 p-1">
+                                    <button onclick="addToCart(@item.Id,1)" class="w-100 btn btn-primary">Add to cart</button>
+                                </div>
+                                <div class="col-md-6 p-1">
+                                    <a href="@url" class="w-100 btn btn-success">View more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+        }
+    </div>
+    <div class="row py-2">
+        <div class="col">
+            <ul class="pagination float-right">
+                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function addToCart(ProductID, Quantity) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("AddProduct","Cart")",
+            data: {
+                ProductID: ProductID,
+                Quantity: Quantity
+            },
+            success: (res) => {
+                window.location.reload();
+            }
+        })
+    }
+
+</script>

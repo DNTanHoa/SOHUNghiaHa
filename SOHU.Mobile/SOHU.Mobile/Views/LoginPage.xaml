@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundImageSource="background.jpg"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="SOHU.Mobile.Views.LoginPage">
+    <ScrollView>
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <StackLayout>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0"
+                                 VerticalOptions="CenterAndExpand">
+                        <Frame CornerRadius="10"
+                            Margin="20,0,20,0"
+                            Padding="0"
+                            x:Name="LoginForm"
+                            BackgroundColor="Transparent">
+                            <StackLayout Padding="0"
+                                         Margin="0">
+                                <StackLayout>
+                                    <Label HorizontalOptions="CenterAndExpand"
+                                           Margin="10"
+                                           TextColor="White"
+                                           FontFamily="Time News Roman"
+                                           Text="Thông tin đăng nhập"
+                                           FontSize="Large"/>
+                                    <StackLayout Orientation="Horizontal"
+                                                 Margin="10,0,10,0"
+                                                 VerticalOptions="CenterAndExpand"
+                                                 HorizontalOptions="FillAndExpand">
+                                        <Frame Padding="12"
+                                               HeightRequest="24"
+                                               WidthRequest="24"
+                                               VerticalOptions="CenterAndExpand"
+                                               BorderColor="Navy"
+                                               BackgroundColor="White"
+                                               CornerRadius="24">
+                                            <Image Source="user"
+                                               HeightRequest="24"
+                                               WidthRequest="24"></Image>
+                                        </Frame>
+                                        <telerikInput:RadEntry x:Name="Account"
+                                                               VerticalOptions="Center"
+                                                               HorizontalOptions="FillAndExpand"
+                                                               TextColor="White"
+                                                               WatermarkText="Tên đăng nhập"
+                                                               WatermarkTextColor="White"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal"
+                                                 Margin="10,0,10,20"
+                                                 HorizontalOptions="FillAndExpand">
+                                        <Frame Padding="12"
+                                               HeightRequest="24"
+                                               WidthRequest="24"
+                                               VerticalOptions="CenterAndExpand"
+                                               BorderColor="Navy"
+                                               BackgroundColor="White"
+                                               CornerRadius="24">
+                                            <Image Source="lock"
+                                               HeightRequest="24"
+                                               WidthRequest="24"></Image>
+                                        </Frame>
+                                        <telerikInput:RadEntry x:Name="Password"
+                                                      VerticalOptions="Center"
+                                                      HorizontalOptions="FillAndExpand"
+                                                      TextColor="White"
+                                                      IsPassword="True"
+                                                      WatermarkText="Mật khẩu"
+                                                      WatermarkTextColor="White"/>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout HeightRequest="50"
+                                             Orientation="Horizontal"
+                                             HorizontalOptions="FillAndExpand"
+                                             BackgroundColor="Navy">
+                                    <Button BackgroundColor="Transparent"
+                                            TextColor="White"
+                                            HorizontalOptions="CenterAndExpand"
+                                            FontSize="22"
+                                            Text="Đăng nhập"></Button>
+                                    <ImageButton WidthRequest="80"
+                                                 Padding="8"
+                                                 BackgroundColor="Transparent"
+                                                 Source="finger"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

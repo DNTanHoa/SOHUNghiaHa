@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2020.2.617" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SOHU.Data\SOHU.Data.csproj" />
+  </ItemGroup>
+
+</Project>

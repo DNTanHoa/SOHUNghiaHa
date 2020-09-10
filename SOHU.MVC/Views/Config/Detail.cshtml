@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Cáu hình chi tiết - ";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+@model SOHU.Data.Models.Config
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Config</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a>System</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="Index" asp-controller="Config">Config</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="Detail" asp-controller="Config" asp-route-ID="@Model.Id">@Model.CodeName</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto;">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="toolbar">
+                            <button class="btn btn-primary" onclick="onSaveChange()"><i class="fas fa-save text-white"></i></button>
+                            <a class="btn btn-dark" asp-action="Index" asp-controller="Config"><i class="fas fa-arrow-left"></i></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="membershipInfor">
+                        @Html.HiddenFor(Model => Model.Id)
+                        @Html.HiddenFor(Model => Model.DateCreated)
+                        @Html.HiddenFor(Model => Model.DateUpdated)
+                        @Html.HiddenFor(Model => Model.UserCreated)
+                        @Html.HiddenFor(Model => Model.UserUpdated)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Group name</label>
+                                    @Html.TextBoxFor(Model => Model.GroupName, new { @class = "form-control", placeholder = "Group name" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Code</label>
+                                    @Html.TextBoxFor(Model => Model.Code, new { @class = "form-control", placeholder = "Code" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Code name</label>
+                                    @Html.TextBoxFor(Model => Model.CodeName, new { @class = "form-control", placeholder = "Code name" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Note</label>
+                                    @Html.TextBoxFor(Model => Model.Note, new { @class = "form-control", placeholder = "Note" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Subcode name</label>
+                                    @Html.TextBoxFor(Model => Model.CodenameSub, new { @class = "form-control", placeholder = "Subcode name" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Sort order</label>
+                                    @Html.TextBoxFor(Model => Model.SortOrder, new { @class = "form-control", placeholder = "Sort order" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Parent</label>
+                                    <select id="ParentID" data-selected="@Model.ParentId" asp-for="ParentId" class="form-control select2" style="width: 100%;">
+                                        <option selected value='0'>Parent</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(() => {
+        $('#ParentID').select2({
+            theme: 'bootstrap4',
+        });
+    })
+
+    function onSaveChange() {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("SaveChange","Config")",
+            data: $("#membershipInfor").serialize(),
+            success: (res) => {
+                var messageType = res.split('-')[0];
+                var note = res.split('-')[1];
+                Notify(messageType.trim(), note);
+            }
+        });
+    }
+
+    function Notify(type, message) {
+        switch (type) {
+            case "success":
+                toastr.success(message);
+                break;
+            case "info":
+                toastr.info(message);
+                break;
+            case "error":
+                toastr.error(message);
+                break;
+            case "warning":
+                toastr.warning(message);
+                break;
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(() => {
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("GetAllToList", "Config")",
+            success: (res) => {
+                let dropDown = $('#ParentID');
+                let selectID = $(dropDown).attr('data-selected');
+                $.each(res, (index, item) => {
+                    if (item.Id == selectID) {
+                        dropDown.append("<option value='" + item.Id + "' selected>" + item.CodeName + "</option>");
+                    }
+                    else {
+                        dropDown.append("<option value='" + item.Id + "'>" + item.CodeName + "</option>");
+                    }
+                });
+            }
+        })
+    })
+</script>

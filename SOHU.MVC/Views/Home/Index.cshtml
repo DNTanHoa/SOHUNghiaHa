@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Home page - ";
+}
+@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Repositories
+@using SOHU.Data.Helpers
+@inject IConfigRepository _configRespository
+<div class="container-fluid px-0">
+    @{
+        var carousel = _configRespository.GetByCodeToList(AppGlobal.CarouselCode);
+        @Html.Partial("~/views/Home/_Carousel.cshtml", carousel);
+    }
+</div>
+<style>
+    #u_0_0 {
+        width: 100%;
+    }
+</style>
+<div class="container py-2">
+    <div class="row">
+        <div id="NewProduct">
+            <h3 class="text-primary"><b>NEW PRODUCTS</b></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="TopProduct" class="d-block">
+            <h3 class="text-primary"><b>TOP PRODUCTS</b></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="SaleProduct" class="d-block">
+            <h3 class="text-primary"><b>SALE PRODUCTS</b></h3>
+        </div>
+    </div>
+    <div class="row py-0" style="min-height:500px;">
+        <div class="col-md-8 h-100">
+            <!--Map-->
+            <iframe src="https://www.google.com/maps/d/embed?mid=14dktu_7KNgrH8W22DT7grjn4Gz2E3LqJ" style="min-height:500px;" class="w-100"></iframe>
+        </div>
+        <div class="col-md-4 h-100">
+            <!--Fanpage-->
+            <div class="fb-page" data-href="https://www.facebook.com/bkufcnguyenhuutholongan/" data-tabs="timeline" data-width="" data-height="500" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/bkufcnguyenhuutholongan/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/bkufcnguyenhuutholongan/">BK FC - THPT Nguyễn Hữu Thọ, Long An</a></blockquote></div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $(document).ready(() => {
+        GetNewProducts();
+        GetTopProducts();
+        GetSaleProducts();
+    });
+
+    function GetNewProducts() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("NewProducts","Product")",
+            data: {
+                PageSize: @AppGlobal.ProductPageSize,
+            },
+            success: (res) => {
+                $("#NewProduct").append(res);
+            }
+        });
+    }
+
+    function GetTopProducts() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("TopProducts","Product")",
+            data: {
+                PageSize: @AppGlobal.ProductPageSize,
+            },
+            success: (res) => {
+                $("#TopProduct").append(res);
+            }
+        });
+    }
+
+    function GetSaleProducts() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("SaleProducts","Product")",
+            data: {
+                PageSize: @AppGlobal.ProductPageSize,
+            },
+            success: (res) => {
+                $("#SaleProduct").append(res);
+            }
+        });
+    }
+</script>

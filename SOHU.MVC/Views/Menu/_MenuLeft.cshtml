@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TreeMenuDataTransfer<Config>>
+@using SOHU.Data.Models
+@using SOHU.Data.DataTransferObject
+
+@foreach (var item in Model)
+{
+    @if (item.Childrens.Any())
+    {
+        <li class="nav-item has-treeview">
+            <a class="nav-link">
+                <i class="nav-icon @item.Item.Note"></i>
+                <p>
+                    @item.Item.Code
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                @Html.Partial("~/Views/PMSMenu/_MenuLeft.cshtml", item.Childrens)
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@item.Item.CodenameSub">
+                <i class="nav-icon @item.Item.Note"></i>
+                <p>
+                    @item.Item.Code
+                </p>
+            </a>
+        </li>
+    }
+}
+
+<script>
+    function setMenuLeftActive() {
+        console.log(this.location.pathname);
+        var tag = $('a[href="' + this.location.pathname + '"]');
+        tag.addClass('active');
+        var tagParent = tag.parent('li').parent('ul').parent('li');
+        tagParent.addClass('menu-open');
+    }
+
+    jQuery(function ($) {
+        setMenuLeftActive();
+    });
+</script>
+

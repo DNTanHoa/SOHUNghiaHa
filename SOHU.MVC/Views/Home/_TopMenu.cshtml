@@ -1,0 +1,27 @@
+﻿@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Helpers
+@model IEnumerable<TreeMenuDataTransfer<Config>>
+
+<ul class="nav nav-pills" id="mainNav">
+    @foreach (var item in Model)
+    {
+        if (item.Childrens.Any())
+        {
+            <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle active" style="font-size: 16px;">
+                    @item.Item.CodeName
+                </a>
+                @Html.Partial("~/Views/Shared/_TopMenu.cshtml", item.Childrens)
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="nav-link" href="" style="font-size: 16px;">
+                    @item.Item.CodeName
+                </a>
+            </li>
+        }
+    }
+</ul>

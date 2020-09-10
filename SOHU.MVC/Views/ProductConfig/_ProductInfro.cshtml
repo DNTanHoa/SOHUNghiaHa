@@ -1,0 +1,23 @@
+﻿@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Repositories
+@using SOHU.Data.Helpers
+@model IEnumerable<ProductConfigDataTransfer>
+    <table class="table m-0">
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th class="border-top-0">
+                            @item.Config:
+                        </th>
+                        <td class="border-top-0">
+                            @item.Value
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>

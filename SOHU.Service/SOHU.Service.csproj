@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Notification\" />
+    <Folder Include="SMS\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SOHU.Data\SOHU.Data.csproj" />
+  </ItemGroup>
+
+</Project>

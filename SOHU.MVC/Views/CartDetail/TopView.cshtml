@@ -1,0 +1,50 @@
+﻿
+@model IList<SOHU.Data.DataTransferObject.CartDetailDataTransfer>
+<div class="header-nav-feature header-nav-features-cart header-nav-features-cart-big d-inline-flex ml-2" data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'top': '48px'}" data-sticky-header-style-deactive="{'top': '0'}">
+    <a href="#" class="header-nav-features-toggle" id="cartIcon">
+        <img src="~/img/icons/icon-cart-big.svg" height="34" alt="" class="header-nav-top-icon-img">
+        <span class="cart-info">
+            <span class="cart-qty">@Model?.Count</span>
+        </span>
+    </a>
+    <div class="header-nav-features-dropdown" id="headerTopCartDropdown">
+        <ol class="mini-products-list">
+            @{
+                foreach (var item in Model)
+                {
+                    var productUrl = item.ProductMetaTitle + "-" + item.ProductId + ".html";
+                    <li class="item">
+                        <a href="@productUrl" title="@item.ProductTitle" class="product-image"><img src="@item.ProductImageThumbnail" alt="@item.ProductTitle"></a>
+                        <div class="product-details">
+                            <p class="product-name">
+                                <a href="@productUrl">@item.ProductTitle </a>
+                            </p>
+                            <p class="qty-price">
+                                @(item.Quantity)X <span class="price">@item.UnitPrice</span>
+                            </p>
+                            <b onclick="" title="Remove This Item" class="btn-remove"><i class="fas fa-times"></i></b>
+                        </div>
+                    </li>
+                }
+            }
+        </ol>
+        <div class="totals">
+            <span class="label">Total:</span>
+            <span class="price-total"><span class="price">$@Model.Sum(item => item.Total)</span></span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-dark" asp-action="Cart" asp-controller="Home">View Cart</a>
+            <a class="btn btn-primary" asp-action="CheckOut" asp-controller="Home">Checkout</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        $("#cartIcon").on('click', () => {
+            if ($("#headerTopCartDropdown").hasClass('show'))
+                $("#headerTopCartDropdown").removeClass('show');
+            else
+                $("#headerTopCartDropdown").addClass('show');
+        });
+    });
+</script>
