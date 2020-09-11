@@ -25,8 +25,9 @@ namespace SOHU.Data.Models
         public virtual DbSet<ProductConfig> ProductConfig { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartDetail> CartDetail { get; set; }
-        public virtual DbSet<CartDetail> Menu { get; set; }
-        public virtual DbSet<CartDetail> Role { get; set; }
+        public virtual DbSet<Menu> Menu { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<Customer> Customer { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

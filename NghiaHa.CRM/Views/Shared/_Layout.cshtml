@@ -75,6 +75,87 @@
                     </div>
                     <nav class="mt-2">
                         <ul id="userMenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Báo cáo
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Tổng quan
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                    <p>
+                                        Hóa đơn - Chứng từ
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Phiếu nhập kho
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Phiếu xuất kho
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Hóa đơn
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Admin - Danh mục
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Customer">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Danh mục - Khách hàng
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Product">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Danh mục - Hàng hóa
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>

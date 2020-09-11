@@ -44,6 +44,7 @@ namespace NghiaHa.CRM
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
 
             services.AddControllersWithViews();
 

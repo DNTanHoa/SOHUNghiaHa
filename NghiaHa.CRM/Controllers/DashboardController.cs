@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NghiaHa.CRM.Web.Models;
 
 namespace NghiaHa.CRM.Controllers
 {
@@ -15,7 +16,8 @@ namespace NghiaHa.CRM.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new DashboardViewModel();
+            return View(model);
         }
     }
 }

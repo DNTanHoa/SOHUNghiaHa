@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Dữ liệu hóa đơn nhập kho";
+}
+@using Kendo.Mvc.UI
+@using SOHU.Data.Models
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Hóa đơn - nhập kho</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Chúng từ</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Invoice">Chứng từ nhập kho</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-2 mt-md-2"><b>Từ ngày</b></div>
+                        <div class="col-md-3">
+                            @(Html.Kendo()
+                              .DatePicker()
+                              .HtmlAttributes( new { @class = "form-control"})
+                              .Name("FromDate")
+                              .Format("dd/MM/yyyy"))
+                        </div>
+                        <div class="col-lg-1 col-md-2 mt-md-2"><b>Đến ngày</b></div>
+                        <div class="col-md-3">
+                            @(Html.Kendo()
+                              .DatePicker()
+                              .HtmlAttributes(new { @class = "form-control" })
+                              .Name("ToDate")
+                              .Format("dd/MM/yyyy"))
+                        </div>
+                        <div class="col-3 col-md-1">
+                            <button class="btn btn-success w-100" onclick="onSearchForDataGrid('Invoice')">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @(Html.Kendo().Grid<SOHU.Data.Models.Invoice>()
+                .Name("Invoice")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Custom("detailFirst").Text("&nbsp;").IconClass("fas fa-external-link-alt").Click("onOpenDetail").HtmlAttributes(new { style = "color:#ffffff; background-color:#28a745; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-success" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(250);
+                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ManageCode).Title("Số phiếu").Width(350);
+                    columns.Bound(t => t.InvoiceCreated).Format("{0:dd-MM-yyyy}").Title("Ngày lập").Width(350);
+                    columns.Bound(t => t.TotalNoTax).Title("Tiền trước thuế").Width(200);
+                    columns.Bound(t => t.Tax).Title("Thuế").Width(200);
+                    columns.Bound(t => t.TotalTax).Title("Tiền thuế").Width(200);
+                    columns.Bound(t => t.Total).Title("Tổng").Width(200);
+                    columns.Bound(t => t.Note).Title("Ghi chú").Width(300);
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Custom("detailLast").Text("&nbsp;").IconClass("fas fa-external-link-alt").Click("onOpenDetail").HtmlAttributes(new { style = "color:#ffffff; background-color:#28a745; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-success" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(250);
+                })
+                .ToolBar(toolBar => toolBar.Custom().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { onclick = "onCreate()", style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "CauHinh")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("CauHinh.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.ManageCode);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.Id);
+                    model.Field(t => t.Id).Editable(false);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEnd"); })
+                .Read(t => t.Action("GetAllToList", "Invoice"))
+                .Destroy(t => t.Action("Delete", "Invoice"))
+                .Create(t => t.Action("Create", "Invoice"))
+                .Update(t => t.Action("Update", "Invoice"))))
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            Notify(messageType.trim(), note);
+            $("#Invoice").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    function Notify(type, message) {
+        switch (type) {
+            case "success":
+                toastr.success(message);
+                break;
+            case "info":
+                toastr.info(message);
+                break;
+            case "error":
+                toastr.error(message);
+                break;
+            case "warning":
+                toastr.warning(message);
+                break;
+        }
+    }
+
+    function onOpenDetail(e) {
+        var item = this.dataItem($(e.currentTarget).closest("tr"));
+        var url = "@Url.Action("Detail","Invoice")?ID=" + item.ID;
+        window.location.href = url;
+    }
+
+    function onCreate() {
+        var url = "@Url.Action("Detail", "Invoice")?ID=0";
+        window.location.href = url;
+    }
+</script>
