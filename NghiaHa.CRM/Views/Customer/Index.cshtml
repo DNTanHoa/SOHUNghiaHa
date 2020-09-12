@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Dữ liệu khách hàng";
+    ViewData["Title"] = "Khách hàng";
 }
 @using Kendo.Mvc.UI
 @using SOHU.Data.Models
@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Dữ liệu khách hàng</h1>
+                <h1>Khách hàng</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -40,7 +40,7 @@
                     columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
                     columns.Bound(t => t.IdentityNumber).Title("Chứng minh").Width(200);
                     columns.Bound(t => t.CitizenNumber).Title("Căn cước").Width(200);
-                    columns.Bound(t => t.Passport).Title("Hộ chiếui").Width(200);
+                    columns.Bound(t => t.Passport).Title("Hộ chiếu").Width(200);
                     columns.Bound(t => t.Note).Title("Ghi chú").Width(300);
                     columns.Command(command =>
                     {

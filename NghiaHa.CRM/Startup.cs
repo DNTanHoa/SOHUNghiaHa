@@ -76,7 +76,7 @@ namespace NghiaHa.CRM
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Invoice}/{action=InvoiceInput}/{id?}");
             });
         }
     }

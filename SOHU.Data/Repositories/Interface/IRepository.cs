@@ -28,6 +28,8 @@ namespace SOHU.Data.Repositories
 
         public List<T> GetAllToList();
 
+        public List<T> GetByParentIDToList(int parentID);
+
         public T GetByID(int ID);
 
         public List<T> GetByPageAndPageSizeToList(int Page, int PageSzie);

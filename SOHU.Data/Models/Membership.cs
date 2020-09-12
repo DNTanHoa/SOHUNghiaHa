@@ -19,6 +19,7 @@ namespace SOHU.Data.Models
         public string Account { get; set; }
         public string Password { get; set; }
         public string Guicode { get; set; }
+        public string TaxCode { get; set; }
 
         public virtual void InitDefaultValue()
         {

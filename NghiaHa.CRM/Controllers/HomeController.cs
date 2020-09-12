@@ -57,12 +57,12 @@ namespace NghiaHa.CRM.Controllers
                 }
                 else
                 {
-                    return Json(AppGlobal.Fail + "-" + AppGlobal.LoginFail);
+                    return Json(AppGlobal.Error + "-" + AppGlobal.LoginFail);
                 }
             }
             else
             {
-                return Json(AppGlobal.Fail + "-" + AppGlobal.LoginFail);
+                return Json(AppGlobal.Error + "-" + AppGlobal.LoginFail);
             }
         }
     }

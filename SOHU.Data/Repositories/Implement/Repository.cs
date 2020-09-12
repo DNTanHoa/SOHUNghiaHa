@@ -76,7 +76,11 @@ namespace SOHU.Data.Repositories
             var result = _context.Set<T>().ToList();
             return result ?? new List<T>();
         }
-
+        public List<T> GetByParentIDToList(int parentID)
+        {
+            var result = _context.Set<T>().Where(model => model.ParentId == parentID).OrderByDescending(model => model.DateUpdated).ToList();
+            return result;
+        }
         public T GetByID(int ID)
         {
             var result = _context.Set<T>().AsNoTracking().FirstOrDefault(model => model.Id == ID);

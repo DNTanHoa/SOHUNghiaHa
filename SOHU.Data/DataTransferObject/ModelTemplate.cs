@@ -6,7 +6,7 @@ namespace SOHU.Data.DataTransferObject
 {
     public class ModelTemplate
     {
-        public int? ID { get; set; }
+        public int? Id { get; set; }
         public string TextName { get; set; }
     }
 }

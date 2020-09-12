@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SOHU.Data.Models
 {
@@ -10,6 +11,8 @@ namespace SOHU.Data.Models
         public string ManageCode { get; set; }
         public string InvoiceCode { get; set; }
         public string MakeCode { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? InvoiceCreated { get; set; }
         public int? MakeSideId { get; set; }
         public int? BuyId { get; set; }
@@ -28,8 +31,14 @@ namespace SOHU.Data.Models
         public decimal? TotalTax { get; set; }
         public decimal? TotalShipCost { get; set; }
         public decimal? TotalDiscount { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Total { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalPaid { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalDebt { get; set; }
         public int? CurrencyId { get; set; }
         public decimal? Gbpexchange { get; set; }

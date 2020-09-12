@@ -44,7 +44,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.CreateFail;
+                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
             }
             return Json(note);
         }
@@ -60,7 +60,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.EditFail;
+                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
             }
             return Json(note);
         }
@@ -75,7 +75,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.DeleteFail;
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
             }
             return Json(note);
         }

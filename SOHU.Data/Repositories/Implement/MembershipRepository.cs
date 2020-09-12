@@ -16,7 +16,16 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
-
+        public bool IsValidByTaxCode(string taxCode)
+        {
+            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.TaxCode.Equals(taxCode));
+            return item == null ? true : false;
+        }
+        public bool IsValidByCitizenIdentification(string citizenIdentification)
+        {
+            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.CitizenIdentification.Equals(citizenIdentification));
+            return item == null ? true : false;
+        }
         public Membership GetByAccount(string Account)
         {
             return _context.Membership.FirstOrDefault(item => item.Account == Account);
@@ -48,7 +57,7 @@ namespace SOHU.Data.Repositories
                     model.ConcatFullname();
                     break;
             }
-            
+
         }
     }
 }

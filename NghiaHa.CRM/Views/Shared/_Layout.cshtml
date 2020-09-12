@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hệ thống quản lý bán hàng Nghĩa Hà - Nghia Ha CRM</title>
+    <title>@ViewData["Title"] - Nghĩa Hà CRM</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
@@ -46,54 +46,31 @@
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" style="font-size:16px;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Hướng dẫn
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Quản lý danh mục</a>
-                            <a class="dropdown-item" href="#">Quản lý khách hàng</a>
-                            <a class="dropdown-item" href="#">Quản lý hóa đơn</a>
-                            <a class="dropdown-item" href="#">Thông tin chung</a>
-                        </div>
-                    </li>
-
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style="font-size:16px;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hướng dẫn
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Quản lý danh mục</a>
+                                <a class="dropdown-item" href="#">Quản lý khách hàng</a>
+                                <a class="dropdown-item" href="#">Quản lý hóa đơn</a>
+                                <a class="dropdown-item" href="#">Thông tin chung</a>
+                            </div>
+                        </li>*@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown user-menu" id="HeaderInfor">
-
                     </li>
                 </ul>
             </nav>
             <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:black;">
                 <a asp-action="Index" asp-controller="Dashboard" class="brand-link text-center" style="font-size: 25px;">
-                    <span class="brand-text font-weight-light text-center">Hệ thống CRM</span>
+                    <span class="brand-text font-weight-light text-center">CRM</span>
                 </a>
                 <div class="sidebar">
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex" id="SidebarInfor">
-
-                    </div>
                     <nav class="mt-2">
                         <ul id="userMenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
-                            <li class="nav-item has-treeview">
-                                <a class="nav-link" href="/">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Báo cáo
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>
-                                                Tổng quan
-                                            </p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+
                             <li class="nav-item has-treeview">
                                 <a class="nav-link" href="/">
                                     <i class="nav-icon fas fa-file-invoice-dollar"></i>
@@ -104,27 +81,57 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
+                                        <a class="nav-link" asp-action="InvoiceInput" asp-controller="Invoice">
                                             <i class="nav-icon far fa-circle"></i>
                                             <p>
-                                                Phiếu nhập kho
+                                                Hóa đơn nhập
                                             </p>
+                                        </a>
+                                    </li>                                   
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user-friends"></i>
+                                    <p>
+                                        Thành viên
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Membership/Customer" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Khách hàng</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>
-                                                Phiếu xuất kho
-                                            </p>
+                                        <a href="/Membership/Supplier" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Nhà cung cấp</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Invoice">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>
-                                                Hóa đơn
-                                            </p>
+                                        <a href="/Membership/Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Nhân viên</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <p>
+                                        Vật tư - Thiết bị
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Product/Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh sách</p>
                                         </a>
                                     </li>
                                 </ul>
@@ -133,24 +140,40 @@
                                 <a class="nav-link" href="/">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>
-                                        Admin - Danh mục
+                                        Hệ thống
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Customer">
+                                        <a class="nav-link" asp-action="InvoiceCategory" asp-controller="Config">
                                             <i class="nav-icon far fa-circle"></i>
                                             <p>
-                                                Danh mục - Khách hàng
+                                                Loại chứng từ
                                             </p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="Index" asp-controller="Product">
+                                        <a class="nav-link" asp-action="CustomerCategory" asp-controller="Config">
                                             <i class="nav-icon far fa-circle"></i>
                                             <p>
-                                                Danh mục - Hàng hóa
+                                                Loại thành viên
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="ProductCategory" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Loại vật tư - Thiết bị
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Unit" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Đơn vị tính
                                             </p>
                                         </a>
                                     </li>
@@ -170,57 +193,25 @@
             </aside>
             <footer class="main-footer">
                 <div class="row">
-                    <strong class="col-sm-6">Bản quyền &copy; 2020 <a class="text-primary" href="https://nghiaha.vn">Nghĩa Hà</a>. Bảo lưu tất cả quyền.</strong>
-                    <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Một sản phẩm của team SOHU</strong>
+                    <strong class="col-sm-6">Bản quyền &copy; 2020 <a target="_blank" class="text-primary" href="http://nghiaha.vn">Nghĩa Hà</a>. Bảo lưu tất cả quyền.</strong>
+                    <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Một sản phẩm của <a target="_blank" class="text-primary" href="http://sohu.vn">SOHU</a></strong>
                 </div>
             </footer>
         </div>
     </div>
     <div id="change-password-modal"></div>
     <script>
-        $(document).ready(() => {
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("MenuLeft","Menu")",
-                success: (res) => {
-                    $("#userMenuLeft").empty();
-                    $("#userMenuLeft").html(res);
-                }
-            });
-
-            $.ajax({
-                type: "get",
-                url: "@Url.Action("HeaderInfor", "Membership")",
-                success: (res) => {
-                    console.log(res);
-                    $("#HeaderInfor").empty();
-                    $("#HeaderInfor").html(res);
-                }
-            });
-
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("SidebarInfor","Membership")",
-                success: (res) => {
-                    console.log(res);
-                    $("#SidebarInfor").empty();
-                    $("#SidebarInfor").html(res);
-                }
-            });
-        });
-
-        function onChangePassword() {
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("ChangePassword", "Membership")",
-                success: (res) => {
-                    $("#change-password-modal").empty();
-                    $("#change-password-modal").html(res);
-                }
-            }).done(() => {
-                Initialization(null, () => {},() => {});
-            });
+        function setMenuLeftActive() {
+            var tag = $('a[href="' + this.location.pathname + '"]');
+            tag.addClass('active');
+            var tag01 = tag.parent('li').parent('ul').parent('li');
+            tag01.addClass('menu-open');
+            var tag02 = tag01.children('a');
+            tag02.addClass('active');
         }
+        jQuery(function ($) {
+            setMenuLeftActive();
+        });
     </script>
 </body>
 </html>

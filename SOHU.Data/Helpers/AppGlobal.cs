@@ -19,6 +19,30 @@ namespace SOHU.Data.Helpers
         #endregion
 
         #region AppSettings 
+        public static int Tax
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("Tax").Value);
+            }
+        }
+        public static int DateBegin
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("DateBegin").Value);
+            }
+        }
+        public static int DateEnd
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("DateEnd").Value);
+            }
+        }
         public static string URLEmail
         {
             get
@@ -31,6 +55,46 @@ namespace SOHU.Data.Helpers
             get
             {
                 return "https://www.google.com/maps/d/embed?mid=" + GoogleMap;
+            }
+        }
+        public static string InvoiceCategory
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("InvoiceCategory").Value;
+            }
+        }
+        public static string CustomerCategory
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("CustomerCategory").Value;
+            }
+        }
+        public static string ProductCategory
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("ProductCategory").Value;
+            }
+        }
+        public static string Unit
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Unit").Value;
+            }
+        }
+        public static string CRM
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("CRM").Value;
             }
         }
         public static string GoogleMap
@@ -128,12 +192,12 @@ namespace SOHU.Data.Helpers
             }
         }
 
-        public static string Fail
+        public static string Error
         {
             get
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                return builder.Build().GetSection("AppSettings").GetSection("Fail").Value;
+                return builder.Build().GetSection("AppSettings").GetSection("Error").Value;
             }
         }
 
@@ -332,7 +396,38 @@ namespace SOHU.Data.Helpers
                 return builder.Build().GetSection("AppSettings").GetSection("CarouselCode").Value;
             }
         }
-
+        public static int InvoiceInputID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("InvoiceInputID").Value);
+            }
+        }
+        public static int CustomerParentID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("CustomerParentID").Value);
+            }
+        }
+        public static int SupplierParentID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("SupplierParentID").Value);
+            }
+        }
+        public static int EmployeeParentID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("EmployeeParentID").Value);
+            }
+        }
         public static int ProductPageSize
         {
             get
@@ -606,5 +701,41 @@ namespace SOHU.Data.Helpers
             return result;
         }
         #endregion
+    }
+    public class YearFinance
+    {
+        public int Display { get; set; }
+        public YearFinance()
+        {
+        }
+        public static List<YearFinance> GetAllToList()
+        {
+            List<YearFinance> list = new List<YearFinance>();
+            for (int i = AppGlobal.DateBegin; i <= AppGlobal.DateEnd; i++)
+            {
+                YearFinance model = new YearFinance();
+                model.Display = i;
+                list.Add(model);
+            }
+            return list;
+        }
+    }
+    public class MonthFinance
+    {
+        public int Display { get; set; }
+        public MonthFinance()
+        {
+        }
+        public static List<MonthFinance> GetAllToList()
+        {
+            List<MonthFinance> list = new List<MonthFinance>();
+            for (int i = 1; i <= 12; i++)
+            {
+                MonthFinance model = new MonthFinance();
+                model.Display = i;
+                list.Add(model);
+            }
+            return list;
+        }
     }
 }

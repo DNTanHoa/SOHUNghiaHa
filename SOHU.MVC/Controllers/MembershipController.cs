@@ -55,11 +55,11 @@ namespace SOHU.MVC.Controllers
                     Response.Cookies.Append("Password", MD5Helper.EncryptDataMD5(model.Password, AppGlobal.MD5Key), cookie);
                     return Json(AppGlobal.Success + " - " + AppGlobal.RedirectDefault);
                 }
-                return Json(AppGlobal.Fail + " - " + AppGlobal.LoginFail);
+                return Json(AppGlobal.Error + " - " + AppGlobal.LoginFail);
             }   
             else
             {
-                return Json(AppGlobal.Fail + " - " + AppGlobal.LoginFail);
+                return Json(AppGlobal.Error + " - " + AppGlobal.LoginFail);
             }    
         }
 

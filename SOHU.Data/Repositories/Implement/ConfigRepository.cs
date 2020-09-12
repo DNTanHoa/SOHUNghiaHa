@@ -14,10 +14,18 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
-
-        public List<Config> GetByCodeToList(string Code)
+        public bool IsValidByGroupNameAndCodeAndCodeName(string groupName, string code, string codeName)
         {
-            return _context.Config.Where(item => item.Code.Equals(Code)).ToList();
+            Config item = _context.Set<Config>().FirstOrDefault(item => item.GroupName.Equals(groupName) && item.Code.Equals(code) && item.CodeName.Equals(codeName));
+            return item == null ? true : false;
+        }
+        public List<Config> GetByCodeToList(string code)
+        {
+            return _context.Config.Where(item => item.Code.Equals(code)).ToList();
+        }
+        public List<Config> GetByGroupNameAndCodeToList(string groupName, string code)
+        {
+            return _context.Config.Where(item => item.GroupName.Equals(groupName) && item.Code.Equals(code)).OrderBy(item => item.CodeName).ToList();
         }
     }
 }

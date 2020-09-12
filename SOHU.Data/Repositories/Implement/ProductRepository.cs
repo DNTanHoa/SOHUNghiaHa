@@ -18,7 +18,11 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
-
+        public bool IsValidByTitle(string title)
+        {
+            Product item = _context.Set<Product>().FirstOrDefault(item => item.Title.Equals(title));
+            return item == null ? true : false;
+        }
         public ProductDataTransfer GetDataTransferByID(int ID)
         {
             SqlParameter[] parameters =
