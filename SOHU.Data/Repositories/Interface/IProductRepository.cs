@@ -9,5 +9,6 @@ namespace SOHU.Data.Repositories
     public interface IProductRepository : IRepository<Product>
     {
         public ProductDataTransfer GetDataTransferByID(int ID);
+        public List<Product> GetByCategoryIDToList(int categoryID);
     }
 }

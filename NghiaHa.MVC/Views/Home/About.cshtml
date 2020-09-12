@@ -1,0 +1,12 @@
+﻿@{ ViewData["Title"] = "Giới thiệu"; }
+@model SOHU.Data.Models.Product
+
+<section class="section section-height-3 m-0 border-0" style="background-color:white;">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <h1><b>@Model.Title</b></h1>
+            <div class="addthis_inline_share_toolbox"></div>
+            @Html.Raw(Model.ContentMain)
+        </div>
+    </div>
+</section>

@@ -1,38 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Cấu hình - ";
-    Layout = "~/Views/Shared/_CMSLayout.cshtml";
-}
+﻿@{ ViewData["Title"] = "Menu CMS - ";
+                Layout = "~/Views/Shared/_CMSLayout.cshtml"; }
 <script src="~/js/mustache.min.js"></script>
 <script id="gridTemplate" type="x-tmpl-mustache">
     <table class="table table-bordered table-hover" style="overflow-x:auto;">
         <thead>
             <tr>
-                <th class="bg-primary" style="cursor:pointer;" width="300"></th>                
-                <th class="bg-primary" style="cursor:pointer;" width="100">Id</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Group</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Code</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Codename</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Subcode</th>                                
+                <th class="bg-primary" style="cursor:pointer;" width="300"></th>
+                <th class="bg-primary" style="cursor:pointer;" width="100">ID</th>
+                <th class="bg-primary" style="cursor:pointer;" width="300">Menu</th>
+                <th class="bg-primary" style="cursor:pointer;" width="300">URL</th>
+                <th class="bg-primary" style="cursor:pointer;" width="300">Icon</th>
+                <th class="bg-primary" style="cursor:pointer;" width="300">Sort</th>
                 <th class="bg-primary" style="cursor:pointer;" width="300"></th>
             </tr>
         </thead>
         <tbody style="overflow-x:auto">
             {{#Data}}
-            <tr >
+            <tr>
                 <td style="table-layout:fixed;">
                     <div>
-                        <a class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
+                        <a style="cursor:pointer; color:white;" class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
                         <button class="btn btn-danger" onclick="onConfirm({{Id}}, 'Config')"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
                 <td style="table-layout:fixed;" width="100">{{Id}}</td>
-                <td style="table-layout:fixed;" width="300">{{GroupName}}</td>
-                <td style="table-layout:fixed;" width="300">{{Code}}</td>
                 <td style="table-layout:fixed;" width="300">{{CodeName}}</td>
-                <td style="table-layout:fixed;" width="300">{{CodenameSub}}</td>                
+                <td style="table-layout:fixed;" width="300">{{CodenameSub}}</td>
+                <td style="table-layout:fixed;" width="300">{{Note}}</td>
+                <td style="table-layout:fixed;" width="300">{{SortOrder}}</td>
                 <td style="table-layout:fixed;">
                     <div>
-                        <a class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
+                        <a style="cursor:pointer; color:white;" class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
                         <button class="btn btn-danger" onclick="onConfirm({{Id}}, 'Config')"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -45,12 +43,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Cấu hình</h1>
+                <h1>Menu CMS</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a>CMS</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="Index" asp-controller="Config">Cấu hình</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="MenuCMS" asp-controller="Config">Menu CMS</a></li>
                 </ol>
             </div>
         </div>
@@ -63,7 +61,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="toolbar">
-                            <a class="btn btn-success" asp-action="Detail" asp-controller="Config" asp-route-ID="0"><i class="fas fa-plus text-white"></i></a>
+                            <a class="btn btn-success" asp-action="MenuCMSDetail" asp-controller="Config" asp-route-ID="0"><i class="fas fa-plus text-white"></i></a>
                         </div>
                         <input type="text" placeholder="Tìm kiếm" class="form-control" style="flex-basis:20%;" />
                     </div>
@@ -84,7 +82,7 @@
     })
 
     function onOpenDetail(Id) {
-        var url = "@Url.Action("Detail","Config")" + "?ID=" + Id;
+        var url = "@Url.Action("MenuCMSDetail", "Config")" + "?ID=" + Id;
         window.location.href = url;
     }
 
@@ -111,7 +109,7 @@
     function fetchData() {
         $.ajax({
             type: 'GET',
-            url: "@Url.Action("GetAllToList", "Config")",
+            url: "@Url.Action("GetMenuCMSToList", "Config")",
             data: {
 
             },

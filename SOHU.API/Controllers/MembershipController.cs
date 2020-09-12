@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SOHU.API.Helpers;
 using SOHU.API.RequestModel;
 using SOHU.API.ResponseModel;
 using SOHU.Data.Enum;
