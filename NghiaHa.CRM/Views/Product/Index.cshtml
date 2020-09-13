@@ -52,9 +52,9 @@
                     columns.Template(@"<a href='/Product/Detail/#=Id#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);
                     columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
-                    columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(300);
-                    columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(300);
-                    columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(300);
+                    columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })

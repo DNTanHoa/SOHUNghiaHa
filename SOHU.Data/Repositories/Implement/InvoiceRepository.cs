@@ -2,6 +2,7 @@
 using SOHU.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,42 @@ namespace SOHU.Data.Repositories
             };
                 SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceInitializationByID", parameters);
             }
+        }
+        public List<Invoice> GetInvoiceInputByProductIDToList(int productID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceInputSelectByProductID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());
+                }
+            }
+            return list;
+        }
+        public List<Invoice> GetInvoiceOutputByProductIDToList(int productID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceOutputSelectByProductID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());                   
+                }
+            }
+            return list;
         }
     }
 }

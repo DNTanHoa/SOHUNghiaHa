@@ -31,6 +31,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(250);
                     columns.Bound(t => t.CodeName).Title("Loại chứng từ").Width(300);
+                    columns.Bound(t => t.Active).Title("Hóa đơn nhập hàng").Width(200);
                     columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })

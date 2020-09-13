@@ -65,6 +65,23 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryId = AppGlobal.InvoiceInputID;
             return View(model);
         }
+        public IActionResult InvoiceInputDetailWindow(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.CategoryId = AppGlobal.InvoiceInputID;
+            return View(model);
+        }
         public IActionResult Delete(int ID)
         {
             string note = AppGlobal.InitString;
@@ -91,6 +108,14 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceInputID, year, month).ToDataSourceResult(request));
         }
+        public IActionResult GetInvoiceInputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceRepository.GetInvoiceInputByProductIDToList(productID).ToDataSourceResult(request));
+        }
+        public IActionResult GetInvoiceOutputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceRepository.GetInvoiceOutputByProductIDToList(productID).ToDataSourceResult(request));
+        }
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInput(Invoice model)
         {
@@ -111,6 +136,27 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
             }
             return RedirectToAction("InvoiceInputDetail", new { ID = model.Id });
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveInvoiceInputWindow(Invoice model)
+        {
+            model.SellName = _membershipRepository.GetByID(model.SellId.Value).FullName;
+            if (model.Id > 0)
+            {
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _invoiceRepository.Update(model.Id, model);
+            }
+            else
+            {
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                if (_invoiceRepository.IsValidByInvoiceCode(model.InvoiceCode) == true)
+                {
+                    _invoiceRepository.Create(model);
+                }
+            }
+            return RedirectToAction("InvoiceInputWindow", new { ID = model.Id });
         }
     }
 }

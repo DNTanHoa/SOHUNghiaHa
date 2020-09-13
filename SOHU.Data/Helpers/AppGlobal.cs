@@ -19,6 +19,46 @@ namespace SOHU.Data.Helpers
         #endregion
 
         #region AppSettings 
+        public static string LogoURLFull
+        {
+            get
+            {
+                string result = AppGlobal.Domain + AppGlobal.Images + "/" + AppGlobal.Logo;
+                return result;
+            }
+        }
+        public static string LoadingURLFull
+        {
+            get
+            {
+                string result = AppGlobal.Domain + AppGlobal.Images + "/" + AppGlobal.Loading;
+                return result;
+            }
+        }
+        public static string Images
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Images").Value;
+            }
+        }
+        public static string Logo
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Logo").Value;
+            }
+        }
+        public static string Loading
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("Loading").Value;
+            }
+        }
         public static int Tax
         {
             get
