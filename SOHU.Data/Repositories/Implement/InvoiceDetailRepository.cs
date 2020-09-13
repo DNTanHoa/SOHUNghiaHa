@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace SOHU.Data.Repositories
@@ -17,6 +18,10 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
+        public List<InvoiceDetail> GetByInvoiceIDToList(int invoiceID)
+        {
+            return _context.InvoiceDetail.Where(item => item.InvoiceId == invoiceID).OrderBy(item => item.Id).ToList();
+        }
         public List<InvoiceDetailDataTransfer> GetDataTransferByInvoiceIDToList(int invoiceID)
         {
             List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
@@ -28,8 +33,10 @@ namespace SOHU.Data.Repositories
             };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailSelectByInvoiceID", parameters);
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+
                 for (int i = 0; i < list.Count; i++)
                 {
+                    list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());
                     list[i].Product = new ModelTemplate();
                     list[i].Product.Id = list[i].ProductId;
                     list[i].Product.TextName = list[i].ProductTitle;

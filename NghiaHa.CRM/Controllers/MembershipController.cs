@@ -142,7 +142,7 @@ namespace NghiaHa.CRM.Controllers
                     model.Initialization(InitType.Insert, RequestUserID);
                     _membershipRepository.Create(model);
                 }
-            }          
+            }
             return RedirectToAction("CustomerDetail", new { ID = model.Id });
         }
         public IActionResult SaveSupplier(Membership model)
@@ -173,6 +173,20 @@ namespace NghiaHa.CRM.Controllers
             }
             return RedirectToAction("SupplierDetail", new { ID = model.Id });
         }
+        public IActionResult Delete(int ID)
+        {
+            string note = AppGlobal.InitString;
+            int result = _membershipRepository.Delete(ID);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+            }
+            return Json(note);
+        }
         public IActionResult SaveEmployee(Membership model)
         {
             bool check = false;
@@ -182,7 +196,7 @@ namespace NghiaHa.CRM.Controllers
             }
             if (model.ParentId == AppGlobal.EmployeeParentID)
             {
-                check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                check = _membershipRepository.IsValidByPhone(model.Phone);
             }
             if (check == true)
             {

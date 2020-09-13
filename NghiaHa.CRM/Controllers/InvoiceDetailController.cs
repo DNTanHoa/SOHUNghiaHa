@@ -37,14 +37,23 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceDetailRepository.GetDataTransferByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
         }
-        public IActionResult CreateDataTransfer(InvoiceDetailDataTransfer model, int invoiceID)
+        public IActionResult GetByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            return Json(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
+        }
+        public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceId = invoiceID;
             InitializationDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
-            result = _invoiceDetailRepository.Create(model);
+
+            if ((model.ProductId > 0) && (model.UnitId > 0))
+            {
+                result = _invoiceDetailRepository.Create(model);
+            }
+
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
@@ -53,7 +62,7 @@ namespace NghiaHa.CRM.Web.Controllers
             else
             {
                 note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
-            }            
+            }
             return Json(note);
         }
         public IActionResult Update(InvoiceDetailDataTransfer model)

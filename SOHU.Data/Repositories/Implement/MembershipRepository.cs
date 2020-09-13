@@ -26,6 +26,11 @@ namespace SOHU.Data.Repositories
             Membership item = _context.Set<Membership>().FirstOrDefault(item => item.CitizenIdentification.Equals(citizenIdentification));
             return item == null ? true : false;
         }
+        public bool IsValidByPhone(string phone)
+        {
+            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.Phone.Equals(phone));
+            return item == null ? true : false;
+        }
         public Membership GetByAccount(string Account)
         {
             return _context.Membership.FirstOrDefault(item => item.Account == Account);

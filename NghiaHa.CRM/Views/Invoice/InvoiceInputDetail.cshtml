@@ -54,13 +54,18 @@
                                         @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
+                                        <label for='MakeCode'>Mẫu số</label>
+                                        @(Html.TextBoxFor(Model => Model.MakeCode, new { placeholder = "Mẫu số", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='ManageCode'>Ký hiệu</label>
+                                        @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Ký hiệu", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
                                         <label for='InvoiceCreated'>Ngày lập</label>
                                         @(Html.TextBoxFor(Model => Model.InvoiceCreated, "{0:MM/dd/yyyy}", new { placeholder = "Điện thoại", @class = "form-control", style = "text-align:right;" }))
                                     </div>
-                                    <div class='form-group'>
-                                        <label for='Tax'>Thuế VAT (%)</label>
-                                        @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
-                                    </div>
+
                                     <div class='form-group'>
                                         <label for='SellId'>Nhà cung cấp</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.SellId)
@@ -87,7 +92,10 @@
                                         <label for='TotalNoTax'>Trước thuế</label>
                                         @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
                                     </div>
-
+                                    <div class='form-group'>
+                                        <label for='Tax'>Thuế VAT (%)</label>
+                                        @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
                                     <div class='form-group'>
                                         <label for='TotalTax'>Tiền thuế VAT</label>
                                         @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
@@ -111,8 +119,69 @@
                 </div>
                 <div class="card card-primary">
                     <div class="card-body">
+                        @*@(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+        .Name("InvoiceDetailDataTransfer")
+        .Columns(columns =>
+        {
+            columns.Command(command =>
+            {
+                command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+            }).Width(150);
+            columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
+            columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
+            columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+        })
+        .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+        .ToolBar(toolBar => toolBar.Search())
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Sortable()
+        .Scrollable()
+        .Reorderable(r => r.Columns(true))
+        .Resizable(r => r.Columns(true))
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(10))
+        .Excel(excel => excel
+        .FileName("CauHinh.xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("ExportExcel", "Config")))
+        .Pdf(pdf => pdf
+        .AllPages()
+        .AvoidLinks()
+        .PaperSize("A4")
+        .Margin("2cm", "1cm", "1cm", "1cm")
+        .Landscape()
+        .RepeatHeaders()
+        .FileName("Config.pdf"))
+        .Search(search=> {
+        })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(1000)
+        .Model(model =>
+        {
+            model.Id(t => t.Id);
+            model.Field(t => t.Total).Editable(false);
+            model.Field(t => t.Id).Editable(false);
+            model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+            model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+            model.Field(t => t.Quantity).DefaultValue(1);
+            model.Field(t => t.UnitPrice).DefaultValue(1000);
+        })
+                .Events(t => { t.RequestEnd("onGridRequestEndDataTransfer"); })
+                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterDataTransfer"))
+                .Destroy(t => t.Action("Delete", "InvoiceDetail"))
+                .Create(t => t.Action("CreateDataTransferss", "InvoiceDetail").Data("filterDataTransferCreate"))
+                .Update(t => t.Action("Update", "InvoiceDetail"))))*@
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
-                .Name("InvoiceDetailDataTransfer")
+                .Name("InvoiceDetail")
                 .Columns(columns =>
                 {
                     columns.Command(command =>
@@ -122,12 +191,12 @@
                     }).Width(150);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(100);
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(100);
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200);
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-
+                    columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
+                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -161,15 +230,18 @@
                 {
                     model.Id(t => t.Id);
                     model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.Id).Editable(false);
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
+
+
                 })
-                .Events(t => { t.RequestEnd("onGridRequestEndDataTransfer"); })
-                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterDataTransfer"))
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoiceDetail"); })
+                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
                 .Destroy(t => t.Action("Delete", "InvoiceDetail"))
-                .Create(t => t.Action("CreateDataTransfer", "InvoiceDetail").Data("filterDataTransferCreate"))
+                .Create(t => t.Action("Create", "InvoiceDetail").Data("filterInvoiceDetailCreate"))
                 .Update(t => t.Action("Update", "InvoiceDetail"))))
                     </div>
                 </div>
@@ -186,7 +258,7 @@
                     }).Width(150);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200);
                     columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-
+                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -219,6 +291,7 @@
                 .Model(model =>
                 {
                     model.Id(t => t.Id);
+                    model.Field(t => t.Id).Editable(false);
                     model.Field(t => t.PaymentCreated).DefaultValue(DateTime.Now);
                     model.Field(t => t.TotalPayment).DefaultValue(0);
 
@@ -241,14 +314,14 @@
 )
 <script>
 
-    function onGridRequestEndDataTransfer(e) {
+    function onGridRequestEndInvoiceDetail(e) {
         if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
             var response = e.response;
             var messageType = response.split('-')[0];
             var note = response.split('-')[1];
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
-            $("#InvoiceDetailDataTransfer").data("kendoGrid").dataSource.read();
+            $("#InvoiceDetail").data("kendoGrid").dataSource.read();
             setInvoice();
         }
     }
@@ -263,11 +336,11 @@
             setInvoice();
         }
     }
-    function filterDataTransfer(e) {
+    function filterInvoiceDetail(e) {
         var invoiceIDValue = $("#Id").val();
         return { invoiceID: invoiceIDValue };
     }
-    function filterDataTransferCreate(e) {
+    function filterInvoiceDetailCreate(e) {
         var invoiceIDValue = $("#Id").val();
         return { invoiceID: invoiceIDValue };
     }
@@ -287,11 +360,21 @@
                 url: '@Url.Action("GetByID", "Invoice")',
                 data: { ID: $("#Id").val() },
                 success: function (result) {
-                    $("#TotalNoTax").val(result["TotalNoTax"]);
-                    $("#TotalTax").val(result["TotalTax"]);
-                    $("#Total").val(result["Total"]);
-                    $("#TotalPaid").val(result["TotalPaid"]);
-                    $("#TotalDebt").val(result["TotalDebt"]);
+                    var TotalNoTax = Math.round(result["TotalNoTax"]);
+                    var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalTax = Math.round(result["TotalTax"]);
+                    var TotalTaxString = TotalTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalPaid = Math.round(result["TotalPaid"]);
+                    var TotalPaidString = TotalPaid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalDebt = Math.round(result["TotalDebt"]);
+                    var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#TotalNoTax").val(TotalNoTaxString);
+                    $("#TotalTax").val(TotalTaxString);
+                    $("#Total").val(TotalString);
+                    $("#TotalPaid").val(TotalPaidString);
+                    $("#TotalDebt").val(TotalDebtString);
                 },
                 error: function (jqXHR, exception) { }
             });

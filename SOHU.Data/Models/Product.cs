@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SOHU.Data.Models
 {
@@ -18,6 +19,9 @@ namespace SOHU.Data.Models
         public string Description { get; set; }
         public string ContentMain { get; set; }
         public decimal? Price { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? QuantityInStock { get; set; }
         public int? PriceUnitID { get; set; }
     }
 }

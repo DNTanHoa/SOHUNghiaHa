@@ -65,6 +65,20 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryId = AppGlobal.InvoiceInputID;
             return View(model);
         }
+        public IActionResult Delete(int ID)
+        {
+            string note = AppGlobal.InitString;
+            int result = _invoiceRepository.Delete(ID);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+            }
+            return Json(note);
+        }
         public IActionResult GetByID(int ID)
         {
             return Json(_invoiceRepository.GetByID(ID));
