@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using NghiaHa.CRM.Controllers;
 using NghiaHa.CRM.Web.Models;
 using SOHU.Data.DataTransferObject;
@@ -20,12 +21,12 @@ namespace NghiaHa.CRM.Web.Controllers
         private readonly IInvoiceDetailRepository _invoiceDetailRepository;
         private readonly IInvoiceRepository _invoiceRepository;
 
-
-        public InvoiceDetailController(IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository)
+        private readonly IProductRepository _productRepository;
+        public InvoiceDetailController(IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IProductRepository productRepository)
         {
             _invoiceDetailRepository = invoiceDetailRepository;
             _invoiceRepository = invoiceRepository;
-
+            _productRepository = productRepository;
         }
         private void InitializationDataTransfer(InvoiceDetailDataTransfer model)
         {
@@ -58,6 +59,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
                 _invoiceRepository.InitializationByID(model.InvoiceId.Value);
+                _productRepository.InitializationByID(model.ProductId.Value);
             }
             else
             {
@@ -75,6 +77,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
                 _invoiceRepository.InitializationByID(model.InvoiceId.Value);
+                _productRepository.InitializationByID(model.ProductId.Value);
             }
             else
             {
@@ -85,13 +88,21 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Delete(int ID)
         {
-            int invoiceID = _invoiceDetailRepository.GetByID(ID).InvoiceId.Value;
+            InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByID(ID);
+            int? invoiceID = 0;
+            int? productId = 0;
+            if (invoiceDetail != null)
+            {
+                invoiceID = invoiceDetail.InvoiceId.Value;
+                productId = invoiceDetail.ProductId.Value;
+            }
             string note = AppGlobal.InitString;
             int result = _invoiceDetailRepository.Delete(ID);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
-                _invoiceRepository.InitializationByID(invoiceID);
+                _invoiceRepository.InitializationByID(invoiceID.Value);
+                _productRepository.InitializationByID(productId.Value);
             }
             else
             {

@@ -32,6 +32,14 @@ namespace SOHU.Data.Repositories
             DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductSelectSingleByID", parameters);
             return SQLHelper.ToList<ProductDataTransfer>(table).FirstOrDefault() ?? new ProductDataTransfer();
         }
+        public void InitializationByID(int ID)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@ID",ID)
+            };
+            SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocProductInitializationByID", parameters);
+        }
         public List<Product> GetByCategoryIDToList(int categoryID)
         {
             return _context.Product.Where(item => item.CategoryId == categoryID).OrderByDescending(item => item.DateUpdated).ToList();
