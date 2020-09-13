@@ -56,8 +56,6 @@
                                         <label for='MetaTitle'>Ngắn gọn</label>
                                         @(Html.TextBoxFor(Model => Model.MetaTitle, new { placeholder = "Ngắn gọn", @class = "form-control" }))
                                     </div>
-                                </div>
-                                <div class="col-md-6">
                                     <div class='form-group'>
                                         <label for='CategoryId'>Nhóm</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.CategoryId)
@@ -69,12 +67,7 @@
                                     )
                                     </div>
                                     <div class='form-group'>
-                                        <label for='QuantityInStock'>Số lượng tồn</label>
-                                        @(Html.TextBoxFor(Model => Model.QuantityInStock, "{0:N0}", new { placeholder = "Số lượng tồn", @class = "form-control" }))
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-md-12">
+                                        <label for='CategoryId'>Thông số</label>
                                         @Html.TextAreaFor(Model => Model.ContentMain)
                                         <script src="/ckeditor/ckeditor.js"></script>
                                         <script src="/ckeditor/adapters/jquery.js"></script>
@@ -88,6 +81,24 @@
                                             });</script>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Tồn đầu kỳ</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInStockRoot, "{0:N0}", new { placeholder = "Tồn đầu kỳ", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng tồn</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInStock, "{0:N0}", new { placeholder = "Số lượng tồn", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng xuất</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityOutput, "{0:N0}", new { placeholder = "Số lượng xuất", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng nhập</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInput, "{0:N0}", new { placeholder = "Số lượng nhập", @class = "form-control" }))
+                                    </div>
+                                </div>                                
                             </div>
                         </form>
                     </div>

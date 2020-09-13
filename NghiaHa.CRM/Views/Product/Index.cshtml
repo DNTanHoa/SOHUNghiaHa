@@ -53,6 +53,8 @@
                     columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);
                     columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
                     columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(300);
+                    columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(300);
+                    columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(300);
                     columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })

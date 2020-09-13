@@ -19,9 +19,19 @@ namespace SOHU.Data.Models
         public string Description { get; set; }
         public string ContentMain { get; set; }
         public decimal? Price { get; set; }
+        public int? PriceUnitID { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? QuantityInStockRoot { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? QuantityInStock { get; set; }
-        public int? PriceUnitID { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? QuantityInput { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? QuantityOutput { get; set; }
+
     }
 }
