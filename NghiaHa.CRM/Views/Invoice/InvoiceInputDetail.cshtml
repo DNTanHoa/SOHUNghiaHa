@@ -223,7 +223,7 @@
                     model.Field(t => t.TotalPayment).DefaultValue(0);
 
                 })
-                .Events(t => { t.RequestEnd("onGridRequestEndDataTransfer"); })
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoicePayment"); })
                 .Read(t => t.Action("GetByInvoiceIDToList", "InvoicePayment").Data("filterInvoicePayment"))
                 .Destroy(t => t.Action("Delete", "InvoicePayment"))
                 .Create(t => t.Action("Create", "InvoicePayment").Data("filterInvoicePaymentCreate"))
@@ -249,6 +249,18 @@
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
             $("#InvoiceDetailDataTransfer").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function onGridRequestEndInvoicePayment(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#InvoicePayment").data("kendoGrid").dataSource.read();
+            setInvoice();
         }
     }
     function filterDataTransfer(e) {
@@ -266,5 +278,22 @@
     function filterInvoicePaymentCreate(e) {
         var invoiceIDValue = $("#Id").val();
         return { invoiceID: invoiceIDValue };
+    }
+    function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#Id").val() },
+                success: function (result) {
+                    $("#TotalNoTax").val(result["TotalNoTax"]);
+                    $("#TotalTax").val(result["TotalTax"]);
+                    $("#Total").val(result["Total"]);
+                    $("#TotalPaid").val(result["TotalPaid"]);
+                    $("#TotalDebt").val(result["TotalDebt"]);
+                },
+                error: function (jqXHR, exception) { }
+            });
     }
 </script>

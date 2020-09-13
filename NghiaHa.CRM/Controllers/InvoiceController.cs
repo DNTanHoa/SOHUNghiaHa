@@ -65,6 +65,10 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryId = AppGlobal.InvoiceInputID;
             return View(model);
         }
+        public IActionResult GetByID(int ID)
+        {
+            return Json(_invoiceRepository.GetByID(ID));
+        }
         public IActionResult GetAllToList([DataSourceRequest] DataSourceRequest request)
         {
             return Json(_invoiceRepository.GetAllToList().ToDataSourceResult(request));
