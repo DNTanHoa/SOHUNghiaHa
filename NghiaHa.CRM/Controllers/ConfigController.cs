@@ -8,6 +8,7 @@ using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NghiaHa.CRM.Controllers;
+using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
 using SOHU.Data.Extensions;
 using SOHU.Data.Helpers;
@@ -32,7 +33,7 @@ namespace NghiaHa.CRM.Web.Controllers
             if (!string.IsNullOrEmpty(model.Note))
             {
                 model.Note = model.Note.Trim();
-            }           
+            }
         }
         public IActionResult Index()
         {
@@ -53,6 +54,16 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult InvoiceCategory()
         {
             return View();
+        }
+        public ActionResult GetByCRMAndProductCategoryToTree([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _configResposistory.GetByCRMAndProductCategoryToTree();
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetDataTransferByParentIDToList([DataSourceRequest] DataSourceRequest request, int parentID)
+        {
+            var data = _configResposistory.GetDataTransferByParentIDToList(parentID);
+            return Json(data.ToDataSourceResult(request));
         }
         public ActionResult GetUnitToList([DataSourceRequest] DataSourceRequest request)
         {
@@ -118,9 +129,10 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return Json(note);
         }
-        public IActionResult CreateProductCategory(Config model)
+        public IActionResult CreateProductCategory(ConfigDataTransfer model)
         {
             Initialization(model);
+            model.ParentId = model.Parent.Id;
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.ProductCategory;
             string note = AppGlobal.InitString;
@@ -144,7 +156,7 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             Initialization(model);
             model.GroupName = AppGlobal.CRM;
-            model.Code = AppGlobal.Unit;            
+            model.Code = AppGlobal.Unit;
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
@@ -159,6 +171,23 @@ namespace NghiaHa.CRM.Web.Controllers
             else
             {
                 note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+            }
+            return Json(note);
+        }
+        public IActionResult UpdateDataTransfer(ConfigDataTransfer model)
+        {
+            Initialization(model);
+            model.ParentId = model.Parent.Id;
+            string note = AppGlobal.InitString;
+            model.Initialization(InitType.Update, RequestUserID);
+            int result = _configResposistory.Update(model.Id, model);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
             }
             return Json(note);
         }

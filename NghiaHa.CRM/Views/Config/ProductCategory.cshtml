@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Nhóm vật tư - thiết bị";
-}
+﻿@{ ViewData["Title"] = "Nhóm vật tư - thiết bị"; }
 @using Kendo.Mvc.UI
 <section class="content-header">
     <div class="container-fluid">
@@ -21,15 +19,31 @@
     <div class="container-fluid">
         <div class="row">
             <div class="card w-100">
-                @(Html.Kendo().Grid<SOHU.Data.Models.Config>()
+                <div class="card-header">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            @(Html.Kendo().DropDownList()
+                     .Name("ProductCategory")
+                     .DataValueField("Id")
+                     .DataTextField("CodeName")
+                    .HtmlAttributes(new { @class = "form-control" })
+                      .Events(e => e.DataBound("onProductCategoryDataBound").Change("onProductCategoryChange"))
+                       .Filter(FilterType.Contains)
+                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
+                            )
+                        </div>
+                    </div>
+                </div>
+                @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.ConfigDataTransfer>()
                 .Name("Config")
                 .Columns(columns =>
                 {
                     columns.Command(command =>
                     {
-                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });                        
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(250);
+                    }).Width(150);
+                    columns.Bound(t => t.Parent.TextName).Title("Parent").EditorTemplateName("Config_ProductCategory").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.CodeName).Title("Nhóm").Width(300);
                     columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
@@ -67,12 +81,13 @@
                 {
                     model.Id(t => t.Id);
                     model.Field(t => t.Id).Editable(false);
+                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetProductCategoryToList", "Config"))
+                .Read(t => t.Action("GetDataTransferByParentIDToList", "Config").Data("filterConfig"))
                 .Destroy(t => t.Action("Delete", "Config"))
                 .Create(t => t.Action("CreateProductCategory", "Config"))
-                .Update(t => t.Action("Update", "Config"))))
+                .Update(t => t.Action("UpdateDataTransfer", "Config"))))
             </div>
         </div>
     </div>
@@ -95,4 +110,20 @@
             $("#Config").data("kendoGrid").dataSource.read();
         }
     }
+    function onProductCategoryDataBound() {
+        var control = $("#ProductCategory").data("kendoDropDownList");
+        var controlLength = control.dataSource.data().length;
+        if (controlLength > 0) {
+            control.select(0);
+            control.trigger("change");
+        }
+    }
+    function onProductCategoryChange() {
+        $("#Config").data("kendoGrid").dataSource.read();
+    }
+    function filterConfig(e) {
+        var parentIDValue = $("#ProductCategory").data("kendoDropDownList").value();
+        return { parentID: parentIDValue };
+
+    }    
 </script>

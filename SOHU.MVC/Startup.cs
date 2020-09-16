@@ -85,7 +85,7 @@ namespace SOHU.MVC
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Membership}/{action=Login}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
