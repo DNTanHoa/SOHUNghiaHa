@@ -38,6 +38,7 @@ namespace NghiaHa.CRM
             services.AddTransient<IInvoicePaymentRepository, InvoicePaymentRepository>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
             services.AddTransient<IInvoiceDetailRepository, InvoiceDetailRepository>();
+            services.AddTransient<IInvoicePropertyRepository, InvoicePropertyRepository>();
             services.AddTransient<IMembershipPaymentRepository, MembershipPaymentRepository>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<ICartDetailRepository, CartDetailRepository>();

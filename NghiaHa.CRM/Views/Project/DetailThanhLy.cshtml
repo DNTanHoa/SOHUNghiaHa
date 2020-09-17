@@ -1,0 +1,100 @@
+﻿@{ ViewData["Title"] = "Thanh lý"; }
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Invoice
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thanh lý</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Dự án - công trình</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <form asp-action="SaveThanhLy" asp-controller="Project">
+                            @Html.HiddenFor(Model => Model.Id)
+                            @Html.HiddenFor(Model => Model.CategoryId)
+                            @Html.HiddenFor(Model => Model.DateBegin)
+                            @Html.HiddenFor(Model => Model.DateCreated)
+                            @Html.HiddenFor(Model => Model.DateEnd)
+                            @Html.HiddenFor(Model => Model.InvoiceCreated)
+                            @Html.HiddenFor(Model => Model.DateUpdated)
+                            <div class="row">
+                                <div class='col-md-1'>
+                                    <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-save"></span>
+                                    </button>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.Id" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Hợp đồng
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.Id" asp-action="DetailChaoGia" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Chào giá
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.Id" asp-action="DetailThanhLy" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Thanh lý
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.Id" asp-action="DetailNghiemThu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Nghiệm thu
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.Id" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-paperclip"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewThanhLy/@Model.Id');" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
+                                        <span class="fas fa-print"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.Id" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12" style="width:100%;">
+                                    @Html.TextAreaFor(Model => Model.ThanhLy)
+
+                                    <script src="/ckeditor/ckeditor.js"></script>
+                                    <script src="/ckeditor/adapters/jquery.js"></script>
+                                    <script>
+                                        CKEDITOR.replace("ThanhLy", {
+                                            on: {
+                                                'instanceReady': function (evt) {
+                                                    evt.editor.resize("100%", "600");
+                                                }
+                                            }
+                                        });</script>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

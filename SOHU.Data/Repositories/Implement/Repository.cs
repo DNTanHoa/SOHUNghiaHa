@@ -16,7 +16,11 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
-
+        public int Range(List<T> list)
+        {
+            _context.Set<T>().AddRange(list);
+            return _context.SaveChanges();
+        }
         public async Task<int> AsyncCreate(T model)
         {
             _context.Set<T>().Add(model);

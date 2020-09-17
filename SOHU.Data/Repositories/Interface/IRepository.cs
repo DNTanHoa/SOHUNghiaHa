@@ -8,6 +8,7 @@ namespace SOHU.Data.Repositories
 {
     public interface IRepository<T> where T : BaseModel
     {
+        public int Range(List<T> list);
         public Task<int> AsyncCreate(T model);
 
         public Task<int> AsyncUpdate(int ID, T model);

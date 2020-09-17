@@ -19,6 +19,14 @@ namespace SOHU.Data.Helpers
         #endregion
 
         #region AppSettings 
+        public static string URLImagesCustomer
+        {
+            get
+            {
+                string result = AppGlobal.Images + "/Project" ;
+                return result;
+            }
+        }
         public static string LogoURLFull
         {
             get
@@ -57,6 +65,30 @@ namespace SOHU.Data.Helpers
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 return builder.Build().GetSection("AppSettings").GetSection("Loading").Value;
+            }
+        }
+        public static int DuAnID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("DuAnID").Value);
+            }
+        }
+        public static int BaoGiaID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("BaoGiaID").Value);
+            }
+        }
+        public static int DuToanID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("DuToanID").Value);
             }
         }
         public static int Tax

@@ -19,6 +19,7 @@ namespace SOHU.Data.Models
         public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual DbSet<InvoicePayment> InvoicePayment { get; set; }
+        public virtual DbSet<InvoiceProperty> InvoiceProperty { get; set; }
         public virtual DbSet<Membership> Membership { get; set; }
         public virtual DbSet<MembershipPayment> MembershipPayment { get; set; }
         public virtual DbSet<Product> Product { get; set; }

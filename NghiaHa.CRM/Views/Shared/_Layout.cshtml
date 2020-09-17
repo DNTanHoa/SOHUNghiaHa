@@ -102,7 +102,25 @@
                 <div class="sidebar">
                     <nav class="mt-2">
                         <ul id="userMenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
-
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-file-signature"></i>
+                                    <p>
+                                        Dự án
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Project">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Danh sách
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="nav-item has-treeview">
                                 <a class="nav-link" href="/">
                                     <i class="nav-icon fas fa-file-invoice-dollar"></i>

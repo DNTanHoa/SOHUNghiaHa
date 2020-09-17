@@ -14,6 +14,12 @@ namespace SOHU.Data.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? InvoiceCreated { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateBegin { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateEnd { get; set; }
         public int? MakeSideId { get; set; }
         public int? BuyId { get; set; }
         public string BuyName { get; set; }
@@ -25,6 +31,10 @@ namespace SOHU.Data.Models
         public string SellAddress { get; set; }
         public string SellEmail { get; set; }
         public string SellPhone { get; set; }
+        public string HopDong { get; set; }
+        public string ChaoGia { get; set; }
+        public string NghiemThu { get; set; }
+        public string ThanhLy { get; set; }
         public int? StatusId { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
