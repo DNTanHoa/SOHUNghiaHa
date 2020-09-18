@@ -72,7 +72,7 @@ namespace SOHU.API.Controllers
             Result routeResult;
 
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _productResposistory.Update(model.Id, model);
+            int result = _productResposistory.Update(model.ID, model);
             if (result > 0)
             {
                 routeResult = new Result()
@@ -120,10 +120,10 @@ namespace SOHU.API.Controllers
             Result routeResult;
             int result = 0;
 
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
-                result = _productResposistory.Update(model.Id, model);
+                result = _productResposistory.Update(model.ID, model);
 
                 if (result > 0)
                 {

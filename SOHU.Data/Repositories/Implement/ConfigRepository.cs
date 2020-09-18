@@ -44,10 +44,9 @@ namespace SOHU.Data.Repositories
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocConfigSelectByParentID", parameters);
                 list = SQLHelper.ToList<ConfigDataTransfer>(dt).ToList();
                 for (int i = 0; i < list.Count; i++)
-                {
-                    list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());
+                {                    
                     list[i].Parent = new ModelTemplate();
-                    list[i].Parent.Id = int.Parse(dt.Rows[i]["ParentID"].ToString());
+                    list[i].Parent.ID = int.Parse(dt.Rows[i]["ParentID"].ToString());
                     list[i].Parent.TextName = list[i].ParentName;
                 }
             }
@@ -58,11 +57,7 @@ namespace SOHU.Data.Repositories
             List<Config> list = new List<Config>();
 
             DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocConfigSelectByCRMAndProductCategoryToTree");
-            list = SQLHelper.ToList<Config>(dt).ToList();
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());
-            }
+            list = SQLHelper.ToList<Config>(dt).ToList();            
             return list;
         }
     }

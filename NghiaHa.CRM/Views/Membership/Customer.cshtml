@@ -43,7 +43,7 @@
                     columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
                     columns.Bound(t => t.TaxCode).Title("Mã số thuế").Width(200);
                     columns.Bound(t => t.Address).Title("Địa chỉ").Width(200);
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -79,8 +79,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetByCustomerParentIDToList", "Membership"))

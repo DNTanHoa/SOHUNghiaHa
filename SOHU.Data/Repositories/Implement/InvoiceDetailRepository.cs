@@ -20,7 +20,7 @@ namespace SOHU.Data.Repositories
         }
         public List<InvoiceDetail> GetByInvoiceIDToList(int invoiceID)
         {
-            return _context.InvoiceDetail.Where(item => item.InvoiceId == invoiceID).OrderBy(item => item.Id).ToList();
+            return _context.InvoiceDetail.Where(item => item.InvoiceID == invoiceID).OrderBy(item => item.ID).ToList();
         }
         public List<InvoiceDetailDataTransfer> GetDataTransferByInvoiceIDToList(int invoiceID)
         {
@@ -35,17 +35,61 @@ namespace SOHU.Data.Repositories
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
 
                 for (int i = 0; i < list.Count; i++)
-                {
-                    list[i].Id = int.Parse(dt.Rows[i]["ID"].ToString());
+                {                    
                     list[i].Product = new ModelTemplate();
-                    list[i].Product.Id = list[i].ProductId;
+                    list[i].Product.ID = list[i].ProductID;
                     list[i].Product.TextName = list[i].ProductTitle;
                     list[i].Unit = new ModelTemplate();
-                    list[i].Unit.Id = list[i].UnitId;
+                    list[i].Unit.ID = list[i].UnitID;
                     list[i].Unit.TextName = list[i].UnitName;
                 }
             }
 
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectNhanSuByInvoiceIDAndParentIDToList(int invoiceID, int parentID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (parentID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@ParentID",parentID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectNhanSuByInvoiceIDAndParentID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {                    
+                    list[i].Employee = new ModelTemplate();
+                    list[i].Employee.ID = list[i].CurrencyID;
+                    list[i].Employee.TextName = list[i].FullName;                   
+                }
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectDuToanByInvoiceIDAndParentIDToList(int invoiceID, int parentID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (parentID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@ParentID",parentID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectDuToanByInvoiceIDAndParentID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Product = new ModelTemplate();
+                    list[i].Product.ID = list[i].ProductID;
+                    list[i].Product.TextName = list[i].ProductTitle;
+                    list[i].Unit = new ModelTemplate();
+                    list[i].Unit.ID = list[i].UnitID;
+                    list[i].Unit.TextName = list[i].UnitName;
+                }
+            }
             return list;
         }
         public void DeleteByProductIsNull()

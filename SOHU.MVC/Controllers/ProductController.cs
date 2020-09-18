@@ -79,7 +79,7 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _productResposistory.Update(model.Id, model);
+            int result = _productResposistory.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -161,10 +161,10 @@ namespace SOHU.MVC.Controllers
                     }
                 }
 
-                if (model.Id > 0)
+                if (model.ID > 0)
                 {
                     model.Initialization(InitType.Update, RequestUserID);
-                    result = _productResposistory.Update(model.Id, model);
+                    result = _productResposistory.Update(model.ID, model);
                     if (result > 0)
                     {
                         note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -189,7 +189,7 @@ namespace SOHU.MVC.Controllers
                 }
             }
             //return Json(note);
-            return RedirectToAction("DetailCompact", new { ID = model.Id });
+            return RedirectToAction("DetailCompact", new { ID = model.ID });
         }
 
         public IActionResult NewProducts(int PageSize)

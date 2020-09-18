@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = "Thanh lý"; }
+﻿@{ ViewData["Title"] = Model.InvoiceCode + " - Thanh lý"; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thanh lý</h1>
+                <h1><b>@Model.InvoiceCode</b> - Thanh lý</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -24,8 +24,8 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <form asp-action="SaveThanhLy" asp-controller="Project">
-                            @Html.HiddenFor(Model => Model.Id)
-                            @Html.HiddenFor(Model => Model.CategoryId)
+                            @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.CategoryID)
                             @Html.HiddenFor(Model => Model.DateBegin)
                             @Html.HiddenFor(Model => Model.DateCreated)
                             @Html.HiddenFor(Model => Model.DateEnd)
@@ -33,43 +33,43 @@
                             @Html.HiddenFor(Model => Model.DateUpdated)
                             <div class="row">
                                 <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
                                         <span class="fas fa-save"></span>
                                     </button>
                                 </div>
+                                <div class='col-md-1'>
+                                    <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewThanhLy/@Model.ID');" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
+                                        <span class="fas fa-print"></span>
+                                    </a>
+                                </div>
                                 <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Hợp đồng
                                     </a>
                                 </div>
                                 <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailChaoGia" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Chào giá
                                     </a>
                                 </div>
                                 <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailThanhLy" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Thanh lý
                                     </a>
                                 </div>
                                 <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailNghiemThu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Nghiệm thu
                                     </a>
                                 </div>
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
-                                    </a>
-                                </div>
-                                <div class='col-md-1'>
-                                    <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewThanhLy/@Model.Id');" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
-                                        <span class="fas fa-print"></span>
-                                    </a>
-                                </div>
-                                <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.Id" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
-                                        <span class="fas fa-arrow-left"></span>
                                     </a>
                                 </div>
                             </div>
@@ -92,8 +92,6 @@
                         </form>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

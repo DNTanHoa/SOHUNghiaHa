@@ -30,8 +30,8 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         private void InitializationDataTransfer(InvoiceDetailDataTransfer model)
         {
-            model.ProductId = model.Product.Id;
-            model.UnitId = model.Unit.Id;
+            model.ProductID = model.Product.ID;
+            model.UnitID = model.Unit.ID;
             model.Total = model.UnitPrice * model.Quantity;
         }
         public IActionResult GetDataTransferByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
@@ -44,13 +44,13 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
-            model.InvoiceId = invoiceID;
+            model.InvoiceID = invoiceID;
             InitializationDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
-            if ((model.ProductId > 0) && (model.UnitId > 0))
+            if ((model.ProductID > 0) && (model.UnitID > 0))
             {
                 result = _invoiceDetailRepository.Create(model);
             }
@@ -58,8 +58,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                _invoiceRepository.InitializationByID(model.InvoiceId.Value);
-                _productRepository.InitializationByID(model.ProductId.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -72,12 +72,12 @@ namespace NghiaHa.CRM.Web.Controllers
             InitializationDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _invoiceDetailRepository.Update(model.Id, model);
+            int result = _invoiceDetailRepository.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByID(model.InvoiceId.Value);
-                _productRepository.InitializationByID(model.ProductId.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -93,8 +93,8 @@ namespace NghiaHa.CRM.Web.Controllers
             int? productId = 0;
             if (invoiceDetail != null)
             {
-                invoiceID = invoiceDetail.InvoiceId.Value;
-                productId = invoiceDetail.ProductId.Value;
+                invoiceID = invoiceDetail.InvoiceID.Value;
+                productId = invoiceDetail.ProductID.Value;
             }
             string note = AppGlobal.InitString;
             int result = _invoiceDetailRepository.Delete(ID);

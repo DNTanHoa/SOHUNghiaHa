@@ -13,7 +13,7 @@ namespace SOHU.Data.DataTransferObject
         {
             get
             {
-                return AppGlobal.DomainWebsite + MetaTitle + "-" + Id + ".html";
+                return AppGlobal.DomainWebsite + MetaTitle + "-" + ID + ".html";
             }
         }
 

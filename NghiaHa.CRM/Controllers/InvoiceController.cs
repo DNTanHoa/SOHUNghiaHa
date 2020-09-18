@@ -62,7 +62,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model = _invoiceRepository.GetByID(ID);
             }
-            model.CategoryId = AppGlobal.InvoiceInputID;
+            model.CategoryID = AppGlobal.InvoiceInputID;
             return View(model);
         }
         public IActionResult InvoiceInputDetailWindow(int ID)
@@ -79,7 +79,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model = _invoiceRepository.GetByID(ID);
             }
-            model.CategoryId = AppGlobal.InvoiceInputID;
+            model.CategoryID = AppGlobal.InvoiceInputID;
             return View(model);
         }
         public IActionResult Delete(int ID)
@@ -123,12 +123,12 @@ namespace NghiaHa.CRM.Web.Controllers
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInput(Invoice model)
         {
-            model.SellName = _membershipRepository.GetByID(model.SellId.Value).FullName;
-            if (model.Id > 0)
+            model.SellName = _membershipRepository.GetByID(model.SellID.Value).FullName;
+            if (model.ID > 0)
             {
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
-                _invoiceRepository.Update(model.Id, model);
+                _invoiceRepository.Update(model.ID, model);
             }
             else
             {
@@ -139,17 +139,17 @@ namespace NghiaHa.CRM.Web.Controllers
                     _invoiceRepository.Create(model);
                 }
             }
-            return RedirectToAction("InvoiceInputDetail", new { ID = model.Id });
+            return RedirectToAction("InvoiceInputDetail", new { ID = model.ID });
         }
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInputWindow(Invoice model)
         {
-            model.SellName = _membershipRepository.GetByID(model.SellId.Value).FullName;
-            if (model.Id > 0)
+            model.SellName = _membershipRepository.GetByID(model.SellID.Value).FullName;
+            if (model.ID > 0)
             {
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
-                _invoiceRepository.Update(model.Id, model);
+                _invoiceRepository.Update(model.ID, model);
             }
             else
             {
@@ -160,7 +160,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     _invoiceRepository.Create(model);
                 }
             }
-            return RedirectToAction("InvoiceInputWindow", new { ID = model.Id });
+            return RedirectToAction("InvoiceInputWindow", new { ID = model.ID });
         }
     }
 }

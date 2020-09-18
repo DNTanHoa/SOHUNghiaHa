@@ -26,8 +26,8 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <form asp-action="SaveInvoiceInput" asp-controller="Invoice">
-                            @Html.HiddenFor(Model => Model.Id)
-                            @Html.HiddenFor(Model => Model.CategoryId)
+                            @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.CategoryID)
                             <div class="row">
                                 <div class='col-md-9'>
                                 </div>
@@ -67,9 +67,9 @@
                                     </div>
 
                                     <div class='form-group'>
-                                        <label for='SellId'>Nhà cung cấp</label>
-                                        @(Html.Kendo().DropDownListFor(Model => Model.SellId)
-                                   .DataValueField("Id")
+                                        <label for='SellID'>Nhà cung cấp</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.SellID)
+                                   .DataValueField("ID")
                                    .DataTextField("FullName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
@@ -77,9 +77,9 @@
                                     )
                                     </div>
                                     <div class='form-group'>
-                                        <label for='MakeSideId'>Người lập</label>
-                                        @(Html.Kendo().DropDownListFor(Model => Model.MakeSideId)
-                                   .DataValueField("Id")
+                                        <label for='MakeSideID'>Người lập</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.MakeSideID)
+                                   .DataValueField("ID")
                                    .DataTextField("FullName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
@@ -196,7 +196,7 @@
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -228,9 +228,9 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
+                    model.Id(t => t.ID);
                     model.Field(t => t.Total).Editable(false);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
@@ -258,7 +258,7 @@
                     }).Width(150);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200);
                     columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -290,8 +290,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.PaymentCreated).DefaultValue(DateTime.Now);
                     model.Field(t => t.TotalPayment).DefaultValue(0);
 
@@ -337,19 +337,19 @@
         }
     }
     function filterInvoiceDetail(e) {
-        var invoiceIDValue = $("#Id").val();
+        var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
     }
     function filterInvoiceDetailCreate(e) {
-        var invoiceIDValue = $("#Id").val();
+        var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
     }
     function filterInvoicePayment(e) {
-        var invoiceIDValue = $("#Id").val();
+        var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
     }
     function filterInvoicePaymentCreate(e) {
-        var invoiceIDValue = $("#Id").val();
+        var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
     }
     function setInvoice() {
@@ -358,7 +358,7 @@
                 type: "POST",
                 datatype: "JSON",
                 url: '@Url.Action("GetByID", "Invoice")',
-                data: { ID: $("#Id").val() },
+                data: { ID: $("#ID").val() },
                 success: function (result) {
                     var TotalNoTax = Math.round(result["TotalNoTax"]);
                     var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");

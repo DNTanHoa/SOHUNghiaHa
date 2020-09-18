@@ -32,7 +32,7 @@
                     }).Width(250);
                     columns.Bound(t => t.CodeName).Title("Loại chứng từ").Width(300);
                     columns.Bound(t => t.Active).Title("Hóa đơn nhập hàng").Width(200);
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
@@ -66,8 +66,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetInvoiceCategoryToList", "Config"))

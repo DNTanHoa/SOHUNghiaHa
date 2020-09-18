@@ -1,6 +1,6 @@
 @using Kendo.Mvc.UI
 @(Html.Kendo().DropDownListFor(t => t)
-                   .DataValueField("Id")
+                   .DataValueField("ID")
                    .DataTextField("Title")
                    .HtmlAttributes(new { data_bind = "value: Product", @class = "form-control" })
                     .Filter(FilterType.Contains)

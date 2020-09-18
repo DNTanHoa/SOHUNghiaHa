@@ -42,7 +42,7 @@ namespace SOHU.Data.Repositories
         }
         public List<Product> GetByCategoryIDToList(int categoryID)
         {
-            return _context.Product.Where(item => item.CategoryId == categoryID).OrderByDescending(item => item.DateUpdated).ToList();
+            return _context.Product.Where(item => item.CategoryID == categoryID).OrderByDescending(item => item.DateUpdated).ToList();
         }
     }
 }

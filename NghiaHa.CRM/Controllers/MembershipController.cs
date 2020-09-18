@@ -68,7 +68,7 @@ namespace NghiaHa.CRM.Controllers
             {
                 model = _membershipRepository.GetByID(ID);
             }
-            model.ParentId = AppGlobal.CustomerParentID;
+            model.ParentID = AppGlobal.CustomerParentID;
             return View(model);
         }
         public IActionResult SupplierDetail(int ID)
@@ -78,7 +78,7 @@ namespace NghiaHa.CRM.Controllers
             {
                 model = _membershipRepository.GetByID(ID);
             }
-            model.ParentId = AppGlobal.SupplierParentID;
+            model.ParentID = AppGlobal.SupplierParentID;
             return View(model);
         }
         public IActionResult EmployeeDetail(int ID)
@@ -88,7 +88,7 @@ namespace NghiaHa.CRM.Controllers
             {
                 model = _membershipRepository.GetByID(ID);
             }
-            model.ParentId = AppGlobal.EmployeeParentID;
+            model.ParentID = AppGlobal.EmployeeParentID;
             return View(model);
         }
         public ActionResult HeaderInfor()
@@ -120,21 +120,21 @@ namespace NghiaHa.CRM.Controllers
         public IActionResult SaveCustomer(Membership model)
         {
             bool check = false;
-            if ((model.ParentId == AppGlobal.CustomerParentID) || (model.ParentId == AppGlobal.SupplierParentID))
+            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
             {
                 check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
             }
-            if (model.ParentId == AppGlobal.EmployeeParentID)
+            if (model.ParentID == AppGlobal.EmployeeParentID)
             {
                 check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
             }
             if (check == true)
             {
-                if (model.Id > 0)
+                if (model.ID > 0)
                 {
                     Initialization(model);
                     model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.Id, model);
+                    _membershipRepository.Update(model.ID, model);
                 }
                 else
                 {
@@ -143,26 +143,26 @@ namespace NghiaHa.CRM.Controllers
                     _membershipRepository.Create(model);
                 }
             }
-            return RedirectToAction("CustomerDetail", new { ID = model.Id });
+            return RedirectToAction("CustomerDetail", new { ID = model.ID });
         }
         public IActionResult SaveSupplier(Membership model)
         {
             bool check = false;
-            if ((model.ParentId == AppGlobal.CustomerParentID) || (model.ParentId == AppGlobal.SupplierParentID))
+            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
             {
                 check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
             }
-            if (model.ParentId == AppGlobal.EmployeeParentID)
+            if (model.ParentID == AppGlobal.EmployeeParentID)
             {
                 check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
             }
             if (check == true)
             {
-                if (model.Id > 0)
+                if (model.ID > 0)
                 {
                     Initialization(model);
                     model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.Id, model);
+                    _membershipRepository.Update(model.ID, model);
                 }
                 else
                 {
@@ -171,7 +171,7 @@ namespace NghiaHa.CRM.Controllers
                     _membershipRepository.Create(model);
                 }
             }
-            return RedirectToAction("SupplierDetail", new { ID = model.Id });
+            return RedirectToAction("SupplierDetail", new { ID = model.ID });
         }
         public IActionResult Delete(int ID)
         {
@@ -190,21 +190,21 @@ namespace NghiaHa.CRM.Controllers
         public IActionResult SaveEmployee(Membership model)
         {
             bool check = false;
-            if ((model.ParentId == AppGlobal.CustomerParentID) || (model.ParentId == AppGlobal.SupplierParentID))
+            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
             {
                 check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
             }
-            if (model.ParentId == AppGlobal.EmployeeParentID)
+            if (model.ParentID == AppGlobal.EmployeeParentID)
             {
                 check = _membershipRepository.IsValidByPhone(model.Phone);
             }
             if (check == true)
             {
-                if (model.Id > 0)
+                if (model.ID > 0)
                 {
                     Initialization(model);
                     model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.Id, model);
+                    _membershipRepository.Update(model.ID, model);
                 }
                 else
                 {
@@ -213,7 +213,7 @@ namespace NghiaHa.CRM.Controllers
                     _membershipRepository.Create(model);
                 }
             }
-            return RedirectToAction("EmployeeDetail", new { ID = model.Id });
+            return RedirectToAction("EmployeeDetail", new { ID = model.ID });
         }
     }
 }

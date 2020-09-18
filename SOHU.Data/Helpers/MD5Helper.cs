@@ -25,12 +25,12 @@ namespace SOHU.Data.Helpers
         {
             byte[] lbtVector = { 240, 3, 45, 29, 0, 76, 173, 59 };
             TripleDESCryptoServiceProvider loCryptoClass = new TripleDESCryptoServiceProvider();
-            MD5CryptoServiceProvider loCryptoProvider = new MD5CryptoServiceProvider();
+            MD5CryptoServiceProvider loCryptoProvIDer = new MD5CryptoServiceProvider();
             byte[] lbtBuffer = null;
             try
             {
                 lbtBuffer = System.Text.Encoding.ASCII.GetBytes(sSource);
-                loCryptoClass.Key = loCryptoProvider.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey));
+                loCryptoClass.Key = loCryptoProvIDer.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey));
                 loCryptoClass.IV = lbtVector;
                 return Convert.ToBase64String(loCryptoClass.CreateEncryptor().TransformFinalBlock(lbtBuffer, 0, lbtBuffer.Length));
             }
@@ -45,9 +45,9 @@ namespace SOHU.Data.Helpers
             finally
             {
                 loCryptoClass.Clear();
-                loCryptoProvider.Clear();
+                loCryptoProvIDer.Clear();
                 loCryptoClass = null;
-                loCryptoProvider = null;
+                loCryptoProvIDer = null;
             }
             return string.Empty;
         }
@@ -57,12 +57,12 @@ namespace SOHU.Data.Helpers
             byte[] lbtVector = { 240, 3, 45, 29, 0, 76, 173, 59 };
             byte[] buffer = null;
             TripleDESCryptoServiceProvider loCryptoClass = new TripleDESCryptoServiceProvider();
-            MD5CryptoServiceProvider loCryptoProvider = new MD5CryptoServiceProvider();
+            MD5CryptoServiceProvider loCryptoProvIDer = new MD5CryptoServiceProvider();
 
             try
             {
                 buffer = Convert.FromBase64String(sSource);
-                loCryptoClass.Key = loCryptoProvider.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey));
+                loCryptoClass.Key = loCryptoProvIDer.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey));
                 loCryptoClass.IV = lbtVector;
                 return Encoding.ASCII.GetString(loCryptoClass.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length));
 
@@ -78,9 +78,9 @@ namespace SOHU.Data.Helpers
             finally
             {
                 loCryptoClass.Clear();
-                loCryptoProvider.Clear();
+                loCryptoProvIDer.Clear();
                 loCryptoClass = null;
-                loCryptoProvider = null;
+                loCryptoProvIDer = null;
 
             }
             return string.Empty;

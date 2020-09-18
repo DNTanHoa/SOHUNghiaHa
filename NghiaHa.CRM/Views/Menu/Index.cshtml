@@ -31,8 +31,8 @@
                         command.Custom("detailFirst").Text("&nbsp;").IconClass("fas fa-external-link-alt").Click("onOpenDetail").HtmlAttributes(new { style = "color:#ffffff; background-color:#28a745; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-success" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(250);
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.ParentId).Title("Nhóm").Width(100);
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ParentID).Title("Nhóm").Width(100);
                     columns.Bound(t => t.DisplayName).Title("Hiển thị").Width(350);
                     columns.Bound(t => t.Icon).Title("Biểu tượng").Width(200);
                     columns.Bound(t => t.Controller).Title("Controller").Width(300);
@@ -82,8 +82,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetAllToList", "Menu"))

@@ -132,7 +132,7 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult CreateProductCategory(ConfigDataTransfer model)
         {
             Initialization(model);
-            model.ParentId = model.Parent.Id;
+            model.ParentID = model.Parent.ID;
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.ProductCategory;
             string note = AppGlobal.InitString;
@@ -177,10 +177,10 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult UpdateDataTransfer(ConfigDataTransfer model)
         {
             Initialization(model);
-            model.ParentId = model.Parent.Id;
+            model.ParentID = model.Parent.ID;
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _configResposistory.Update(model.Id, model);
+            int result = _configResposistory.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -196,7 +196,7 @@ namespace NghiaHa.CRM.Web.Controllers
             Initialization(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _configResposistory.Update(model.Id, model);
+            int result = _configResposistory.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

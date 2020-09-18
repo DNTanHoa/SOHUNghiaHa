@@ -16,7 +16,7 @@ namespace SOHU.Data.Models
         public decimal? Total { get; set; }
         public decimal? TotalPaid { get; set; }
         public decimal? TotalDebt { get; set; }
-        public int? CurrencyId { get; set; }
+        public int? CurrencyID { get; set; }
         public decimal? Gbpexchange { get; set; }
     }
 }

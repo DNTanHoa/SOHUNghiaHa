@@ -53,7 +53,7 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             model.Initialization(InitType.Insert, RequestUserID);
             string note = AppGlobal.InitString;
-            var result = customerRepository.Update(model.Id, model);
+            var result = customerRepository.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

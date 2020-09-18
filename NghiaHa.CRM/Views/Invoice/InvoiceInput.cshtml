@@ -61,14 +61,14 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail/#=Id#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(200);
                     columns.Bound(t => t.Total).Title("Sau thuế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -102,8 +102,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthToList", "Invoice").Data("filterInvoice"))

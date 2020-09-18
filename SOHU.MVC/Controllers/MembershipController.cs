@@ -67,11 +67,11 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             int result = 0;
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
                 model.ConcatFullname();
-                result = _resposistory.Update(model.Id, model);
+                result = _resposistory.Update(model.ID, model);
                 if (result > 0)
                 {
                     note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

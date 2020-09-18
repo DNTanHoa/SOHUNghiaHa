@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = "Thông tin chi tiết dự án - công trình"; }
+﻿@{ ViewData["Title"] = @Model.InvoiceCode + "Thông tin"; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thông tin chi tiết dự án - công trình</h1>
+                <h1><b>@Model.InvoiceCode</b> - Thông tin</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -24,48 +24,47 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <form asp-action="SaveProject" asp-controller="Project">
-                            @Html.HiddenFor(Model => Model.Id)
-                            @Html.HiddenFor(Model => Model.CategoryId)
+                            @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.CategoryID)
                             <div class="row">
+                                <div class='col-md-1'>
+                                    <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
                                 <div class='col-md-1'>
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
                                         <span class="fas fa-save"></span>
                                     </button>
-                                </div>
-
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Hợp đồng
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailChaoGia" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Chào giá
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailThanhLy" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Thanh lý
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailNghiemThu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Nghiệm thu
-                                    </a>
-                                </div>
-                                <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.Id" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        <span class="fas fa-paperclip"></span>
-                                    </a>
                                 </div>
                                 <div class='col-md-1'>
                                     <a asp-route-ID="0" asp-action="Detail" asp-controller="Project" title="Tạo mới" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-plus"></span>
                                     </a>
                                 </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Dự toán
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailNhanSu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Nhân sự
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Chấm công
+                                    </a>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        Hợp đồng
+                                    </a>
+                                </div>                               
                                 <div class='col-md-1'>
-                                    <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
-                                        <span class="fas fa-arrow-left"></span>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-paperclip"></span>
                                     </a>
                                 </div>
                             </div>
@@ -102,9 +101,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class='form-group'>
-                                        <label for='SellId'>Khách hàng</label>
-                                        @(Html.Kendo().DropDownListFor(Model => Model.BuyId)
-                                   .DataValueField("Id")
+                                        <label for='BuyID'>Khách hàng</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.BuyID)
+                                   .DataValueField("ID")
                                    .DataTextField("FullName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
@@ -112,9 +111,9 @@
                                     )
                                     </div>
                                     <div class='form-group'>
-                                        <label for='MakeSideId'>Người lập</label>
-                                        @(Html.Kendo().DropDownListFor(Model => Model.MakeSideId)
-                                   .DataValueField("Id")
+                                        <label for='MakeSideID'>Người lập</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.MakeSideID)
+                                   .DataValueField("ID")
                                    .DataTextField("FullName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)

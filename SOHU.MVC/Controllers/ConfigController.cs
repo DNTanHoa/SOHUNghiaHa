@@ -117,7 +117,7 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _configResposistory.Update(model.Id, model);
+            int result = _configResposistory.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -165,10 +165,10 @@ namespace SOHU.MVC.Controllers
                     }
                 }
             }
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
-                result = _configResposistory.Update(model.Id, model);
+                result = _configResposistory.Update(model.ID, model);
                 if (result > 0)
                 {
                     note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -191,7 +191,7 @@ namespace SOHU.MVC.Controllers
                     note = AppGlobal.Success + " - " + AppGlobal.CreateFail;
                 }
             }            
-            return RedirectToAction("BannerDetail", new { ID = model.Id });
+            return RedirectToAction("BannerDetail", new { ID = model.ID });
         }
 
         public IActionResult SaveChange(Config model)
@@ -199,10 +199,10 @@ namespace SOHU.MVC.Controllers
             string note = AppGlobal.InitString;
             int result = 0;
            
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
-                result = _configResposistory.Update(model.Id, model);
+                result = _configResposistory.Update(model.ID, model);
                 if (result > 0)
                 {
                     note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -231,8 +231,8 @@ namespace SOHU.MVC.Controllers
         public ActionResult GetTreeMenuDataTransferByCodeToList(string Code)
         {
             var data = _configResposistory.GetByCodeToList(Code);
-            var result = data.GenerateTree(item => item.Id, item => item.ParentId);
-            return Json(data.GenerateTree(item => item.Id, Item => Item.ParentId));
+            var result = data.GenerateTree(item => item.ID, item => item.ParentID);
+            return Json(data.GenerateTree(item => item.ID, Item => Item.ParentID));
         }
 
         public IActionResult GetByCodeToList(string Code)

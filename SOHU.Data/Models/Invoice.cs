@@ -7,7 +7,7 @@ namespace SOHU.Data.Models
     public partial class Invoice : BaseModel
     {
       
-        public int? CategoryId { get; set; }
+        public int? CategoryID { get; set; }
         public string ManageCode { get; set; }
         public string InvoiceCode { get; set; }
         public string MakeCode { get; set; }
@@ -20,13 +20,13 @@ namespace SOHU.Data.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateEnd { get; set; }
-        public int? MakeSideId { get; set; }
-        public int? BuyId { get; set; }
+        public int? MakeSideID { get; set; }
+        public int? BuyID { get; set; }
         public string BuyName { get; set; }
         public string BuyAddress { get; set; }
         public string BuyEmail { get; set; }
         public string BuyPhone { get; set; }
-        public int? SellId { get; set; }
+        public int? SellID { get; set; }
         public string SellName { get; set; }
         public string SellAddress { get; set; }
         public string SellEmail { get; set; }
@@ -35,7 +35,7 @@ namespace SOHU.Data.Models
         public string ChaoGia { get; set; }
         public string NghiemThu { get; set; }
         public string ThanhLy { get; set; }
-        public int? StatusId { get; set; }
+        public int? StatusID { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalNoTax { get; set; }
@@ -60,7 +60,7 @@ namespace SOHU.Data.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalDebt { get; set; }
-        public int? CurrencyId { get; set; }
+        public int? CurrencyID { get; set; }
         public decimal? Gbpexchange { get; set; }
     }
 }

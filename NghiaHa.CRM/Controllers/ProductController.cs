@@ -55,11 +55,11 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Save(Product model)
         {
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
-                _productRepository.Update(model.Id, model);
+                _productRepository.Update(model.ID, model);
             }
             else
             {
@@ -70,7 +70,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     _productRepository.Create(model);
                 }
             }
-            return RedirectToAction("Detail", new { ID = model.Id });
+            return RedirectToAction("Detail", new { ID = model.ID });
         }
     }
 }

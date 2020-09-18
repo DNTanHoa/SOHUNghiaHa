@@ -24,15 +24,25 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <form asp-action="SaveFiles" asp-controller="Project">
-                            @Html.HiddenFor(Model => Model.Id)
+                            @Html.HiddenFor(Model => Model.ID)
                             @Html.HiddenFor(Model => Model.InvoiceID)
                             @Html.HiddenFor(Model => Model.DateCreated)
                             @Html.HiddenFor(Model => Model.DateUpdated)
                             <div class="row">
                                 <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.InvoiceID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
                                         <span class="fas fa-save"></span>
                                     </button>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="Detail" asp-controller="Project" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
+                                    </a>
                                 </div>
                                 <div class='col-md-2'>
                                     <a asp-route-ID="@Model.InvoiceID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
@@ -57,11 +67,6 @@
                                 <div class='col-md-1'>
                                     <a asp-route-ID="@Model.InvoiceID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
-                                    </a>
-                                </div>
-                                <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.InvoiceID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
-                                        <span class="fas fa-arrow-left"></span>
                                     </a>
                                 </div>
                             </div>
@@ -90,7 +95,7 @@
 .Columns(columns =>
 {
     columns.Command(command => { command.Destroy().Text("&nbsp;").IconClass("fas fa-trash-alt").HtmlAttributes(new { style = "font-size: 16px; color:#ffffff; background-color:#d73925; padding-left:16px; padding-top:6px; border-radius: 6px; width:50px;" }); }).Width(70);
-    columns.Bound(t => t.Id).Title("ID").Width(100);
+    columns.Bound(t => t.ID).Title("ID").Width(100);
     columns.Bound(t => t.Title).Title("Tiêu đề").Width(200);
     columns.Bound(t => t.Note).Title("Extension").Width(200);
     columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Images/Project/#=FileName#"");' class='btn btn-success' style='color:white; cursor:pointer;'><i class='fas fa-paperclip'></i></a>").Title("File").Width(70).HtmlAttributes(new { style = "text-align:center;" });
@@ -127,7 +132,7 @@
 .PageSize(1000)
 .Model(model =>
 {
-    model.Id(t => t.Id);
+    model.Id(t => t.ID);
 })
 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
 .Read(t => t.Action("GetInvoicePropertyByInvoiceIDToList", "Project").Data("filterInvoiceProperty"))

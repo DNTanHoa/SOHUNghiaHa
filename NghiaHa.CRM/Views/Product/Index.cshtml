@@ -31,7 +31,7 @@
                     .HtmlAttributes(new { @class = "form-control" })
                       .Events(e => e.DataBound("onProductCategoryDataBound").Change("onProductCategoryChange"))
                        .Filter(FilterType.Contains)
-                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetProductCategoryToList", "Config")))
+                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
                             )
                         </div>
                         <div class='col-sm-5'>
@@ -55,7 +55,7 @@
                     columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(200).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -88,8 +88,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetByCategoryIDToList", "Product").Data("filterProduct"))

@@ -49,7 +49,7 @@ namespace NghiaHa.CRM.Controllers
                     var cookie = new CookieOptions();
                     cookie.Expires = AppGlobal.InitDateTime.AddDays(30);
                     var member = membershipRepository.GetByAccount(model.Account);
-                    Response.Cookies.Append("UserID", member.Id.ToString(), cookie);
+                    Response.Cookies.Append("UserID", member.ID.ToString(), cookie);
                     Response.Cookies.Append("RememberPassword", model.RememberPassword.ToString(), cookie);
                     Response.Cookies.Append("Password", MD5Helper.EncryptDataMD5(model.Password, AppGlobal.MD5Key), cookie);
                     Response.Cookies.Append("IsLogin", "True", cookie);

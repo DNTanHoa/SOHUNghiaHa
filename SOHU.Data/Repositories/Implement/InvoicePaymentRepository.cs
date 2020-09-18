@@ -16,7 +16,7 @@ namespace SOHU.Data.Repositories
         }
         public List<InvoicePayment> GetByInvoiceIDToList(int invoiceID)
         {
-            return _context.InvoicePayment.Where(item => item.InvoiceId == invoiceID).OrderBy(item => item.PaymentCreated).ToList();
+            return _context.InvoicePayment.Where(item => item.InvoiceID == invoiceID).OrderBy(item => item.PaymentCreated).ToList();
         }
     }
 }

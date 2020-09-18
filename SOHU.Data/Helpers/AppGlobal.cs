@@ -67,6 +67,31 @@ namespace SOHU.Data.Helpers
                 return builder.Build().GetSection("AppSettings").GetSection("Loading").Value;
             }
         }
+        public static int ThiCongID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("ThiCongID").Value);
+            }
+        }
+        public static int NhanSuID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("NhanSuID").Value);
+            }
+        }
+
+        public static int ChamCongID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("ChamCongID").Value);
+            }
+        }
         public static int DuAnID
         {
             get
@@ -75,12 +100,12 @@ namespace SOHU.Data.Helpers
                 return int.Parse(builder.Build().GetSection("AppSettings").GetSection("DuAnID").Value);
             }
         }
-        public static int BaoGiaID
+        public static int ChaoGiaID
         {
             get
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("BaoGiaID").Value);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("ChaoGiaID").Value);
             }
         }
         public static int DuToanID
@@ -126,7 +151,7 @@ namespace SOHU.Data.Helpers
         {
             get
             {
-                return "https://www.google.com/maps/d/embed?mid=" + GoogleMap;
+                return "https://www.google.com/maps/d/embed?mID=" + GoogleMap;
             }
         }
         public static string InvoiceCategory

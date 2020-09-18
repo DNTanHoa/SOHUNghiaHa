@@ -127,7 +127,7 @@
                                                     @{ var topMenus = respository.GetByCodeToList(AppGlobal.TopMenuCode).OrderBy(item => item.SortOrder).ToList();
                                                         foreach (var topMenu in topMenus)
                                                         {
-                                                            if (@topMenu.Id != 35)
+                                                            if (@topMenu.ID != 35)
                                                             {
                                                                 <li class="dropdown dropdown-full-color dropdown-light">
                                                                     <a class="dropdown-item dropdown-toggle" href="@topMenu.CodenameSub">

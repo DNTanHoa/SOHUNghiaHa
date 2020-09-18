@@ -42,7 +42,7 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Create(InvoicePayment model, int invoiceID)
         {
-            model.InvoiceId = invoiceID;
+            model.InvoiceID = invoiceID;
             Initialization(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -51,7 +51,7 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                _invoiceRepository.InitializationByID(model.InvoiceId.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
             }
             else
             {
@@ -64,11 +64,11 @@ namespace NghiaHa.CRM.Web.Controllers
             Initialization(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _invoicePaymentRepository.Update(model.Id, model);
+            int result = _invoicePaymentRepository.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByID(model.InvoiceId.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
             }
             else
             {
@@ -78,7 +78,7 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Delete(int ID)
         {
-            int invoiceID = _invoicePaymentRepository.GetByID(ID).InvoiceId.Value;
+            int invoiceID = _invoicePaymentRepository.GetByID(ID).InvoiceID.Value;
             string note = AppGlobal.InitString;
             int result = _invoicePaymentRepository.Delete(ID);
             if (result > 0)

@@ -26,7 +26,7 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <form asp-action="Save" asp-controller="Product">
-                            @Html.HiddenFor(Model => Model.Id)
+                            @Html.HiddenFor(Model => Model.ID)
                             <div class="row">
                                 <div class='col-md-9'>
                                 </div>
@@ -58,12 +58,12 @@
                                     </div>
                                     <div class='form-group'>
                                         <label for='CategoryId'>Nhóm</label>
-                                        @(Html.Kendo().DropDownListFor(Model => Model.CategoryId)
-                                   .DataValueField("Id")
+                                        @(Html.Kendo().DropDownListFor(Model => Model.CategoryID)
+                                   .DataValueField("ID")
                                    .DataTextField("CodeName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
-                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetProductCategoryToList", "Config")))
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
                                     )
                                     </div>
                                     <div class='form-group'>
@@ -153,7 +153,7 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
+                    model.Id(t => t.ID);
                 })
                 .Read(t => t.Action("GetInvoiceInputByProductIDToList", "Invoice").Data("filterInvoiceInput"))
                 ))
@@ -207,7 +207,7 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
+                    model.Id(t => t.ID);
                 })
                 .Read(t => t.Action("GetInvoiceOutputByProductIDToList", "Invoice").Data("filterInvoiceOutput"))
                 ))
@@ -219,11 +219,11 @@
 
 <script>  
     function filterInvoiceInput(e) {
-        var productIDValue = $("#Id").val();
+        var productIDValue = $("#ID").val();
         return { productID: productIDValue };
     }
     function filterInvoiceOutput(e) {
-        var productIDValue = $("#Id").val();
+        var productIDValue = $("#ID").val();
         return { productID: productIDValue };
     }
 </script>

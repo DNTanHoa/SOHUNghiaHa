@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        @Html.HiddenFor(Model => Model.Id)
+                        @Html.HiddenFor(Model => Model.ID)
                         @Html.HiddenFor(Model => Model.DateCreated)
                         @Html.HiddenFor(Model => Model.DateUpdated)
                         @Html.HiddenFor(Model => Model.UserCreated)
@@ -45,7 +45,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="Menu">Menu</label>
-                                    <select id="CategoryId" data-selected="@Model.CategoryId" asp-for="CategoryId" class="form-control select2" style="width: 100%;">
+                                    <select id="CategoryId" data-selected="@Model.CategoryID" asp-for="CategoryID" class="form-control select2" style="width: 100%;">
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -106,7 +106,7 @@
 </section>
 <script>
     $(document).ready(() => {
-        $('#CategoryId').select2({
+        $('#CategoryID').select2({
 theme: 'bootstrap4',
         });
         $('#PriceUnitID').select2({
@@ -167,7 +167,7 @@ theme: 'bootstrap4',
             data: {
             },
             success: (res) => {
-                let dropDown = $('#CategoryId');
+                let dropDown = $('#CategoryID');
                 let selectID = $(dropDown).attr('data-selected');
                 $.each(res, (index, item) => {
                     if (item.Id == selectID) {
