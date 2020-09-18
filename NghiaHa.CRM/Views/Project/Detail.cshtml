@@ -61,7 +61,7 @@
                                     <a asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Hợp đồng
                                     </a>
-                                </div>                               
+                                </div>
                                 <div class='col-md-1'>
                                     <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
@@ -93,7 +93,7 @@
                                     <div class='form-group'>
                                         <label for='BuyAddress'>Địa chỉ thi công</label>
                                         @(Html.TextBoxFor(Model => Model.BuyAddress, new { placeholder = "Địa chỉ thi công", @class = "form-control", style = "text-align:right;" }))
-                                    </div>                                   
+                                    </div>
                                     <div class='form-group'>
                                         <label for='Tax'>Thuế VAT (%)</label>
                                         @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
@@ -147,7 +147,139 @@
                     </div>
                 </div>
 
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Thi công</h3>
+                    </div>
+                    <div class="card-body">
+                        <br />
+                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("ProjectThiCong")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.DateTrack).DefaultValue(DateTime.Now);
+                    model.Field(t => t.Quantity).DefaultValue(1);
+                    model.Field(t => t.UnitPrice).DefaultValue(1000);
 
+
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCong"); })
+                .Read(t => t.Action("GetProjectDuToanByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
+                .Destroy(t => t.Action("DeleteProjectThiCong", "Project"))
+                .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
+                .Update(t => t.Action("UpdateProjectThiCong", "Project"))))
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Lịch sử thanh toán</h3>
+                    </div>
+                    <div class="card-body">
+                        @(Html.Kendo().Grid<SOHU.Data.Models.InvoicePayment>()
+                .Name("InvoicePayment")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.PaymentCreated).DefaultValue(DateTime.Now);
+                    model.Field(t => t.TotalPayment).DefaultValue(0);
+
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoicePayment"); })
+                .Read(t => t.Action("GetByInvoiceIDToList", "InvoicePayment").Data("filterProjectThiCong"))
+                .Destroy(t => t.Action("Delete", "InvoicePayment"))
+                .Create(t => t.Action("Create", "InvoicePayment").Data("filterProjectThiCong"))
+                .Update(t => t.Action("Update", "InvoicePayment"))))
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -157,3 +289,58 @@
     .Position(p => p.Pinned(true).Top(30).Right(30))
     .Width(400)
 )
+<script>
+    function onGridRequestEndProjectThiCong(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#ProjectThiCong").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function onGridRequestEndInvoicePayment(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#InvoicePayment").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function filterProjectThiCong(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#ID").val() },
+                success: function (result) {
+                    var TotalNoTax = Math.round(result["TotalNoTax"]);
+                    var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalTax = Math.round(result["TotalTax"]);
+                    var TotalTaxString = TotalTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalPaid = Math.round(result["TotalPaid"]);
+                    var TotalPaidString = TotalPaid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalDebt = Math.round(result["TotalDebt"]);
+                    var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#TotalNoTax").val(TotalNoTaxString);
+                    $("#TotalTax").val(TotalTaxString);
+                    $("#Total").val(TotalString);
+                    $("#TotalPaid").val(TotalPaidString);
+                    $("#TotalDebt").val(TotalDebtString);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+</script>

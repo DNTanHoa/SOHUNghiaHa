@@ -22,10 +22,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Dự toán</h3>
-                    </div>
+                <div class="card card-primary">                   
                     <div class="card-body">
                         <div class="row">
                             <div class='col-md-1'>
@@ -72,8 +69,8 @@
                     columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200);
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
@@ -142,8 +139,8 @@
                     }).Width(150);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200);
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);

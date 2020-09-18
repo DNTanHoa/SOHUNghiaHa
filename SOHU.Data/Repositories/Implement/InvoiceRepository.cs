@@ -37,6 +37,18 @@ namespace SOHU.Data.Repositories
                 SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceInitializationByID", parameters);
             }
         }
+        public void InitializationByIDAndParentID(int ID, int parentID)
+        {
+            if ((ID > 0) && (parentID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ID",ID),
+                new SqlParameter("@ParentID",parentID)
+                    };
+                SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceInitializationByIDAndParentID", parameters);
+            }
+        }
         public List<Invoice> GetInvoiceInputByProductIDToList(int productID)
         {
             List<Invoice> list = new List<Invoice>();
@@ -47,7 +59,7 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@ProductID",productID),
             };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceInputSelectByProductID", parameters);
-                list = SQLHelper.ToList<Invoice>(dt);               
+                list = SQLHelper.ToList<Invoice>(dt);
             }
             return list;
         }
@@ -64,7 +76,7 @@ namespace SOHU.Data.Repositories
                 list = SQLHelper.ToList<Invoice>(dt);
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i].ID = int.Parse(dt.Rows[i]["ID"].ToString());                   
+                    list[i].ID = int.Parse(dt.Rows[i]["ID"].ToString());
                 }
             }
             return list;

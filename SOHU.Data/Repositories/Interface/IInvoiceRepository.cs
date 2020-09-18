@@ -12,5 +12,6 @@ namespace SOHU.Data.Repositories
         public List<Invoice> GetInvoiceInputByProductIDToList(int productID);
         public List<Invoice> GetInvoiceOutputByProductIDToList(int productID);
         public void InitializationByID(int ID);
+        public void InitializationByIDAndParentID(int ID, int parentID);
     }
 }
