@@ -6,7 +6,7 @@ namespace SOHU.Data.Models
 {
     public partial class InvoiceDetail : BaseModel
     {
-       
+        public int? CategoryID { get; set; }
         public int? InvoiceID { get; set; }
         public int? ProductID { get; set; }
         public string ManageCode { get; set; }
@@ -27,9 +27,14 @@ namespace SOHU.Data.Models
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Total { get; set; }
         public int? CurrencyID { get; set; }
+
         public decimal? Gbpexchange { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateTrack { get; set; }
+        public int? EmployeeID { get; set; }
+        public int? Shift01 { get; set; }
+        public int? Shift02 { get; set; }
+        public int? Shift03 { get; set; }
     }
 }

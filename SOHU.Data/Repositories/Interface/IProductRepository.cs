@@ -8,6 +8,8 @@ namespace SOHU.Data.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
+        public void InitializationByIDAndCategoryID(int ID, int categoryID);
+        public void InitializationByIDAndParentID(int ID, int parentID);
         public void InitializationByID(int ID);
         public bool IsValidByTitle(string title);
         public ProductDataTransfer GetDataTransferByID(int ID);

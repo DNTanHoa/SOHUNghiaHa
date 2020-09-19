@@ -34,11 +34,38 @@ namespace SOHU.Data.Repositories
         }
         public void InitializationByID(int ID)
         {
-            SqlParameter[] parameters =
+            if (ID > 0)
             {
+                SqlParameter[] parameters =
+                {
                 new SqlParameter("@ID",ID)
-            };
-            SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocProductInitializationByID", parameters);
+                 };
+                SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocProductInitializationByID", parameters);
+            }
+        }
+        public void InitializationByIDAndParentID(int ID, int parentID)
+        {
+            if ((ID > 0) && (parentID > 0))
+            {
+                SqlParameter[] parameters =
+                {
+                new SqlParameter("@ID",ID),
+                new SqlParameter("@ParentID",parentID)
+                };
+                SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocProductInitializationByIDAndParentID", parameters);
+            }
+        }
+        public void InitializationByIDAndCategoryID(int ID, int categoryID)
+        {
+            if ((ID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                {
+                new SqlParameter("@ID",ID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocProductInitializationByIDAndCategoryID", parameters);
+            }
         }
         public List<Product> GetByCategoryIDToList(int categoryID)
         {

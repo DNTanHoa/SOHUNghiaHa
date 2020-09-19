@@ -35,7 +35,7 @@ namespace SOHU.Data.Repositories
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
 
                 for (int i = 0; i < list.Count; i++)
-                {                    
+                {
                     list[i].Product = new ModelTemplate();
                     list[i].Product.ID = list[i].ProductID;
                     list[i].Product.TextName = list[i].ProductTitle;
@@ -60,10 +60,31 @@ namespace SOHU.Data.Repositories
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectNhanSuByInvoiceIDAndParentID", parameters);
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
                 for (int i = 0; i < list.Count; i++)
-                {                    
+                {
                     list[i].Employee = new ModelTemplate();
-                    list[i].Employee.ID = list[i].CurrencyID;
-                    list[i].Employee.TextName = list[i].FullName;                   
+                    list[i].Employee.ID = list[i].EmployeeID;
+                    list[i].Employee.TextName = list[i].FullName;
+                }
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectNhanSuByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectNhanSuByInvoiceIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Employee = new ModelTemplate();
+                    list[i].Employee.ID = list[i].EmployeeID;
+                    list[i].Employee.TextName = list[i].FullName;
                 }
             }
             return list;
@@ -82,6 +103,81 @@ namespace SOHU.Data.Repositories
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
                 for (int i = 0; i < list.Count; i++)
                 {
+                    list[i].Product = new ModelTemplate();
+                    list[i].Product.ID = list[i].ProductID;
+                    list[i].Product.TextName = list[i].ProductTitle;
+                    list[i].Unit = new ModelTemplate();
+                    list[i].Unit.ID = list[i].UnitID;
+                    list[i].Unit.TextName = list[i].UnitName;
+                }
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectDuToanByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectDuToanByInvoiceIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Product = new ModelTemplate();
+                    list[i].Product.ID = list[i].ProductID;
+                    list[i].Product.TextName = list[i].ProductTitle;
+                    list[i].Unit = new ModelTemplate();
+                    list[i].Unit.ID = list[i].UnitID;
+                    list[i].Unit.TextName = list[i].UnitName;
+                }
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectDuToanFullNameByInvoiceIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Parent = new ModelTemplate();
+                    list[i].Parent.ParentID = list[i].ID;
+                    list[i].Parent.TextName = list[i].ParentName;                    
+                }
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Parent = new ModelTemplate();
+                    list[i].Parent.ID = list[i].ID;
+                    list[i].Parent.TextName = list[i].ParentName;
+                    list[i].Employee = new ModelTemplate();
+                    list[i].Employee.ID = list[i].EmployeeID;
+                    list[i].Employee.TextName = list[i].FullName;
                     list[i].Product = new ModelTemplate();
                     list[i].Product.ID = list[i].ProductID;
                     list[i].Product.TextName = list[i].ProductTitle;

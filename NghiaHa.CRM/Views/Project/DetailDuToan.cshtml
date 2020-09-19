@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = Model.InvoiceCode + " - Dự toán - Chào giá"; }
+﻿@{ ViewData["Title"] = Model.InvoiceName + " - Dự toán - Chào giá"; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><b>@Model.InvoiceCode</b> - Dự toán - Chào giá</h1>
+                <h1><b>@Model.InvoiceName</b> - Dự toán - Chào giá</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -34,12 +34,7 @@
                                 <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     Dự toán
                                 </a>
-                            </div>
-                            <div class='col-md-2'>
-                                <a asp-route-ID="@Model.ID" asp-action="DetailNhanSu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                    Nhân sự
-                                </a>
-                            </div>
+                            </div>                           
                             <div class='col-md-2'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     Chấm công
@@ -67,7 +62,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
                     columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -137,7 +132,7 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });

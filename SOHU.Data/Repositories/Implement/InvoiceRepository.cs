@@ -49,6 +49,18 @@ namespace SOHU.Data.Repositories
                 SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceInitializationByIDAndParentID", parameters);
             }
         }
+        public void InitializationByIDAndCategoryID(int ID, int categoryID)
+        {
+            if ((ID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ID",ID),
+                new SqlParameter("@CategoryID",categoryID)
+                    };
+                SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceInitializationByIDAndCategoryID", parameters);
+            }
+        }
         public List<Invoice> GetInvoiceInputByProductIDToList(int productID)
         {
             List<Invoice> list = new List<Invoice>();

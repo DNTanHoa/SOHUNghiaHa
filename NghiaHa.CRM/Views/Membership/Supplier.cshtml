@@ -38,11 +38,11 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Membership/SupplierDetail/#=Id#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.FullName).Title("Nhà cung cấp").Width(300);
+                    columns.Template(@"<a href='/Membership/SupplierDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.FullName).Title("Nhà cung cấp").Width(500);
                     columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
                     columns.Bound(t => t.TaxCode).Title("Mã số thuế").Width(200);
-                    columns.Bound(t => t.Address).Title("Địa chỉ").Width(200);
+                    columns.Bound(t => t.Address).Title("Địa chỉ").Width(1000);
                     columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
 
                 })

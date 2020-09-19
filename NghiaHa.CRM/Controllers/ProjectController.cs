@@ -41,11 +41,41 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.InvoiceCode = model.InvoiceCode.Trim();
             }
+            if (!string.IsNullOrEmpty(model.InvoiceName))
+            {
+                model.InvoiceName = model.InvoiceName.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.BuyPhone))
+            {
+                model.BuyPhone = model.BuyPhone.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.BuyAddress))
+            {
+                model.BuyAddress = model.BuyAddress.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.HangMuc))
+            {
+                model.HangMuc = model.HangMuc.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.HopDongTitle))
+            {
+                model.HopDongTitle = model.HopDongTitle.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.HopDongTitleSub))
+            {
+                model.HopDongTitleSub = model.HopDongTitleSub.Trim();
+            }
         }
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
-            model.ProductID = model.Product.ID;
-            model.UnitID = model.Unit.ID;
+            if (model.Product != null)
+            {
+                model.ProductID = model.Product.ID;
+            }
+            if (model.Unit != null)
+            {
+                model.UnitID = model.Unit.ID;
+            }
             model.Total = model.UnitPrice * model.Quantity;
         }
         public IActionResult Index()
@@ -54,6 +84,25 @@ namespace NghiaHa.CRM.Web.Controllers
             viewModel.YearFinance = DateTime.Now.Year;
             viewModel.MonthFinance = DateTime.Now.Month;
             return View(viewModel);
+        }
+        public IActionResult DetailChamCong(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.DateBegin = DateTime.Now;
+            model.DateEnd = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.CategoryID = AppGlobal.DuAnID;
+            return View(model);
         }
         public IActionResult DetailDuToan(int ID)
         {
@@ -127,6 +176,52 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
+                //if (string.IsNullOrEmpty(model.HopDong))
+                //{
+                string hopDong = "";
+                var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "HopDong.html");
+                using (var stream = new FileStream(physicalPath, FileMode.Open))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        hopDong = reader.ReadToEnd();
+                    }
+                }
+                DateTime now = DateTime.Now;
+                hopDong = hopDong.Replace(@"[Day]", now.Day.ToString());
+                hopDong = hopDong.Replace(@"[Month]", now.Month.ToString());
+                hopDong = hopDong.Replace(@"[Year]", now.Year.ToString());
+                hopDong = hopDong.Replace(@"[InvoiceName]", model.InvoiceName);
+                hopDong = hopDong.Replace(@"[HopDongTitle]", model.HopDongTitle);
+                hopDong = hopDong.Replace(@"[HopDongTitleSub]", model.HopDongTitleSub);
+                hopDong = hopDong.Replace(@"[InvoiceCode]", model.InvoiceCode);
+                hopDong = hopDong.Replace(@"[HangMuc]", model.HangMuc);                
+                Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
+                if (buyer != null)
+                {
+                    hopDong = hopDong.Replace(@"[BuyName]", buyer.FullName);
+                    hopDong = hopDong.Replace(@"[BuyAddress]", buyer.Address);
+                    hopDong = hopDong.Replace(@"[BuyFullName]", buyer.ContactFullName);
+                    hopDong = hopDong.Replace(@"[BuyPosition]", buyer.ContactPosition);
+                    hopDong = hopDong.Replace(@"[BuyBankAccount]", buyer.BankAccount);
+                    hopDong = hopDong.Replace(@"[BuyBankName]", buyer.BankName);
+                    hopDong = hopDong.Replace(@"[BuyTaxCode]", buyer.TaxCode);
+                    hopDong = hopDong.Replace(@"[BuyPhone]", buyer.Phone);
+                }
+                Membership seller = _membershipRepository.GetByID(model.SellID.Value);
+                if (buyer != null)
+                {
+                    hopDong = hopDong.Replace(@"[SellName]", seller.FullName);
+                    hopDong = hopDong.Replace(@"[SellAddress]", seller.Address);
+                    hopDong = hopDong.Replace(@"[SellFullName]", seller.ContactFullName);
+                    hopDong = hopDong.Replace(@"[SellPosition]", seller.ContactPosition);
+                    hopDong = hopDong.Replace(@"[SellBankAccount]", seller.BankAccount);
+                    hopDong = hopDong.Replace(@"[SellBankName]", seller.BankName);
+                    hopDong = hopDong.Replace(@"[SellTaxCode]", seller.TaxCode);
+                    hopDong = hopDong.Replace(@"[SellPhone]", seller.Phone);
+                }
+                model.HopDong = hopDong;
+                //}
             }
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
@@ -270,29 +365,49 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
+        public ActionResult GetProjectDuToanFullNameByInvoiceIDAndDuToanToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.DuToanID);
+            return Json(data.ToDataSourceResult(request));
+        }
         public ActionResult GetInvoicePropertyByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
             var data = _invoicePropertyRepository.GetByInvoiceIDToList(invoiceID);
             return Json(data.ToDataSourceResult(request));
         }
-        public ActionResult GetProjectNhanSuByInvoiceIDParentIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        public ActionResult GetProjectNhanSuByInvoiceIDAndNhanSuToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.NhanSuID);
             return Json(data.ToDataSourceResult(request));
         }
-        public ActionResult GetProjectDuToanByInvoiceIDAndDuToanToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        public ActionResult GetProjectChamCongByInvoiceIDAndChamCongToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
-            var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.DuToanID);
-            return Json(data.ToDataSourceResult(request));
-        }
-        public ActionResult GetProjectDuToanByInvoiceIDAndChaoGiaToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
-        {
-            var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.ChaoGiaID);
+            var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.ChamCongID);
             return Json(data.ToDataSourceResult(request));
         }
         public ActionResult GetProjectDuToanByInvoiceIDAndThiCongToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.ThiCongID);
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetProjectNhanSuByInvoiceIDAndChamCongToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ChamCongID);
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetProjectDuToanByInvoiceIDAndDuToanToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.DuToanID);
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetProjectDuToanByInvoiceIDAndChaoGiaToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ChaoGiaID);
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetProjectThiCongByInvoiceIDAndThiCongToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ThiCongID);
             return Json(data.ToDataSourceResult(request));
         }
         public IActionResult DeleteInvoiceProperty(int ID)
@@ -314,20 +429,20 @@ namespace NghiaHa.CRM.Web.Controllers
             InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByID(ID);
             int invoiceID = 0;
             int productID = 0;
-            int parentID = 0;
+            int categoryID = 0;
             if (invoiceDetail != null)
             {
                 invoiceID = invoiceDetail.InvoiceID.Value;
                 productID = invoiceDetail.ProductID.Value;
-                parentID = invoiceDetail.ParentID.Value;
+                categoryID = invoiceDetail.CategoryID.Value;
             }
             string note = AppGlobal.InitString;
             int result = _invoiceDetailRepository.Delete(ID);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
-                _invoiceRepository.InitializationByIDAndParentID(invoiceID, parentID);
-                _productRepository.InitializationByID(productID);
+                _invoiceRepository.InitializationByIDAndCategoryID(invoiceID, categoryID);
+                _productRepository.InitializationByIDAndCategoryID(productID, categoryID);
             }
             else
             {
@@ -352,6 +467,7 @@ namespace NghiaHa.CRM.Web.Controllers
         [AcceptVerbs("Post")]
         public IActionResult SaveProject(Invoice model)
         {
+            model.SellID = AppGlobal.NghiaHaID;
             Membership membership = _membershipRepository.GetByID(model.BuyID.Value);
             model.BuyName = membership.FullName;
             if (string.IsNullOrEmpty(model.BuyPhone))
@@ -383,6 +499,14 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.HopDong = model.HopDong;
+                invoice.InvoiceCode = model.InvoiceCode;
+                invoice.HangMuc = model.HangMuc;
+                invoice.HopDongTitle = model.HopDongTitle;
+                invoice.HopDongTitleSub = model.HopDongTitleSub;
+                if (!string.IsNullOrEmpty(invoice.HopDongTitleSub))
+                {
+                    invoice.HopDongTitleSub = model.HopDongTitle;
+                }
                 Initialization(invoice);
                 invoice.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(invoice.ID, invoice);
@@ -430,7 +554,7 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult CreateProjectDuToan(InvoiceDetailDataTransfer model, int invoiceID)
         {
-            model.ParentID = AppGlobal.DuToanID;
+            model.CategoryID = AppGlobal.DuToanID;
             model.InvoiceID = invoiceID;
             InitializationInvoiceDetailDataTransfer(model);
             string note = AppGlobal.InitString;
@@ -447,7 +571,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 {
                     InvoiceDetailDataTransfer baogia = model;
                     baogia.ID = 0;
-                    baogia.ParentID = AppGlobal.ChaoGiaID;
+                    baogia.CategoryID = AppGlobal.ChaoGiaID;
                     _invoiceDetailRepository.Create(baogia);
                 }
             }
@@ -459,8 +583,11 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult CreateProjectThiCong(InvoiceDetailDataTransfer model, int invoiceID)
         {
-            model.ParentID = AppGlobal.ThiCongID;
+            model.CategoryID = AppGlobal.ThiCongID;
             model.InvoiceID = invoiceID;
+            model.ParentID = model.Parent.ID;
+            model.ProductID = model.Product.ID;
+            model.EmployeeID = model.Employee.ID;
             InitializationInvoiceDetailDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -472,8 +599,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                _invoiceRepository.InitializationByIDAndParentID(model.InvoiceID.Value, model.ParentID.Value);
-                _productRepository.InitializationByID(model.ProductID.Value);
+                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
+                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
             }
             else
             {
@@ -483,7 +610,7 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult CreateProjectChaoGia(InvoiceDetailDataTransfer model, int invoiceID)
         {
-            model.ParentID = AppGlobal.ChaoGiaID;
+            model.CategoryID = AppGlobal.ChaoGiaID;
             model.InvoiceID = invoiceID;
             InitializationInvoiceDetailDataTransfer(model);
             string note = AppGlobal.InitString;
@@ -505,9 +632,34 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult CreateProjectNhanSu(InvoiceDetailDataTransfer model, int invoiceID)
         {
-            model.ParentID = AppGlobal.NhanSuID;
+            model.CategoryID = AppGlobal.NhanSuID;
             model.InvoiceID = invoiceID;
-            model.CurrencyID = model.Employee.ID;
+            model.EmployeeID = model.Employee.ID;
+            string note = AppGlobal.InitString;
+            model.Initialization(InitType.Insert, RequestUserID);
+            int result = 0;
+            result = _invoiceDetailRepository.Create(model);
+
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+            }
+            return Json(note);
+        }
+        public IActionResult CreateProjectChamCong(InvoiceDetailDataTransfer model, int invoiceID)
+        {
+            model.CategoryID = AppGlobal.ChamCongID;
+            model.InvoiceID = invoiceID;
+            model.EmployeeID = model.Employee.ID;
+            model.ProductID = AppGlobal.NhanCongID;
+            model.UnitID = AppGlobal.LanID;
+            model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
+            model.UnitPrice = 0;
+            InitializationInvoiceDetailDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
@@ -548,8 +700,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByIDAndParentID(model.InvoiceID.Value, model.ParentID.Value);
-                _productRepository.InitializationByID(model.ProductID.Value);
+                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
+                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
             }
             else
             {
@@ -559,7 +711,25 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult UpdateProjectNhanSu(InvoiceDetailDataTransfer model)
         {
-            model.CurrencyID = model.Employee.ID;
+            model.EmployeeID = model.Employee.ID;
+            string note = AppGlobal.InitString;
+            model.Initialization(InitType.Update, RequestUserID);
+            int result = _invoiceDetailRepository.Update(model.ID, model);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
+            }
+            return Json(note);
+        }
+        public IActionResult UpdateProjectChamCong(InvoiceDetailDataTransfer model)
+        {
+            model.EmployeeID = model.Employee.ID;
+            model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
+            InitializationInvoiceDetailDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
             int result = _invoiceDetailRepository.Update(model.ID, model);

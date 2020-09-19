@@ -124,6 +124,7 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult SaveInvoiceInput(Invoice model)
         {
             model.SellName = _membershipRepository.GetByID(model.SellID.Value).FullName;
+            model.BuyID = AppGlobal.NghiaHaID;
             if (model.ID > 0)
             {
                 Initialization(model);

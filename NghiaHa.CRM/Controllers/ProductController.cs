@@ -37,10 +37,11 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult Detail(int ID)
         {
             Product model = new Product();
+            model.ContentMain = "Tính theo thực tế";
             if (ID > 0)
             {
                 model = _productRepository.GetByID(ID);
-            }
+            }            
             return View(model);
         }
         public ActionResult GetAllToList([DataSourceRequest] DataSourceRequest request)

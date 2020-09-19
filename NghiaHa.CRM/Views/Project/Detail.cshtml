@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = @Model.InvoiceCode + "Thông tin"; }
+﻿@{ ViewData["Title"] = @Model.InvoiceName + " - Thông tin"; ViewData["InvoiceID"] = @Model.ID; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><b>@Model.InvoiceCode</b> - Thông tin</h1>
+                <h1><b>@Model.InvoiceName</b> - Thông tin</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -48,11 +48,6 @@
                                     </a>
                                 </div>
                                 <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailNhanSu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Nhân sự
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
                                     <a asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Chấm công
                                     </a>
@@ -71,8 +66,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class='form-group'>
-                                        <label for='InvoiceCode'>Dự án</label>
-                                        @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Dự án", @class = "form-control" }))
+                                        <label for='InvoiceName'>Dự án</label>
+                                        @(Html.TextBoxFor(Model => Model.InvoiceName, new { placeholder = "Dự án", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='InvoiceCreated'>Ngày ký hợp đồng</label>
@@ -163,7 +158,9 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
                     columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(300);
+                    columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -204,6 +201,8 @@
                     model.Id(t => t.ID);
                     model.Field(t => t.Total).Editable(false);
                     model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Employee).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.DateTrack).DefaultValue(DateTime.Now);
@@ -213,7 +212,7 @@
 
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCong"); })
-                .Read(t => t.Action("GetProjectDuToanByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
+                .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
                 .Destroy(t => t.Action("DeleteProjectThiCong", "Project"))
                 .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
                 .Update(t => t.Action("UpdateProjectThiCong", "Project"))))

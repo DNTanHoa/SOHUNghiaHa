@@ -31,10 +31,7 @@ namespace SOHU.Data.Models
         public string SellAddress { get; set; }
         public string SellEmail { get; set; }
         public string SellPhone { get; set; }
-        public string HopDong { get; set; }
-        public string ChaoGia { get; set; }
-        public string NghiemThu { get; set; }
-        public string ThanhLy { get; set; }
+       
         public int? StatusID { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
@@ -62,5 +59,13 @@ namespace SOHU.Data.Models
         public decimal? TotalDebt { get; set; }
         public int? CurrencyID { get; set; }
         public decimal? Gbpexchange { get; set; }
+        public string HopDong { get; set; }
+        public string ChaoGia { get; set; }
+        public string NghiemThu { get; set; }
+        public string ThanhLy { get; set; }
+        public string InvoiceName { get; set; }
+        public string HopDongTitle { get; set; }
+        public string HopDongTitleSub { get; set; }
+        public string HangMuc { get; set; }        
     }
 }
