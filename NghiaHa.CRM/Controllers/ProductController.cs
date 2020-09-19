@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using NghiaHa.CRM.Controllers;
@@ -16,10 +18,12 @@ namespace NghiaHa.CRM.Web.Controllers
 {
     public class ProductController : BaseController
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IHostingEnvironment hostingEnvironment, IProductRepository productRepository)
         {
+            _hostingEnvironment = hostingEnvironment;
             _productRepository = productRepository;
         }
         private void Initialization(Product model)
@@ -41,7 +45,7 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _productRepository.GetByID(ID);
-            }            
+            }
             return View(model);
         }
         public ActionResult GetAllToList([DataSourceRequest] DataSourceRequest request)
@@ -56,6 +60,23 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Save(Product model)
         {
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files[0];
+                if (file != null)
+                {
+                    string fileExtension = Path.GetExtension(file.FileName);
+                    string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                    fileName = AppGlobal.SetName(fileName);
+                    fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
+                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "images/Product", fileName);
+                    using (var stream = new FileStream(physicalPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        model.Image = fileName;
+                    }
+                }
+            }
             if (model.ID > 0)
             {
                 Initialization(model);

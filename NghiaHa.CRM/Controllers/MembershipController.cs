@@ -44,6 +44,10 @@ namespace NghiaHa.CRM.Controllers
             {
                 model.CitizenIdentification = model.CitizenIdentification.Trim();
             }
+            if (!string.IsNullOrEmpty(model.Email))
+            {
+                model.Email = model.Email.Trim();
+            }
         }
         public IActionResult Index()
         {
@@ -119,24 +123,24 @@ namespace NghiaHa.CRM.Controllers
         }
         public IActionResult SaveCustomer(Membership model)
         {
-            bool check = false;
-            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            if (model.ID > 0)
             {
-                check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _membershipRepository.Update(model.ID, model);
             }
-            if (model.ParentID == AppGlobal.EmployeeParentID)
+            else
             {
-                check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-            }
-            if (check == true)
-            {
-                if (model.ID > 0)
+                bool check = false;
+                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
                 {
-                    Initialization(model);
-                    model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.ID, model);
+                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
                 }
-                else
+                if (model.ParentID == AppGlobal.EmployeeParentID)
+                {
+                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                }
+                if (check == true)
                 {
                     Initialization(model);
                     model.Initialization(InitType.Insert, RequestUserID);
@@ -147,24 +151,24 @@ namespace NghiaHa.CRM.Controllers
         }
         public IActionResult SaveSupplier(Membership model)
         {
-            bool check = false;
-            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            if (model.ID > 0)
             {
-                check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _membershipRepository.Update(model.ID, model);
             }
-            if (model.ParentID == AppGlobal.EmployeeParentID)
+            else
             {
-                check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-            }
-            if (check == true)
-            {
-                if (model.ID > 0)
+                bool check = false;
+                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
                 {
-                    Initialization(model);
-                    model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.ID, model);
+                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
                 }
-                else
+                if (model.ParentID == AppGlobal.EmployeeParentID)
+                {
+                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                }
+                if (check == true)
                 {
                     Initialization(model);
                     model.Initialization(InitType.Insert, RequestUserID);

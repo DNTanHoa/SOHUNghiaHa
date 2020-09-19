@@ -18,18 +18,15 @@ namespace SOHU.Data.Repositories
         }
         public bool IsValidByTaxCode(string taxCode)
         {
-            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.TaxCode.Equals(taxCode));
-            return item == null ? true : false;
+            return _context.Set<Membership>().FirstOrDefault(item => item.TaxCode.Equals(taxCode)) == null ? true : false;
         }
         public bool IsValidByCitizenIdentification(string citizenIdentification)
         {
-            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.CitizenIdentification.Equals(citizenIdentification));
-            return item == null ? true : false;
+            return _context.Set<Membership>().FirstOrDefault(item => item.CitizenIdentification.Equals(citizenIdentification)) == null ? true : false;
         }
         public bool IsValidByPhone(string phone)
         {
-            Membership item = _context.Set<Membership>().FirstOrDefault(item => item.Phone.Equals(phone));
-            return item == null ? true : false;
+            return _context.Set<Membership>().FirstOrDefault(item => item.Phone.Equals(phone)) == null ? true : false;
         }
         public Membership GetByAccount(string Account)
         {

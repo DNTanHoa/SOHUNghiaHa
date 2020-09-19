@@ -24,7 +24,7 @@
                         <div class='col-sm-6'>
                             @(Html.Kendo().DropDownList()
                      .Name("ProductCategory")
-                     .DataValueField("Id")
+                     .DataValueField("ID")
                      .DataTextField("CodeName")
                     .HtmlAttributes(new { @class = "form-control" })
                       .Events(e => e.DataBound("onProductCategoryDataBound").Change("onProductCategoryChange"))

@@ -26,7 +26,7 @@
                         <div class='col-sm-6'>
                             @(Html.Kendo().DropDownList()
                      .Name("ProductCategory")
-                     .DataValueField("Id")
+                     .DataValueField("ID")
                      .DataTextField("CodeName")
                     .HtmlAttributes(new { @class = "form-control" })
                       .Events(e => e.DataBound("onProductCategoryDataBound").Change("onProductCategoryChange"))
@@ -49,7 +49,7 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Product/Detail/#=Id#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a href='/Product/Detail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);
                     columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
                     columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(200).HtmlAttributes(new { style = "text-align:right;" });

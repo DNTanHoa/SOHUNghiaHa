@@ -188,6 +188,21 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<InvoiceDetailDataTransfer> GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectChaoGiaByInvoiceIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+            }
+            return list;
+        }
         public void DeleteByProductIsNull()
         {
             SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailDeleteByProductIsNull");
