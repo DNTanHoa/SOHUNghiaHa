@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using NghiaHa.CRM.Controllers;
+using NghiaHa.CRM.Web.Models;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
@@ -37,11 +38,16 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return View();
         }
-
+        public IActionResult Index01(int ID)
+        {
+            BaseViewModel model = new BaseViewModel();
+            return View(model);
+        }
         public IActionResult Detail(int ID)
         {
             Product model = new Product();
             model.ContentMain = "Tính theo thực tế";
+            model.Discount = 0;
             if (ID > 0)
             {
                 model = _productRepository.GetByID(ID);
@@ -51,6 +57,11 @@ namespace NghiaHa.CRM.Web.Controllers
         public ActionResult GetAllToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _productRepository.GetAllToList();
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetAllOrderByTitleToList([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _productRepository.GetAllOrderByTitleToList();
             return Json(data.ToDataSourceResult(request));
         }
         public ActionResult GetByCategoryIDToList([DataSourceRequest] DataSourceRequest request, int categoryID)
@@ -93,6 +104,20 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
             }
             return RedirectToAction("Detail", new { ID = model.ID });
+        }
+        public IActionResult Delete(int ID)
+        {
+            string note = AppGlobal.InitString;
+            int result = _productRepository.Delete(ID);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+            }
+            return Json(note);
         }
     }
 }

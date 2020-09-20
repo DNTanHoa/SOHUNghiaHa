@@ -18,6 +18,9 @@ namespace SOHU.Data.Models
         public decimal? Quantity { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? Quantity01 { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? UnitPrice { get; set; }
         public decimal? TotalNoTax { get; set; }
         public decimal? TotalDiscount { get; set; }
@@ -26,6 +29,9 @@ namespace SOHU.Data.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Total { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? Total01 { get; set; }
         public int? CurrencyID { get; set; }
 
         public decimal? Gbpexchange { get; set; }
@@ -36,5 +42,8 @@ namespace SOHU.Data.Models
         public int? Shift01 { get; set; }
         public int? Shift02 { get; set; }
         public int? Shift03 { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? Discount { get; set; }
     }
 }

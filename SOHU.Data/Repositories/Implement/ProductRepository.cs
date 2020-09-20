@@ -71,5 +71,9 @@ namespace SOHU.Data.Repositories
         {
             return _context.Product.Where(item => item.CategoryID == categoryID).OrderByDescending(item => item.DateUpdated).ToList();
         }
+        public List<Product> GetAllOrderByTitleToList()
+        {
+            return _context.Product.OrderBy(item => item.Title).ToList();
+        }
     }
 }

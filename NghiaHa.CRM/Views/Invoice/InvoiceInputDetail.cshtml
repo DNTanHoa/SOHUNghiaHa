@@ -191,12 +191,14 @@
                     }).Width(150);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200);
+                    columns.Bound(t => t.Quantity).Title("Số lượng thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity01).Title("Số lượng hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
-                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total01).Title("Thành tiền hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ManufacturingCode).Title("Sô seri").Width(200);
+
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -230,10 +232,12 @@
                 {
                     model.Id(t => t.ID);
                     model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.Total01).Editable(false);
                     model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
+                    model.Field(t => t.Quantity01).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
 
 

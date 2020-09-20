@@ -101,8 +101,8 @@
                 </a>
                 <div class="sidebar">
                     <nav class="mt-2">
-                        <ul id="userMenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
-                            <li class="nav-item has-treeview">
+                        <ul id="MenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                            @*<li class="nav-item has-treeview">
                                 <a class="nav-link" href="/">
                                     <i class="nav-icon fas fa-file-signature"></i>
                                     <p>
@@ -184,6 +184,12 @@
                                             <p>Danh sách</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="/Product/Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item has-treeview">
@@ -199,7 +205,7 @@
                                         <a class="nav-link" asp-action="InvoiceCategory" asp-controller="Config">
                                             <i class="nav-icon far fa-circle"></i>
                                             <p>
-                                                Loại chứng từ
+                                                D chứng từ
                                             </p>
                                         </a>
                                     </li>
@@ -228,7 +234,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li>*@
+
                         </ul>
                     </nav>
                 </div>
@@ -260,8 +267,20 @@
             tag02.addClass('active');
         }
         jQuery(function ($) {
+            InitializationMenuLeft();
             setMenuLeftActive();
         });
+        function InitializationMenuLeft() {
+            $.ajax({
+                   url: '@Url.Action("InitializationMenuLeft", "Home")',
+                    type: 'GET',
+                    cache: false,
+                    data: {}
+            }).done(function (result) {
+                console.log(result);
+                $('#MenuLeft').html(result);
+             })
+        }
     </script>
 </body>
 </html>

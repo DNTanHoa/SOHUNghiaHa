@@ -20,6 +20,7 @@ namespace SOHU.Data.Models
         public string ContentMain { get; set; }
         public decimal? Price { get; set; }
         public int? PriceUnitID { get; set; }
+        public int? Discount { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? QuantityInStockRoot { get; set; }

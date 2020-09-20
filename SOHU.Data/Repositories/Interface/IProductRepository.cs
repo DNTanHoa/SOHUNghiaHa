@@ -8,6 +8,7 @@ namespace SOHU.Data.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
+        public List<Product> GetAllOrderByTitleToList();
         public void InitializationByIDAndCategoryID(int ID, int categoryID);
         public void InitializationByIDAndParentID(int ID, int parentID);
         public void InitializationByID(int ID);
