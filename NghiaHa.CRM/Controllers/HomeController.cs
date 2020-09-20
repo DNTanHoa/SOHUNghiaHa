@@ -11,6 +11,8 @@ using NghiaHa.CRM.Models;
 using SOHU.Data.Helpers;
 using SOHU.Data.Repositories;
 using SOHU.Data.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace NghiaHa.CRM.Controllers
 {
@@ -68,8 +70,8 @@ namespace NghiaHa.CRM.Controllers
             }
         }
         public string InitializationMenuLeft()
-        {
-            StringBuilder txt = new StringBuilder();
+        {            
+            StringBuilder txt = new StringBuilder();            
             txt.AppendLine(@"<li class='nav-item has-treeview'>");
             txt.AppendLine(@"<a class='nav-link' href='#'>");
             txt.AppendLine(@"<i class='nav-icon fas fa-file-signature'></i>");

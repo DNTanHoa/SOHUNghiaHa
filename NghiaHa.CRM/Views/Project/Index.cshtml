@@ -65,12 +65,11 @@
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(200);
                     columns.Bound(t => t.InvoiceName).Title("Dự án").Width(200);
-                    columns.Bound(t => t.BuyName).Title("Khách hàng").Width(200);
+                    columns.Bound(t => t.BuyName).Title("Khách hàng").Width(500);
                     columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(200);
                     columns.Bound(t => t.Total).Title("Sau thuế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
