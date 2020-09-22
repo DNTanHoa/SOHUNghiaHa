@@ -29,6 +29,7 @@ namespace SOHU.Mobile
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
+            containerRegistry.RegisterForNavigation<CustomerMaster, CustomerMasterViewModel>();
         }
     }
 }

@@ -17,7 +17,17 @@
             <local:HomePage />
         </x:Arguments>
     </NavigationPage>
-    <NavigationPage Title="Dự án" IconImageSource="home">
+    <NavigationPage Title="Dự án" IconImageSource="project">
+        <x:Arguments>
+            <local:HomePage />
+        </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="Khách hàng" IconImageSource="chart">
+        <x:Arguments>
+            <local:HomePage />
+        </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="Thông tin" IconImageSource="info">
         <x:Arguments>
             <local:HomePage />
         </x:Arguments>

@@ -4,8 +4,10 @@
              xmlns:prism="http://prismlibrary.com"
              x:Class="SOHU.Mobile.App">
   <Application.Resources>
-
-    <!-- Application resource dictionary -->
-
-  </Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="Navy"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </prism:PrismApplication>

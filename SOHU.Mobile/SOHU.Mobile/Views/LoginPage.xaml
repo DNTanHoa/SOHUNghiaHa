@@ -49,6 +49,7 @@
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="FillAndExpand"
                                                                TextColor="White"
+                                                               Text="{Binding Username}"
                                                                WatermarkText="Tên đăng nhập"
                                                                WatermarkTextColor="White"/>
                                     </StackLayout>
@@ -70,6 +71,7 @@
                                                       VerticalOptions="Center"
                                                       HorizontalOptions="FillAndExpand"
                                                       TextColor="White"
+                                                      Text="{Binding Password}"
                                                       IsPassword="True"
                                                       WatermarkText="Mật khẩu"
                                                       WatermarkTextColor="White"/>
@@ -83,6 +85,7 @@
                                             TextColor="White"
                                             HorizontalOptions="CenterAndExpand"
                                             FontSize="22"
+                                            Command="{Binding LoginCommand}"
                                             Text="Đăng nhập"></Button>
                                     <ImageButton WidthRequest="80"
                                                  Padding="8"
