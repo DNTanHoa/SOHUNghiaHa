@@ -21,7 +21,10 @@ namespace NghiaHa.CRM.Controllers
             _membershipRepository = membershipRepository;
         }
 
-
+        /// <summary>
+        /// CCode ngu vler
+        /// </summary>
+        /// <param name="model"></param>
         private void Initialization(Membership model)
         {
             if (!string.IsNullOrEmpty(model.FullName))
