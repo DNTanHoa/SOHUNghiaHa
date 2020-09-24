@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Login to CMS - Website nail";
+    ViewData["Title"] = "Đăng nhập - SOHU";
     Layout = null;
 }
 @model SOHU.MVC.Models.UserLoginViewModel
@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login to CMS - Website nail</title>
+    <title>Đăng nhập - SOHU</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <link type="image/x-icon" href="~/images/logo.jpg" rel="shortcut icon">
@@ -21,7 +21,7 @@
 <body class="hold-transition login-page" style="background-image: url('../images/background.jpg')">
     <div class="d-flex justify-content-center align-items-center login-page" style="min-height:100%;" id="loginContent">
         <div style="z-index: 2; padding-bottom: 10px;">
-            <p class="text-white h4 text-center h4"><b>LOGIN TO CMS</b></p>
+            <p class="text-white h4 text-center h4"><b>Nghĩa Hà CMS</b></p>
         </div>
         <div class="login-box">
             <div class="card">
@@ -34,7 +34,7 @@
                         <form id="loginForm">
                             @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
                             <div class="input-group mb-2">
-                                @(Html.TextBoxFor(Model => Model.Account, new {@class="form-control", @placeholder = "Account" }))
+                                @(Html.TextBoxFor(Model => Model.Account, new {@class="form-control", @placeholder = "Tài khoản" }))
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-user-alt"></span>
@@ -43,7 +43,7 @@
                             </div>
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             <div class="input-group mb-2">
-                                @(Html.TextBoxFor(Model => Model.Password, new {@class="form-control", @type="password" ,@placeholder = "Password" }))
+                                @(Html.TextBoxFor(Model => Model.Password, new {@class="form-control", @type="password" ,@placeholder = "Mật khẩu" }))
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
@@ -55,7 +55,7 @@
                                     <div class="icheck-primary">
                                         @Html.CheckBoxFor(model => model.IsRemember, new { @id = "remember" })
                                         <label for="remember">
-                                            Remember
+                                            Ghi nhớ thông tin
                                         </label>
                                     </div>
                                 </div>
@@ -65,11 +65,11 @@
                             </div>
                         </form>
                     </div>
-                    <div class="social-auth-links text-center mb-3">
+                    @*<div class="social-auth-links text-center mb-3">
                         <a asp-controller="Account" asp-action="SignIn" class="btn btn-block btn-danger">
                             <i class="fab fa-google-plus mr-2"></i>Use email
                         </a>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>

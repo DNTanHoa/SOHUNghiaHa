@@ -12,7 +12,7 @@
             @{
                 foreach (var item in Model)
                 {
-                    var productUrl = item.ProductMetaTitle + "-" + item.ProductId + ".html";
+                    var productUrl = item.ProductMetaTitle + "-" + item.ProductID + ".html";
                     <li class="item">
                         <a href="@productUrl" title="@item.ProductTitle" class="product-image"><img src="@item.ProductImageThumbnail" alt="@item.ProductTitle"></a>
                         <div class="product-details">

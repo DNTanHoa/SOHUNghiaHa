@@ -126,7 +126,7 @@
                                         <div class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-dropdown-arrow header-nav-main-effect-3 header-nav-main-sub-effect-1">
                                             <nav class="collapse">
                                                 @{
-                                                    var topMenus = respository.GetByCodeToList(AppGlobal.TopMenuCode).GenerateTree(item => item.Id, item => (int)item.ParentId);
+                                                    var topMenus = respository.GetByCodeToList(AppGlobal.TopMenuCode).GenerateTree(item => item.ID, item => (int)item.ParentID);
                                                     @Html.Partial("~/Views/Home/_TopMenu.cshtml", topMenus);
                                                 }
                                             </nav>

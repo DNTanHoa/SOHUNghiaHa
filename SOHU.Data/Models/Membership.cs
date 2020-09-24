@@ -19,6 +19,13 @@ namespace SOHU.Data.Models
         public string Account { get; set; }
         public string Password { get; set; }
         public string Guicode { get; set; }
+        public string TaxCode { get; set; }
+        public string ContactFullName { get; set; }
+        public string ContactPhone { get; set; }
+        public string ContactEmail { get; set; }
+        public string ContactPosition { get; set; }
+        public string BankAccount { get; set; }
+        public string BankName { get; set; }
 
         public virtual void InitDefaultValue()
         {

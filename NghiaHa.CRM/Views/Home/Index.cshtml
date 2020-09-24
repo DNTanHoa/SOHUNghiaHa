@@ -1,5 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Đăng nhập - Hệ thống quản lý khách hàng";
+﻿@{    
     Layout = null;
 }
 @model NghiaHa.CRM.Models.UserLoginViewModel
@@ -9,10 +8,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Nghĩa hà: Hệ thống quản lý thông tin khách hàng - CRM">
-    <meta name="keywords" content="Nghĩa hà: Hệ thống quản lý thông tin khách hàng - CRM">
-    <meta name="author" content="Nghĩa Hà">
-    <title>Đăng nhập - Hệ thống quản lý thông tin khách hàng - CRM</title>
+    <meta name="description" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <meta name="keywords" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <meta name="author" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <title>Đăng nhập - @SOHU.Data.Helpers.AppGlobal.Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <link rel="manifest" href="~/manifest.json">
@@ -29,7 +28,7 @@
 <body class="hold-transition login-page" style="background-image: url('images/background.jpg'); background-size:cover;">
     <div class="d-flex justify-content-center align-items-center login-page" style="min-height:100%;" id="loginContent">
         <div style="z-index: 2; padding-bottom: 10px;">
-            <p class="text-white h4 text-center h4"><b>ĐĂNG NHẬP HỆ THỐNG</b></p>
+            <p class="text-white h4 text-center h4"><b>@SOHU.Data.Helpers.AppGlobal.Title</b></p>
             @Html.HiddenFor(Model => Model.RedirectUrl)
         </div>
         <div class="login-box">
@@ -40,7 +39,7 @@
                         <form id="loginForm">
                             @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
                             <div class="input-group mb-2">
-                                @(Html.TextBoxFor(Model => Model.Account, new {@class="form-control", @placeholder = "Tên Đăng Nhập" }))
+                                @(Html.TextBoxFor(Model => Model.Account, new {@class="form-control", @placeholder = "Tài khoản" }))
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-user-alt"></span>
@@ -68,12 +67,7 @@
                                 <div class="col-4">
                                     <a onclick="onLogin()" style="cursor:pointer;" class="btn btn-primary btn-block text-white"><i class="fas fa-sign-in-alt"></i></a>
                                 </div>
-                            </div>
-                            <div class="social-auth-links text-center mb-3">
-                                <a asp-controller="Home" asp-action="LoginByEmail" id="loginEmailButton" class="btn btn-block btn-danger">
-                                    <i class="fab fa-google-plus mr-2"></i>Đăng nhập bằng email
-                                </a>
-                            </div>
+                            </div>                         
                         </form>
                     </div>
                 </div>

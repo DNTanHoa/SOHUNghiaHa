@@ -44,7 +44,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.CreateFail;
+                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
             }
             return Json(note);
         }
@@ -53,14 +53,14 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             model.Initialization(InitType.Insert, RequestUserID);
             string note = AppGlobal.InitString;
-            var result = customerRepository.Update(model.Id, model);
+            var result = customerRepository.Update(model.ID, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.EditFail;
+                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
             }
             return Json(note);
         }
@@ -75,7 +75,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                note = AppGlobal.Fail + " - " + AppGlobal.DeleteFail;
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
             }
             return Json(note);
         }

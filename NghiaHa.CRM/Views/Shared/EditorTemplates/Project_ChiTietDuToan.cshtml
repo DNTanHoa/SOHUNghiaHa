@@ -1,0 +1,8 @@
+@using Kendo.Mvc.UI
+@(Html.Kendo().DropDownListFor(t => t)
+                   .DataValueField("ParentID")
+                   .DataTextField("ParentName")
+                   .HtmlAttributes(new { data_bind = "value: Parent", @class = "form-control" })
+                    .Filter(FilterType.Contains)
+                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetProjectDuToanFullNameByInvoiceIDAndDuToanToList", "Project", new { invoiceID = ViewData["InvoiceID"] })))
+)

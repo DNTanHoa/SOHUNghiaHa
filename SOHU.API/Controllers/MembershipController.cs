@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SOHU.API.Helpers;
 using SOHU.API.RequestModel;
 using SOHU.API.ResponseModel;
 using SOHU.Data.Enum;
@@ -58,14 +59,14 @@ namespace SOHU.API.Controllers
             Result routeResult;
             int result = 0;
 
-            if (model.Id > 0)
+            if (model.ID > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
 
                 //concat first + lastname
                 _membershipRepository.InitBeforeSave(model, InitType.Update);
 
-                result = _membershipRepository.Update(model.Id, model);
+                result = _membershipRepository.Update(model.ID, model);
 
                 if (result > 0)
                 {

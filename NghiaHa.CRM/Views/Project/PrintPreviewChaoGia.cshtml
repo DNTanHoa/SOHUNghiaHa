@@ -1,0 +1,34 @@
+﻿@{ Layout = "~/Views/Shared/_LayoutWindowPrintPreview.cshtml";
+
+    ViewData["Title"] = "" + Model.InvoiceCode + " - " + Model.BuyName; }
+
+
+@model SOHU.Data.Models.Invoice
+<style>
+    .border, .border td, .border th {
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        padding: 10px;
+    }
+
+    .border {
+        border-collapse: collapse;
+    }
+
+        .border th {
+            text-align: center;
+        }
+
+        .border td {
+            text-align: right;
+        }
+
+        .border .text {
+            text-align: left;
+        }
+</style>
+<div style="width:1000px; height:auto; padding:40px; margin:auto; background-color:#ffffff;">
+    @Html.Raw(Model.ChaoGia)
+</div>
+

@@ -32,6 +32,16 @@
     <script src="~/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
     <script src="~/plugins/select2/js/select2.full.min.js"></script>
     <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>       
+        function OpenWindowByURL(URLParamater, w = 100, h = 200) {
+            var width01 = screen.width - w;
+            var height01 = screen.height - h;
+            var left = (screen.width - width01) / 2;
+            var top = (screen.height - height01) / 3;
+            var url = URLParamater;
+            window.open(url, '_blank', 'location=yes,height=' + height01 + ',width=' + width01 + ',scrollbars=yes,status=yes,toolbar=yes,top=' + top + ',left=' + left + '');
+        }
+    </script>
 </head>
 <body class="hold-transition sidebar-mini m-0">
     <div class="wrapper">
@@ -45,21 +55,21 @@
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <img src="~/images/logo.jpg" class="user-image img-circle elevation-2" alt="Hình Ảnh Cá Nhân">
-                        <span class="d-none d-md-inline" id="UsernameHeader">Tên Người Dùng Là?</span>
+                        <span class="d-none d-md-inline" id="UsernameHeader">Quản trị</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                         <li class="user-header bg-primary">
                             <img src="~/images/logo.jpg" class="img-circle elevation-2" alt="User Image">
                             <p>
-                                <span id="Username">Người Dùng Hệ Thống</span>
-                                <small>Thành Viên Từ 2020</small>
+                                <span id="Username">Quản trị</span>
+                                <small>2020</small>
                             </p>
                         </li>
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-2"></div>
                                 <div class="text-center col-8">
-                                    Nail Website CMS
+                                    SOHU CMS
                                 </div>
                                 <div class="col-2"></div>
                             </div>
@@ -74,7 +84,7 @@
         </nav>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="index3.html" class="brand-link">
-                <span class="brand-text font-weight-light">Content Management System</span>
+                <span class="brand-text font-weight-light">CMS</span>
             </a>
 
             <div class="sidebar">
@@ -83,7 +93,7 @@
                         <img src="~/images/logo.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block" id="UsernameSideBar">Login user fullname</a>
+                        <a href="#" class="d-block" id="UsernameSideBar">Quản trị nội dung</a>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -103,8 +113,8 @@
         </aside>
         <footer class="main-footer">
             <div class="row">
-                <strong class="col-sm-6">Bản quyền &copy; 2020 <a class="text-primary" href="https://toilamkythuat.com">Tôi làm kỹ thuật</a>. Bảo lưu tất cả quyền.</strong>
-                <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Chuyên trang chém gió</strong>
+                <strong class="col-sm-6">Bản quyền &copy; 2020 <a class="text-primary" href="http://sohu.vn/">SOHU.vn</a>. Bảo lưu tất cả quyền.</strong>
+                <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Phiên bản 2.1</strong>
             </div>
         </footer>
     </div>
@@ -118,14 +128,14 @@
     @RenderSection("Scripts", required: false)
     <script>
         $(document).ready(() => {
-            @*$.ajax({
+            $.ajax({
                 type: "GET",
-                url: "@Url.Action("MenuLeft","Menu")",
+                url: "@Url.Action("MenuLeft","Config")",
                 success: (res) => {
                     $("#userMenuLeft").empty();
                     $("#userMenuLeft").html(res);
                 }
-            });*@
+            });
 
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy'

@@ -1,0 +1,203 @@
+﻿@{ ViewData["Title"] = "Chi tiết - ";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml"; }
+@model SOHU.Data.DataTransferObject.ProductDataTransfer
+@using SOHU.Data.Helpers
+@using SOHU.Data.Models
+@using SOHU.Data.DataTransferObject
+<script src="~/ckeditor/ckeditor.js"></script>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a>CMS</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="Index" asp-controller="Product">Bài viết</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100" style="overflow-x:auto;">
+                <div class="card-body">
+                    <form asp-action="SaveChange" asp-controller="Product" method="post" enctype="multipart/form-data">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between" style="float:right;">
+                                <div class="toolbar">
+                                    <button class="btn btn-primary" type="submit"><i class="fas fa-save text-white"></i></button>
+                                    <a class="btn btn-success" asp-action="DetailCompact" asp-controller="Product" asp-route-ID="0"><i class="fas fa-file text-white"></i></a>
+                                    <a class="btn btn-success" onclick="javascript:OpenWindowByURL('@Model.URL');" style="cursor:pointer;"><i class="fas fa-binoculars text-white"></i></a>
+                                    <a class="btn btn-dark" asp-action="Index" asp-controller="Product"><i class="fas fa-arrow-left"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.HiddenFor(Model => Model.ID)
+                        @Html.HiddenFor(Model => Model.DateCreated)
+                        @Html.HiddenFor(Model => Model.DateUpdated)
+                        @Html.HiddenFor(Model => Model.UserCreated)
+                        @Html.HiddenFor(Model => Model.UserUpdated)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Menu">Menu</label>
+                                    <select id="CategoryId" data-selected="@Model.CategoryID" asp-for="CategoryID" class="form-control select2" style="width: 100%;">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Tiêu đề</label>
+                                    @Html.TextBoxFor(Model => Model.Title, new { @class = "form-control", placeholder = "Tiêu đề" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="Description">Mô tả</label>
+                                    @Html.TextBoxFor(Model => Model.Description, new { @class = "form-control", placeholder = "Mô tả" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="Image">Hình đại diện</label>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <img src="@Url.Content(Model.Image)" alt="@Url.Content(Model.Image)" title="@Url.Content(Model.Image)" style="width:50%; height:50%;" class="img-thumbnail" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="fileToUpload" id="fileToUpload">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="MetaTitle">Meta title</label>
+                                    @Html.TextBoxFor(Model => Model.MetaTitle, new { @class = "form-control", placeholder = "Meta title (tự động)" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="MetaKeyword">Meta keyword</label>
+                                    @Html.TextBoxFor(Model => Model.MetaKeyword, new { @class = "form-control", placeholder = "Meta keyword (tự động)" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="MetaDescription">Meta description</label>
+                                    @Html.TextBoxFor(Model => Model.MetaDescription, new { @class = "form-control", placeholder = "Meta description (tự động)" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="Tags">Tags</label>
+                                    @Html.TextBoxFor(Model => Model.Tags, new { @class = "form-control", placeholder = "Tags" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="Urlcode">URL</label>
+                                    @Html.TextBoxFor(Model => Model.Urlcode, new { @class = "form-control", placeholder = "URL (tự động)" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name">Nội dung</label>
+                                    @Html.TextAreaFor(Model => Model.ContentMain, new { @class = "", rows = "10", cols = "80" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(() => {
+        $('#CategoryID').select2({
+theme: 'bootstrap4',
+        });
+        $('#PriceUnitID').select2({
+                    theme: 'bootstrap4',
+        });
+                })
+
+    CKEDITOR.replace('ContentMain', {
+        filebrowserImageBrowseUrl: "@Url.Action("Index","File")",
+    });
+
+
+
+    $('#productInfor').on('submit', function () {
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            });
+
+    function onSaveChange() {
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+        $.ajax({
+                type: 'POST',
+            url: "@Url.Action("SaveChange","Product")",
+            data: $("#productInfor").serialize(),
+            success: (res) => {
+                var messageType = res.split('-')[0];
+                var note = res.split('-')[1];
+                Notify(messageType.trim(), note);
+            }
+        });
+            }
+
+            function Notify(type, message) {
+                switch (type) {
+                    case "success":
+                        toastr.success(message);
+                        break;
+                    case "info":
+                        toastr.info(message);
+                        break;
+                    case "error":
+                        toastr.error(message);
+                        break;
+                    case "warning":
+                        toastr.warning(message);
+                        break;
+                }
+            }
+</script>
+<script>
+    $(document).ready(() => {
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("GetMenuWebsiteToList", "Config")",
+            data: {
+            },
+            success: (res) => {
+                let dropDown = $('#CategoryID');
+                let selectID = $(dropDown).attr('data-selected');
+                $.each(res, (index, item) => {
+                    if (item.Id == selectID) {
+                        dropDown.append("<option value='" + item.Id + "' selected>" + item.CodeName + "</option>");
+                    }
+                    else {
+                        dropDown.append("<option value='" + item.Id + "'>" + item.CodeName + "</option>");
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("GetByCodeToList", "Config")",
+            data: {
+                Code: '@AppGlobal.PriceUnit',
+            },
+            success: (res) => {
+                let dropDown = $('#PriceUnitID');
+                let selectID = $(dropDown).attr('data-selected');
+                $.each(res, (index, item) => {
+                    if (item.Id == selectID) {
+                        dropDown.append("<option value='" + item.Id + "' selected>" + item.CodeName + "</option>");
+                    }
+                    else {
+                        dropDown.append("<option value='" + item.Id + "'>" + item.CodeName + "</option>");
+                    }
+                });
+            }
+        })
+    })
+</script>

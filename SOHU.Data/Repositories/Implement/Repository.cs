@@ -16,7 +16,11 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
-
+        public int Range(List<T> list)
+        {
+            _context.Set<T>().AddRange(list);
+            return _context.SaveChanges();
+        }
         public async Task<int> AsyncCreate(T model)
         {
             _context.Set<T>().Add(model);
@@ -41,7 +45,7 @@ namespace SOHU.Data.Repositories
 
         public async Task<T> AsyncGetByID(int ID)
         {
-            return await _context.Set<T>().AsNoTracking().FirstOrDefaultAsync(model => model.Id == ID);
+            return await _context.Set<T>().AsNoTracking().FirstOrDefaultAsync(model => model.ID == ID);
         }
 
         public async Task<int> AsyncUpdate(int ID, T model)
@@ -76,10 +80,14 @@ namespace SOHU.Data.Repositories
             var result = _context.Set<T>().ToList();
             return result ?? new List<T>();
         }
-
+        public List<T> GetByParentIDToList(int parentID)
+        {
+            var result = _context.Set<T>().Where(model => model.ParentID == parentID).OrderByDescending(model => model.DateUpdated).ToList();
+            return result;
+        }
         public T GetByID(int ID)
         {
-            var result = _context.Set<T>().AsNoTracking().FirstOrDefault(model => model.Id == ID);
+            var result = _context.Set<T>().AsNoTracking().FirstOrDefault(model => model.ID == ID);
             return result;
         }
 

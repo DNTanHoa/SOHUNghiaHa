@@ -1,7 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Product management - ";
-    Layout = "~/Views/Shared/_CMSLayout.cshtml";
-}
+﻿@{ ViewData["Title"] = "Bài viết - ";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml"; }
+@model SOHU.Data.DataTransferObject.ModelTemplate
 <script src="~/js/mustache.min.js"></script>
 <script id="gridTemplate" type="x-tmpl-mustache">
     <table class="table table-bordered table-hover overflow-auto" style="overflow-x:auto;">
@@ -9,13 +8,8 @@
             <tr>
                 <th class="bg-primary" style="cursor:pointer;" width="300"></th>
                 <th class="bg-primary" style="cursor:pointer;" width="100">ID</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Category</th>
-                <th class="bg-primary" style="cursor:pointer;" width="400">Title</th>
-                <th class="bg-primary" style="cursor:pointer;" width="400">Meta title</th>
-                <th class="bg-primary" style="cursor:pointer;" width="400">Meta keywords</th>
-                <th class="bg-primary" style="cursor:pointer;" width="400">Meta description</th>
-                <th class="bg-primary" style="cursor:pointer;" width="400">Tags</th>
-                <th class="bg-primary" style="cursor:pointer;" width="300">Image</th>
+                <th class="bg-primary" style="cursor:pointer;" width="400">Bài viết</th>
+                <th class="bg-primary" style="cursor:pointer;" width="400">Ngày sửa cuối</th>
                 <th class="bg-primary" style="cursor:pointer;" width="300"></th>
             </tr>
         </thead>
@@ -24,21 +18,16 @@
             <tr style="table-layout:fixed;">
                 <td width="300">
                     <div>
-                        <a class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
+                        <a style="cursor:pointer; color:white;" class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
                         <button class="btn btn-danger" onclick="onConfirm({{Id}},'Product')"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
-                <td style="table-layout:fixed;" width="100">{{ID}}</td>
-                <td style="table-layout:fixed;" width="300">{{Category}}</td>
+                <td style="table-layout:fixed;" width="100">{{Id}}</td>
                 <td style="table-layout:fixed;" width="400">{{Title}}</td>
-                <td style="table-layout:fixed;" width="400">{{MetaTitle}}</td>
-                <td style="table-layout:fixed;" width="400">{{MetaKeyword}}</td>
-                <td style="table-layout:fixed;" width="400">{{MetaDescription}}</td>
-                <td style="table-layout:fixed;" width="400">{{Tags}}</td>
-                <td style="table-layout:fixed;" width="300">{{ImageThumbnail}}</td>
+                <td style="table-layout:fixed;" width="300">{{DateUpdated}}</td>
                 <td style="table-layout:fixed;" width="300">
                     <div>
-                        <a class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
+                        <a style="cursor:pointer; color:white;" class="btn btn-success" onclick="onOpenDetail({{Id}})"><i class="fas fa-external-link-alt"></i></a>
                         <button class="btn btn-danger" onclick="onConfirm({{Id}},'Product')"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -51,12 +40,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Product - service</h1>
+                <h1>Bài viết</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a>System</a></li>
-                    <li class="breadcrumb-item active"><a asp-action="Index" asp-controller="Product" class="text-primary">Product</a></li>
+                    <li class="breadcrumb-item"><a>CMS</a></li>
+                    <li class="breadcrumb-item active"><a asp-action="Index" asp-controller="Product" class="text-primary">Bài viết</a></li>
                 </ol>
             </div>
         </div>
@@ -69,12 +58,25 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="toolbar">
-                            <a class="btn btn-success" asp-action="Detail" asp-controller="Product" asp-route-ID="0"><i class="fas fa-plus text-white"></i></a>
+                            <a class="btn btn-success" asp-action="DetailCompact" asp-controller="Product" asp-route-ID="0"><i class="fas fa-plus text-white"></i></a>
                         </div>
                         <input type="text" placeholder="Search" class="form-control" style="flex-basis:20%;" />
                     </div>
                 </div>
                 <div class="card-body overflow-auto">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <select id="ID" data-selected="@Model.ID" asp-for="ID" class="form-control select2" style="width: 100%;">
+                            </select>
+                        </div>
+                        <div class='col-sm-1'>
+                            <button style="width:100%;" type="button" class="btn btn-success" onclick="onSearch()">
+                                <span class="fas fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <br />
+
                     <div id="grid">
 
                     </div>
@@ -86,11 +88,31 @@
 <div id="modal-area-content"></div>
 <script>
     $(document).ready(() => {
-        fetchData();
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("GetMenuWebsiteToList", "Config")",
+            data: {
+            },
+            success: (res) => {
+                let dropDown = $('#ID');
+                let selectID = $(dropDown).attr('data-selected');
+                $.each(res, (index, item) => {
+                    if (item.Id == selectID) {
+                        dropDown.append("<option value='" + item.Id + "' selected>" + item.CodeName + "</option>");
+                    }
+                    else {
+                        dropDown.append("<option value='" + item.Id + "'>" + item.CodeName + "</option>");
+                    }
+                });
+            }
+        });
+        onSearch();
     })
-
+    function onSearch() {
+       fetchData();
+    }
     function onOpenDetail(Id) {
-        var url = "@Url.Action("Detail", "Product")" + "?ID=" + Id;
+        var url = "@Url.Action("DetailCompact", "Product")" + "?ID=" + Id;
         window.location.href = url;
     }
 
@@ -115,11 +137,12 @@
     }
 
     function fetchData() {
+        var categoryIDValue = $("#ID").val();        
         $.ajax({
             type: 'GET',
-            url: "@Url.Action("GetAllToList", "Product")",
+            url: "@Url.Action("GetByCategoryIDToList", "Product")",
             data: {
-
+                categoryID: categoryIDValue,
             },
             success: (res) => {
                 console.log(res);

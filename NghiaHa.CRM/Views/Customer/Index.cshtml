@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Dữ liệu khách hàng";
+    ViewData["Title"] = "Khách hàng";
 }
 @using Kendo.Mvc.UI
 @using SOHU.Data.Models
@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Dữ liệu khách hàng</h1>
+                <h1>Khách hàng</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -32,7 +32,7 @@
                         command.Custom("detailFirst").Text("&nbsp;").IconClass("fas fa-external-link-alt").Click("onOpenDetail").HtmlAttributes(new { style = "color:#ffffff; background-color:#28a745; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-success" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(250);
-                    columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.FullName).Title("Khách hàng").Width(350);
                     columns.Bound(t => t.Address).Title("Địa chỉ").Width(350);
                     columns.Bound(t => t.Email).Title("Email").Width(200);
@@ -40,7 +40,7 @@
                     columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
                     columns.Bound(t => t.IdentityNumber).Title("Chứng minh").Width(200);
                     columns.Bound(t => t.CitizenNumber).Title("Căn cước").Width(200);
-                    columns.Bound(t => t.Passport).Title("Hộ chiếui").Width(200);
+                    columns.Bound(t => t.Passport).Title("Hộ chiếu").Width(200);
                     columns.Bound(t => t.Note).Title("Ghi chú").Width(300);
                     columns.Command(command =>
                     {
@@ -86,8 +86,8 @@
                 .PageSize(1000)
                 .Model(model =>
                 {
-                    model.Id(t => t.Id);
-                    model.Field(t => t.Id).Editable(false);
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
                 .Read(t => t.Action("GetAllToList", "Customer"))

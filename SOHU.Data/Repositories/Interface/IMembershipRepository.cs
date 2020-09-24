@@ -8,6 +8,9 @@ namespace SOHU.Data.Repositories
 {
     public interface IMembershipRepository : IRepository<Membership>
     {
+        public bool IsValidByTaxCode(string taxCode);
+        public bool IsValidByCitizenIdentification(string citizenIdentification);
+        public bool IsValidByPhone(string phone);
         public bool IsValid(string account, string password);
 
         public Membership GetByAccount(string Username);
