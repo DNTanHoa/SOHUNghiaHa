@@ -43,7 +43,7 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
-            model.InitializationDataTransfer();
+            model.InitializationForInvoice();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -70,7 +70,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> Update(InvoiceDetailDataTransfer model)
         {
-            model.InitializationDataTransfer();
+            model.InitializationForInvoice();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);

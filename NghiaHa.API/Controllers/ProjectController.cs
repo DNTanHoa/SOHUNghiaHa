@@ -953,7 +953,7 @@ namespace NghiaHa.API.Controllers
         {
             model.CategoryID = AppGlobal.DuToanID;
             model.InvoiceID = invoiceID;
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -990,7 +990,7 @@ namespace NghiaHa.API.Controllers
             model.ParentID = model.Parent.ID;
             model.ProductID = model.Product.ID;
             model.EmployeeID = model.Employee.ID;
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
             
@@ -1018,7 +1018,7 @@ namespace NghiaHa.API.Controllers
         {
             model.CategoryID = AppGlobal.ChaoGiaID;
             model.InvoiceID = invoiceID;
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -1072,7 +1072,7 @@ namespace NghiaHa.API.Controllers
             model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
             model.UnitPrice = 0;
 
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Insert, RequestUserID);
 
             int result = _invoiceDetailRepository.Create(model);
@@ -1092,7 +1092,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> UpdateProjectDuToan(InvoiceDetailDataTransfer model)
         {
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
@@ -1112,7 +1112,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> UpdateProjectThiCong(InvoiceDetailDataTransfer model)
         {
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
@@ -1156,7 +1156,7 @@ namespace NghiaHa.API.Controllers
         {
             model.EmployeeID = model.Employee.ID;
             model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
-            model.InitializationInvoiceDetailDataTransfer();
+            model.InitializationForProject();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
