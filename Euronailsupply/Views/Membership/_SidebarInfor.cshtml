@@ -1,0 +1,17 @@
+﻿@using Kendo.Mvc.UI
+@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Helpers
+@{
+    Layout = null;
+}
+
+
+@model Membership
+
+<div class="image">
+    <img src="~/images/logo.jpg" class="img-circle elevation-2" alt="@Model.Account">
+</div>
+<div class="info">
+    <a asp-action="Index" asp-controller="Employee" class="d-block" id="UsernameSideBar">@Model.FullName</a>
+</div>

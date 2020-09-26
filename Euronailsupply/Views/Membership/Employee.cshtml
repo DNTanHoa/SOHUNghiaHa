@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Nhân viên";
+}
+@using Kendo.Mvc.UI
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Nhân viên</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Thành viên</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Employee" asp-controller="Membership">Nhân viên</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <div class="row">
+                        <div class='col-sm-11'>
+                        </div>
+                        <div class='col-sm-1'>
+                            <a asp-route-ID="0" asp-action="EmployeeDetail" asp-controller="Membership" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+                @(Html.Kendo().Grid<SOHU.Data.Models.Membership>()
+                .Name("Membership")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(70);
+                    columns.Template(@"<a href='/Membership/EmployeeDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.FullName).Title("Nhân viên").Width(300);
+                    columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
+                    columns.Bound(t => t.CitizenIdentification).Title("CMND").Width(200);
+                    columns.Bound(t => t.Address).Title("Địa chỉ").Width(200);
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.FullName);
+                    search.Field(f => f.Phone);
+                    search.Field(f => f.Address);
+                    search.Field(f => f.CitizenIdentification);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEnd"); })
+                .Read(t => t.Action("GetByEmployeeParentIDToList", "Membership"))
+                .Destroy(t => t.Action("Delete", "Membership"))
+                .Update(t => t.Action("Update", "Membership"))))
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+
+<script>
+
+    function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#Membership").data("kendoGrid").dataSource.read();
+        }
+    }
+</script>

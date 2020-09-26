@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\EditorTemplates\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SOHU.Data\SOHU.Data.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,121 @@
+﻿@{ ViewData["Title"] = "Vật tư - thiết bị"; }
+@using Kendo.Mvc.UI
+@model Euronailsupply.Models.BaseViewModel
+@Html.HiddenFor(Model => Model.ID)
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Vật tư - thiết bị</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Vật tư - thiết bị</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">Danh sách</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <div class="row">
+                        <div class='col-sm-11'>
+                        </div>
+                        <div class='col-sm-1'>
+                            <a asp-route-ID="0" asp-action="Detail" asp-controller="Product" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+                @(Html.Kendo().Grid<SOHU.Data.Models.Product>()
+                .Name("Product")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(70);
+                    columns.Template(@"<a href='/Product/Detail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
+                    columns.Bound(t => t.Urlcode).Title("Mã sản phẩm").Width(200);
+                    columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(700);                    
+                    columns.Bound(t => t.QuantityInStock).Title("Tồn").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityInput).Title("Nhập").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityOutput).Title("Xuất").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                   
+
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.Title);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEnd"); })
+                .Read(t => t.Action("GetByCategoryIDToList", "Product").Data("filterProduct"))
+                .Destroy(t => t.Action("Delete", "Product"))
+                .Create(t => t.Action("Create", "Product").Data("filterProductCreate"))
+                .Update(t => t.Action("Update", "Product"))))
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+
+<script>
+
+    function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#Product").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    function filterProduct(e) {
+        var categoryIDValue = $("#ID").val();
+        return { categoryID: categoryIDValue };
+
+    }
+    function filterProductCreate(e) {
+        var categoryIDValue = $("#ID").val();
+        return { categoryID: categoryIDValue };
+    }
+</script>
