@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NghiaHa.CRM.Web.Models
+namespace Euronailsupply.Models
 {
     public class BaseViewModel
     {
