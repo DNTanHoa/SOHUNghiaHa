@@ -1,0 +1,36 @@
+﻿@using Kendo.Mvc.UI
+@using SOHU.Data.DataTransferObject
+@using SOHU.Data.Models
+@using SOHU.Data.Helpers
+@{
+    Layout = null;
+}
+
+@model Membership
+
+<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <img src="~/images/logo.jpg" class="user-image img-circle elevation-2" alt="@Model.Account">
+    <span class="d-none d-md-inline" id="UsernameHeader">@Model.Account - @Model.FullName</span>
+</a>
+<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+    <li class="user-header bg-primary">
+        <img src="~/images/logo.jpg" class="img-circle elevation-2" alt="@Model.Account - @Model.FullName">
+        <p>
+            <span id="Username">@Model.Account - @Model.FullName</span>
+            <small>@Model.Email</small>
+        </p>
+    </li>
+    <li class="user-body">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="text-center col-8">
+                Hệ thống CRM
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </li>
+    <li class="user-footer">
+        <a onclick="onChangePassword(@Model.ID)" class="btn btn-default btn-flat">Đổi Mật Khẩu</a>
+        <a asp-action="Logout" asp-controller="Home" class="btn btn-default btn-flat float-right">Thoát</a>
+    </li>
+</ul>

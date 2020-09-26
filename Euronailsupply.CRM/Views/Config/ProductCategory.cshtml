@@ -1,0 +1,129 @@
+﻿@{ ViewData["Title"] = "Danh mục vật tư"; }
+@using Kendo.Mvc.UI
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh mục vật tư</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Hệ thống</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="ProductCategory" asp-controller="Config">Nhóm vật tư - thiết bị</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            @(Html.Kendo().DropDownList()
+                     .Name("ProductCategory")
+                     .DataValueField("ID")
+                     .DataTextField("CodeName")
+                    .HtmlAttributes(new { @class = "form-control" })
+                      .Events(e => e.DataBound("onProductCategoryDataBound").Change("onProductCategoryChange"))
+                       .Filter(FilterType.Contains)
+                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
+                            )
+                        </div>
+                    </div>
+                </div>
+                @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.ConfigDataTransfer>()
+                .Name("Config")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });                        
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.Parent.TextName).Title("Parent").EditorTemplateName("Config_ProductCategory").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.CodeName).Title("Nhóm").Width(300);
+                   
+
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.CodeName);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEnd"); })
+                .Read(t => t.Action("GetDataTransferByParentIDToList", "Config").Data("filterConfig"))
+                .Destroy(t => t.Action("Delete", "Config"))
+                .Create(t => t.Action("CreateProductCategory", "Config"))
+                .Update(t => t.Action("UpdateDataTransfer", "Config"))))
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+
+<script>
+
+    function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#Config").data("kendoGrid").dataSource.read();
+        }
+    }
+    function onProductCategoryDataBound() {
+        var control = $("#ProductCategory").data("kendoDropDownList");
+        var controlLength = control.dataSource.data().length;
+        if (controlLength > 0) {
+            control.select(0);
+            control.trigger("change");
+        }
+    }
+    function onProductCategoryChange() {
+        $("#Config").data("kendoGrid").dataSource.read();
+    }
+    function filterConfig(e) {
+        var parentIDValue = $("#ProductCategory").data("kendoDropDownList").value();
+        return { parentID: parentIDValue };
+
+    }    
+</script>

@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Đơn vị tính";
+}
+@using Kendo.Mvc.UI
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Đơn vị tính</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Hệ thống</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Unit" asp-controller="Config">Đơn vị tính</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                @(Html.Kendo().Grid<SOHU.Data.Models.Config>()
+                .Name("Config")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(250);
+                    columns.Bound(t => t.CodeName).Title("Đơn vị tính").Width(300);
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("CauHinh.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.CodeName);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEnd"); })
+                .Read(t => t.Action("GetUnitToList", "Config"))
+                .Destroy(t => t.Action("Delete", "Config"))
+                .Create(t => t.Action("CreateUnit", "Config"))
+                .Update(t => t.Action("Update", "Config"))))
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+
+<script>
+
+     function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#Config").data("kendoGrid").dataSource.read();
+        }
+    }
+</script>

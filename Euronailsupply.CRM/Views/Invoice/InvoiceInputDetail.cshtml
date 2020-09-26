@@ -1,0 +1,386 @@
+﻿@{
+    ViewData["Title"] = "Thông tin chi tiết hóa đơn nhập";
+}
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Invoice
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thông tin chi tiết hóa đơn nhập</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Chứng từ</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Hóa đơn nhập</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <form asp-action="SaveInvoiceInput" asp-controller="Invoice">
+                            @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.CategoryID)
+                            <div class="row">
+                                <div class='col-md-9'>
+                                </div>
+                                <div class='col-md-1'>
+                                    <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-save"></span>
+                                    </button>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="InvoiceInputDetail" asp-controller="Invoice" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-action="InvoiceInput" asp-controller="Invoice" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='InvoiceCode'>Số hóa đơn</label>
+                                        @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='MakeCode'>Mẫu số</label>
+                                        @(Html.TextBoxFor(Model => Model.MakeCode, new { placeholder = "Mẫu số", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='ManageCode'>Ký hiệu</label>
+                                        @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Ký hiệu", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='InvoiceCreated'>Ngày lập</label>
+                                        @(Html.TextBoxFor(Model => Model.InvoiceCreated, "{0:MM/dd/yyyy}", new { placeholder = "Ngày lập", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
+
+                                    <div class='form-group'>
+                                        <label for='SellID'>Nhà cung cấp</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.SellID)
+                                   .DataValueField("ID")
+                                   .DataTextField("FullName")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetBySupplierParentIDToList", "Membership")))
+                                    )
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='MakeSideID'>Người lập</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.MakeSideID)
+                                   .DataValueField("ID")
+                                   .DataTextField("FullName")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByEmployeeParentIDToList", "Membership")))
+                                    )
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='TotalNoTax'>Trước thuế</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Tax'>Thuế VAT (%)</label>
+                                        @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='TotalTax'>Tiền thuế VAT</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Total'>Sau thuế</label>
+                                        @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='TotalPaid'>Thanh toán</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalPaid, "{0:N0}", new { placeholder = "Thanh toán", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='TotalDebt'>Dư nợ</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalDebt, "{0:N0}", new { placeholder = "Dư nợ", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-body">
+                        @*@(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+        .Name("InvoiceDetailDataTransfer")
+        .Columns(columns =>
+        {
+            columns.Command(command =>
+            {
+                command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+            }).Width(150);
+            columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+            columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
+            columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
+            columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+        })
+        .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+        .ToolBar(toolBar => toolBar.Search())
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Sortable()
+        .Scrollable()
+        .Reorderable(r => r.Columns(true))
+        .Resizable(r => r.Columns(true))
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(10))
+        .Excel(excel => excel
+        .FileName("CauHinh.xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("ExportExcel", "Config")))
+        .Pdf(pdf => pdf
+        .AllPages()
+        .AvoidLinks()
+        .PaperSize("A4")
+        .Margin("2cm", "1cm", "1cm", "1cm")
+        .Landscape()
+        .RepeatHeaders()
+        .FileName("Config.pdf"))
+        .Search(search=> {
+        })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(1000)
+        .Model(model =>
+        {
+            model.Id(t => t.Id);
+            model.Field(t => t.Total).Editable(false);
+            model.Field(t => t.Id).Editable(false);
+            model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+            model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+            model.Field(t => t.Quantity).DefaultValue(1);
+            model.Field(t => t.UnitPrice).DefaultValue(1000);
+        })
+                .Events(t => { t.RequestEnd("onGridRequestEndDataTransfer"); })
+                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterDataTransfer"))
+                .Destroy(t => t.Action("Delete", "InvoiceDetail"))
+                .Create(t => t.Action("CreateDataTransferss", "InvoiceDetail").Data("filterDataTransferCreate"))
+                .Update(t => t.Action("Update", "InvoiceDetail"))))*@
+                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("InvoiceDetail")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity01).Title("Số lượng hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
+                    columns.Bound(t => t.Total).Title("Thành tiền thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total01).Title("Thành tiền hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Model").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Số seri").Width(200);
+
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.Total01).Editable(false);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Quantity).DefaultValue(1);
+                    model.Field(t => t.Quantity01).DefaultValue(1);
+                    model.Field(t => t.UnitPrice).DefaultValue(1000);
+
+
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoiceDetail"); })
+                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                .Destroy(t => t.Action("Delete", "InvoiceDetail"))
+                .Create(t => t.Action("Create", "InvoiceDetail").Data("filterInvoiceDetailCreate"))
+                .Update(t => t.Action("Update", "InvoiceDetail"))))
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-body">
+                        @(Html.Kendo().Grid<SOHU.Data.Models.InvoicePayment>()
+                .Name("InvoicePayment")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200);
+                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.PaymentCreated).DefaultValue(DateTime.Now);
+                    model.Field(t => t.TotalPayment).DefaultValue(0);
+
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoicePayment"); })
+                .Read(t => t.Action("GetByInvoiceIDToList", "InvoicePayment").Data("filterInvoicePayment"))
+                .Destroy(t => t.Action("Delete", "InvoicePayment"))
+                .Create(t => t.Action("Create", "InvoicePayment").Data("filterInvoicePaymentCreate"))
+                .Update(t => t.Action("Update", "InvoicePayment"))))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+<script>
+
+    function onGridRequestEndInvoiceDetail(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#InvoiceDetail").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function onGridRequestEndInvoicePayment(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#InvoicePayment").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function filterInvoiceDetail(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    function filterInvoiceDetailCreate(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    function filterInvoicePayment(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    function filterInvoicePaymentCreate(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#ID").val() },
+                success: function (result) {
+                    var TotalNoTax = Math.round(result["TotalNoTax"]);
+                    var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalTax = Math.round(result["TotalTax"]);
+                    var TotalTaxString = TotalTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalPaid = Math.round(result["TotalPaid"]);
+                    var TotalPaidString = TotalPaid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalDebt = Math.round(result["TotalDebt"]);
+                    var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#TotalNoTax").val(TotalNoTaxString);
+                    $("#TotalTax").val(TotalTaxString);
+                    $("#Total").val(TotalString);
+                    $("#TotalPaid").val(TotalPaidString);
+                    $("#TotalDebt").val(TotalDebtString);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+</script>

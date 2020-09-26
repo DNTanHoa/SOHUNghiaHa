@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Thông tin chi tiết nhân viên";
+}
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Membership
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thông tin chi tiết nhân viên</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Thành viên</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Employee" asp-controller="Membership">Nhân viên</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <form asp-action="SaveEmployee" asp-controller="Membership">
+                            @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.ParentID)
+                            <div class="row">
+                                <div class='col-md-9'>
+                                </div>
+                                <div class='col-md-1'>
+                                    <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-save"></span>
+                                    </button>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="EmployeeDetail" asp-controller="Membership" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-action="Employee" asp-controller="Membership" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='FullName'>Nhân viên</label>
+                                        @(Html.TextBoxFor(Model => Model.FullName, new { placeholder = "Nhân viên", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Phone'>Điện thoại</label>
+                                        @(Html.TextBoxFor(Model => Model.Phone, new { placeholder = "Điện thoại", @class = "form-control" }))
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='CitizenIdentification'>CMND</label>
+                                        @(Html.TextBoxFor(Model => Model.CitizenIdentification, new { placeholder = "CMND", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Address'>Địa chỉ</label>
+                                        @(Html.TextBoxFor(Model => Model.Address, new { placeholder = "Địa chỉ", @class = "form-control" }))
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

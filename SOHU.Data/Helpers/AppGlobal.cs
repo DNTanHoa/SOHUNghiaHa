@@ -75,6 +75,14 @@ namespace SOHU.Data.Helpers
                 return int.Parse(builder.Build().GetSection("AppSettings").GetSection("NghiaHaID").Value);
             }
         }
+        public static int EuronailsupplyID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("EuronailsupplyID").Value);
+            }
+        }
         public static int LanID
         {
             get
