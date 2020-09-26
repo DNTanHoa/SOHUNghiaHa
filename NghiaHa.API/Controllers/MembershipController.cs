@@ -2,6 +2,7 @@
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
@@ -17,38 +18,6 @@ namespace NghiaHa.API.Controllers
         public MembershipController(IMembershipRepository membershipRepository)
         {
             _membershipRepository = membershipRepository;
-        }
-
-        /// <summary>
-        /// CCode ngu vler
-        /// </summary>
-        /// <param name="model"></param>
-        private void Initialization(Membership model)
-        {
-            if (!string.IsNullOrEmpty(model.FullName))
-            {
-                model.FullName = model.FullName.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.Phone))
-            {
-                model.Phone = model.Phone.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.Address))
-            {
-                model.Address = model.Address.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.TaxCode))
-            {
-                model.TaxCode = model.TaxCode.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.CitizenIdentification))
-            {
-                model.CitizenIdentification = model.CitizenIdentification.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.Email))
-            {
-                model.Email = model.Email.Trim();
-            }
         }
 
         [HttpGet]
@@ -135,7 +104,7 @@ namespace NghiaHa.API.Controllers
 
             if (model.ID > 0)
             {
-                Initialization(model);
+                model.TrimModel();
                 model.Initialization(InitType.Update, RequestUserID);
 
                 result = _membershipRepository.Update(model.ID, model);
@@ -164,7 +133,7 @@ namespace NghiaHa.API.Controllers
 
                 if (check == true)
                 {
-                    Initialization(model);
+                    model.TrimModel();
                     model.Initialization(InitType.Insert, RequestUserID);
 
                     result = _membershipRepository.Create(model);
@@ -190,7 +159,7 @@ namespace NghiaHa.API.Controllers
 
             if (model.ID > 0)
             {
-                Initialization(model);
+                model.TrimModel();
                 model.Initialization(InitType.Update, RequestUserID);
 
                 result = _membershipRepository.Update(model.ID, model);
@@ -217,7 +186,7 @@ namespace NghiaHa.API.Controllers
                 }
                 if (check == true)
                 {
-                    Initialization(model);
+                    model.TrimModel();
                     model.Initialization(InitType.Insert, RequestUserID);
 
                     result = _membershipRepository.Create(model);
@@ -272,7 +241,7 @@ namespace NghiaHa.API.Controllers
             {
                 if (model.ID > 0)
                 {
-                    Initialization(model);
+                    model.TrimModel();
                     model.Initialization(InitType.Update, RequestUserID);
 
                     int result = _membershipRepository.Update(model.ID, model);
@@ -288,7 +257,7 @@ namespace NghiaHa.API.Controllers
                 }
                 else
                 {
-                    Initialization(model);
+                    model.TrimModel();
                     model.Initialization(InitType.Insert, RequestUserID);
 
                     int result = _membershipRepository.Create(model);

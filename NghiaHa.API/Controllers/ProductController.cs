@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
@@ -21,13 +22,6 @@ namespace NghiaHa.API.Controllers
         {
             _hostingEnvironment = hostingEnvironment;
             _productRepository = productRepository;
-        }
-        private void Initialization(Product model)
-        {
-            if (!string.IsNullOrEmpty(model.Title))
-            {
-                model.Title = model.Title.Trim();
-            }
         }
 
         [HttpGet]
@@ -96,9 +90,10 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
+            model.TrimTitle();
+
             if (model.ID > 0)
             {
-                Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
 
                 result = _productRepository.Update(model.ID, model);
@@ -114,7 +109,6 @@ namespace NghiaHa.API.Controllers
             }
             else
             {
-                Initialization(model);
                 model.Initialization(InitType.Insert, RequestUserID);
                 if (_productRepository.IsValidByTitle(model.Title) == true)
                 {

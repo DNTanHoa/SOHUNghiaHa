@@ -2,6 +2,7 @@
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
@@ -20,17 +21,6 @@ namespace NghiaHa.API.Controllers
             _invoicePaymentRepository = invoicePaymentRepository;
             _invoiceRepository = invoiceRepository;
         }
-        private void Initialization(InvoicePayment model)
-        {
-            if (!string.IsNullOrEmpty(model.FullName))
-            {
-                model.FullName = model.FullName.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.Phone))
-            {
-                model.Phone = model.Phone.Trim();
-            }
-        }
 
         [HttpGet]
         public ActionResult<string> GetByInvoiceIDToList(int invoiceID)
@@ -43,7 +33,7 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> Create(InvoicePayment model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
-            Initialization(model);
+            model.TrimModel();
             model.Initialization(InitType.Insert, RequestUserID);
 
             int result = _invoicePaymentRepository.Create(model);
@@ -64,7 +54,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> Update(InvoicePayment model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoicePaymentRepository.Update(model.ID, model);

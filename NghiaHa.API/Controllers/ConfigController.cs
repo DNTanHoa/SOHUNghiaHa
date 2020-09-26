@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SOHU.Data.ModelExtensions;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
@@ -17,17 +18,6 @@ namespace NghiaHa.API.Controllers
         public ConfigController(IConfigRepository configResposistory)
         {
             _configResposistory = configResposistory;
-        }
-        private void Initialization(Config model)
-        {
-            if (!string.IsNullOrEmpty(model.CodeName))
-            {
-                model.CodeName = model.CodeName.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.Note))
-            {
-                model.Note = model.Note.Trim();
-            }
         }
 
         [HttpGet]
@@ -75,7 +65,7 @@ namespace NghiaHa.API.Controllers
         [HttpPost]
         public ActionResult<string> CreateInvoiceCategory(Config model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.InvoiceCategory;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -101,7 +91,7 @@ namespace NghiaHa.API.Controllers
         [HttpPost]
         public ActionResult<string> CreateCustomerCategory(Config model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.CustomerCategory;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -127,7 +117,7 @@ namespace NghiaHa.API.Controllers
         [HttpPost]
         public ActionResult<string> CreateProductCategory(ConfigDataTransfer model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.ParentID = model.Parent.ID;
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.ProductCategory;
@@ -154,7 +144,7 @@ namespace NghiaHa.API.Controllers
         [HttpPost]
         public ActionResult<string> CreateUnit(Config model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.GroupName = AppGlobal.CRM;
             model.Code = AppGlobal.Unit;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -180,7 +170,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> UpdateDataTransfer(ConfigDataTransfer model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.ParentID = model.Parent.ID;
             model.Initialization(InitType.Update, RequestUserID);
             int result = _configResposistory.Update(model.ID, model);
@@ -200,7 +190,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> Update(Config model)
         {
-            Initialization(model);
+            model.TrimModel();
             model.Initialization(InitType.Update, RequestUserID);
             int result = _configResposistory.Update(model.ID, model);
 
@@ -219,7 +209,6 @@ namespace NghiaHa.API.Controllers
         [HttpDelete]
         public ActionResult<string> Delete(int ID)
         {
-            string note = AppGlobal.InitString;
             int result = _configResposistory.Delete(ID);
 
             if (result > 0)

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using NghiaHa.API.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using System;
+using System.Collections.Generic;
 
 namespace NghiaHa.API.Controllers
 {
@@ -24,13 +22,6 @@ namespace NghiaHa.API.Controllers
         {
             _invoiceRepository = invoiceRepository;
             _membershipRepository = membershipRepository;
-        }
-        private void Initialization(Invoice model)
-        {
-            if (!string.IsNullOrEmpty(model.InvoiceCode))
-            {
-                model.InvoiceCode = model.InvoiceCode.Trim();
-            }
         }
 
         [HttpGet]
@@ -159,7 +150,7 @@ namespace NghiaHa.API.Controllers
             model.BuyID = AppGlobal.NghiaHaID;
             if (model.ID > 0)
             {
-                Initialization(model);
+                model.TrimInvoiceCode();
                 model.Initialization(InitType.Update, RequestUserID);
 
                 result = _invoiceRepository.Update(model.ID, model);
@@ -175,7 +166,7 @@ namespace NghiaHa.API.Controllers
             }
             else
             {
-                Initialization(model);
+                model.TrimInvoiceCode();
                 model.Initialization(InitType.Insert, RequestUserID);
                 if (_invoiceRepository.IsValidByInvoiceCode(model.InvoiceCode) == true)
                 {
@@ -204,7 +195,7 @@ namespace NghiaHa.API.Controllers
             
             if (model.ID > 0)
             {
-                Initialization(model);
+                model.TrimInvoiceCode();
                 model.Initialization(InitType.Update, RequestUserID);
                 result = _invoiceRepository.Update(model.ID, model);
 
@@ -219,7 +210,7 @@ namespace NghiaHa.API.Controllers
             }
             else
             {
-                Initialization(model);
+                model.TrimInvoiceCode();
                 model.Initialization(InitType.Insert, RequestUserID);
                 if (_invoiceRepository.IsValidByInvoiceCode(model.InvoiceCode) == true)
                 {

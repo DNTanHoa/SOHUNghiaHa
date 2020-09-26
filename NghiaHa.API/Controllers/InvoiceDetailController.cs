@@ -3,10 +3,10 @@ using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
-using System.Collections.Generic;
 
 namespace NghiaHa.API.Controllers
 {
@@ -16,20 +16,13 @@ namespace NghiaHa.API.Controllers
     {
         private readonly IInvoiceDetailRepository _invoiceDetailRepository;
         private readonly IInvoiceRepository _invoiceRepository;
-
         private readonly IProductRepository _productRepository;
+
         public InvoiceDetailController(IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IProductRepository productRepository)
         {
             _invoiceDetailRepository = invoiceDetailRepository;
             _invoiceRepository = invoiceRepository;
             _productRepository = productRepository;
-        }
-        private void InitializationDataTransfer(InvoiceDetailDataTransfer model)
-        {
-            model.ProductID = model.Product.ID;
-            model.UnitID = model.Unit.ID;
-            model.Total = model.UnitPrice * model.Quantity;
-            model.Total01 = model.UnitPrice * model.Quantity01;
         }
 
         [HttpGet]
@@ -50,7 +43,7 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
-            InitializationDataTransfer(model);
+            model.InitializationDataTransfer();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -77,9 +70,11 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> Update(InvoiceDetailDataTransfer model)
         {
-            InitializationDataTransfer(model);
+            model.InitializationDataTransfer();
             model.Initialization(InitType.Update, RequestUserID);
+
             int result = _invoiceDetailRepository.Update(model.ID, model);
+
             if (result > 0)
             {
                 RouteResult = new SuccessResult(AppGlobal.EditSuccess);

@@ -4,6 +4,7 @@ using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
+using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
@@ -32,50 +33,6 @@ namespace NghiaHa.API.Controllers
             _invoicePropertyRepository = invoicePropertyRepository;
             _membershipRepository = membershipRepository;
             _productRepository = productRepository;
-        }
-        private void Initialization(Invoice model)
-        {
-            if (!string.IsNullOrEmpty(model.InvoiceCode))
-            {
-                model.InvoiceCode = model.InvoiceCode.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.InvoiceName))
-            {
-                model.InvoiceName = model.InvoiceName.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.BuyPhone))
-            {
-                model.BuyPhone = model.BuyPhone.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.BuyAddress))
-            {
-                model.BuyAddress = model.BuyAddress.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.HangMuc))
-            {
-                model.HangMuc = model.HangMuc.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.HopDongTitle))
-            {
-                model.HopDongTitle = model.HopDongTitle.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.HopDongTitleSub))
-            {
-                model.HopDongTitleSub = model.HopDongTitleSub.Trim();
-            }
-        }
-
-        private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
-        {
-            if (model.Product != null)
-            {
-                model.ProductID = model.Product.ID;
-            }
-            if (model.Unit != null)
-            {
-                model.UnitID = model.Unit.ID;
-            }
-            model.Total = model.UnitPrice * model.Quantity;
         }
 
         [HttpGet]
@@ -843,7 +800,7 @@ namespace NghiaHa.API.Controllers
 
             if (model.ID > 0)
             {
-                Initialization(model);
+                model.TrimModel();
                 model.Initialization(InitType.Update, RequestUserID);
 
                 result = _invoiceRepository.Update(model.ID, model);
@@ -859,7 +816,7 @@ namespace NghiaHa.API.Controllers
             }
             else
             {
-                Initialization(model);
+                model.TrimModel();
                 model.Initialization(InitType.Insert, RequestUserID);
 
                 result = _invoiceRepository.Create(model);
@@ -895,7 +852,7 @@ namespace NghiaHa.API.Controllers
                     invoice.HopDongTitleSub = model.HopDongTitle;
                 }
 
-                Initialization(invoice);
+                model.TrimModel();
                 invoice.Initialization(InitType.Update, RequestUserID);
 
                 int result = _invoiceRepository.Update(invoice.ID, invoice);
@@ -921,7 +878,7 @@ namespace NghiaHa.API.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.ChaoGia = model.ChaoGia;
-                Initialization(invoice);
+                invoice.TrimModel();
                 invoice.Initialization(InitType.Update, RequestUserID);
 
                 int result = _invoiceRepository.Update(invoice.ID, invoice);
@@ -947,7 +904,7 @@ namespace NghiaHa.API.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.NghiemThu = model.NghiemThu;
-                Initialization(invoice);
+                invoice.TrimModel();
                 invoice.Initialization(InitType.Update, RequestUserID);
 
                 int result = _invoiceRepository.Update(invoice.ID, invoice);
@@ -973,7 +930,7 @@ namespace NghiaHa.API.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.ThanhLy = model.ThanhLy;
-                Initialization(invoice);
+                invoice.TrimModel();
                 invoice.Initialization(InitType.Update, RequestUserID);
                 
                 int result = _invoiceRepository.Update(invoice.ID, invoice);
@@ -996,7 +953,7 @@ namespace NghiaHa.API.Controllers
         {
             model.CategoryID = AppGlobal.DuToanID;
             model.InvoiceID = invoiceID;
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -1033,7 +990,7 @@ namespace NghiaHa.API.Controllers
             model.ParentID = model.Parent.ID;
             model.ProductID = model.Product.ID;
             model.EmployeeID = model.Employee.ID;
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
             
@@ -1061,7 +1018,7 @@ namespace NghiaHa.API.Controllers
         {
             model.CategoryID = AppGlobal.ChaoGiaID;
             model.InvoiceID = invoiceID;
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -1115,7 +1072,7 @@ namespace NghiaHa.API.Controllers
             model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
             model.UnitPrice = 0;
 
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Insert, RequestUserID);
 
             int result = _invoiceDetailRepository.Create(model);
@@ -1135,7 +1092,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> UpdateProjectDuToan(InvoiceDetailDataTransfer model)
         {
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
@@ -1155,7 +1112,7 @@ namespace NghiaHa.API.Controllers
         [HttpPut]
         public ActionResult<string> UpdateProjectThiCong(InvoiceDetailDataTransfer model)
         {
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
@@ -1199,7 +1156,7 @@ namespace NghiaHa.API.Controllers
         {
             model.EmployeeID = model.Employee.ID;
             model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
-            InitializationInvoiceDetailDataTransfer(model);
+            model.InitializationInvoiceDetailDataTransfer();
             model.Initialization(InitType.Update, RequestUserID);
 
             int result = _invoiceDetailRepository.Update(model.ID, model);
