@@ -36,6 +36,11 @@ namespace NghiaHa.API
             services.AddTransient<IMembershipPaymentRepository, MembershipPaymentRepository>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+            services.AddTransient<IInvoicePropertyRepository, InvoicePropertyRepository>();
+            services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+            services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
