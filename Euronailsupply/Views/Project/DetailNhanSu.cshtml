@@ -1,0 +1,138 @@
+﻿@{ ViewData["Title"] = Model.InvoiceName + " - Nhân sự"; }
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Invoice
+@Html.HiddenFor(Model => Model.ID)
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1><b>@Model.InvoiceName</b> - Nhân sự</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Dự án - công trình</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class='col-md-1'>
+                                <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                    <span class="fas fa-arrow-left"></span>
+                                </a>
+                            </div>
+                            <div class='col-md-2'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    Dự toán
+                                </a>
+                            </div>
+                            <div class='col-md-2'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailNhanSu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    Nhân sự
+                                </a>
+                            </div>
+                            <div class='col-md-2'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    Chấm công
+                                </a>
+                            </div>
+                            <div class='col-md-2'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    Hợp đồng
+                                </a>
+                            </div>
+                            <div class='col-md-1'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-paperclip"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("ProjectNhanSu")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.Employee.TextName).Title("Nhân sự").EditorTemplateName("Membership_Employee").Width(300).HtmlAttributes(new { style = "text-align: right;" });                    
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Employee).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndProjectNhanSu"); })
+                .Read(t => t.Action("GetProjectNhanSuByInvoiceIDAndNhanSuToList", "Project").Data("filterProjectNhanSu"))
+                .Destroy(t => t.Action("DeleteDetail", "Project"))
+                .Create(t => t.Action("CreateProjectNhanSu", "Project").Data("filterProjectNhanSu"))
+                .Update(t => t.Action("UpdateProjectNhanSu", "Project"))))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+
+<script>
+    function onGridRequestEndProjectNhanSu(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#ProjectNhanSu").data("kendoGrid").dataSource.read();
+        }
+    }
+    
+    function filterProjectNhanSu(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+
+    }</script>

@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nghĩa Hà CRM</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css">
+    <link rel="apple-touch-icon" href="http://cms.nghiaha.vn/images/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://crm.nghiaha.vn/images/logo.png">
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/plugins/toastr/toastr.min.js"></script>
+    <script src="/dist/js/adminlte.js"></script>
+    <script src="/dist/js/demo.js"></script>
+    <script src="/js/site.js"></script>
+    <script src="/plugins/moment/moment.min.js"></script>
+    <script src="/js/notify.js"></script>
+    <script src="/js/mustache.min.js"></script>
+    <script src="/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <link href="https://kendo.cdn.telerik.com/2019.3.1023/styles/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.aspnetmvc.min.js"></script>
+    <script>
+        function BeginRequestHandler() {
+            Slider();
+        }
+        function EndRequestHandler() {
+            $('#Dim').css("display", "none");
+            $('#BackGround').fadeTo("fast", 2);
+        }
+        function Slider() {
+            $('#Dim').css("display", "");
+            $('#Dim').css("z-index", "10");
+            $('#Dim').css("position", "absolute");
+            $('#Dim').css("top", ($(window).height() - $('#Dim').height()) / 2 + $(window).scrollTop() + "px");
+            $('#Dim').css("left", ($(window).width() - $('#Dim').width()) / 2 + $(window).scrollLeft() + "px");
+            $('#BackGround').fadeTo("fast", 0.5);
+            $('#Dim').focus();
+        }
+        function OpenWindowByURL(URLParamater, w = 100, h = 200) {
+            var width01 = screen.width - w;
+            var height01 = screen.height - h;
+            var left = (screen.width - width01) / 2;
+            var top = (screen.height - height01) / 3;
+            var url = URLParamater;
+            window.open(url, '_blank', 'location=yes,height=' + height01 + ',width=' + width01 + ',scrollbars=yes,status=yes,toolbar=yes,top=' + top + ',left=' + left + '');
+        }
+    </script>
+</head>
+<body id="BackGround" class="hold-transition sidebar-mini m-0">
+    <div id="Dim" style="display: none;">
+        <div class="msgbox">
+            <img src="@SOHU.Data.Helpers.AppGlobal.LoadingURLFull" alt="Processing, please wait!"
+                 title="Processing, please wait!" width="200px" height="200px" />
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="wrapper">
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>                   
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown user-menu" id="HeaderInfor">
+                    </li>
+                </ul>
+            </nav>
+            <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:black;">
+                <a asp-action="Index" asp-controller="Dashboard" class="brand-link text-center" style="font-size: 25px;">
+                    <span class="brand-text font-weight-light text-center">CRM</span>
+                </a>
+                <div class="sidebar">
+                    <nav class="mt-2">
+                        <ul id="MenuLeft" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                            @*<li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-file-signature"></i>
+                                    <p>
+                                        Dự án
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Project">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Danh sách
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                    <p>
+                                        Hóa đơn - Chứng từ
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="InvoiceInput" asp-controller="Invoice">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Hóa đơn nhập
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user-friends"></i>
+                                    <p>
+                                        Thành viên
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Membership/Customer" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Khách hàng</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Membership/Supplier" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Nhà cung cấp</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Membership/Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Nhân viên</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <p>
+                                        Vật tư - Thiết bị
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Product/Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Product/Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" href="/">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Hệ thống
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="InvoiceCategory" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                D chứng từ
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="CustomerCategory" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Loại thành viên
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="ProductCategory" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Loại vật tư - Thiết bị
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Unit" asp-controller="Config">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>
+                                                Đơn vị tính
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>*@
+
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+
+            <div class="content-wrapper">
+                <div class="container-fluid" id="AppContent">
+                    @RenderBody()
+                </div>
+            </div>
+            <aside class="control-sidebar control-sidebar-dark">
+            </aside>
+            <footer class="main-footer">
+                <div class="row">
+                    <strong class="col-sm-6">Bản quyền &copy; 2020 <a target="_blank" class="text-primary" href="http://nghiaha.vn">Nghĩa Hà</a>. Bảo lưu tất cả quyền.</strong>
+                    <strong class="col-sm-6 text-sm-left text-md-right hiden-xs">Một sản phẩm của <a target="_blank" class="text-primary" href="http://sohu.vn">SOHU</a></strong>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div id="change-password-modal"></div>
+    <script>
+        function InitializationMenuLeft() {
+            $.ajax({
+                   url: '@Url.Action("InitializationMenuLeft", "Home")',
+                    type: 'GET',
+                    cache: false,
+                    data: {}
+            }).done(function (result) {
+                console.log(result);
+                $('#MenuLeft').html(result);
+             })
+        }
+        function setMenuLeftActive() {
+            var tag = $('a[href="' + this.location.pathname + '"]');
+            tag.addClass('active');
+            var tag01 = tag.parent('li').parent('ul').parent('li');
+            tag01.addClass('menu-open');
+            var tag02 = tag01.children('a');
+            tag02.addClass('active');
+        }
+        jQuery(function ($) {
+            InitializationMenuLeft();            
+        });
+
+    </script>
+</body>
+</html>

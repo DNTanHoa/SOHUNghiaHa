@@ -1,0 +1,251 @@
+﻿@{ ViewData["Title"] = "Thông tin chi tiết"; }
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Product
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thông tin chi tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Vật tư - thiết bị</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">Danh sách</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <form asp-action="Save" asp-controller="Product">
+                            @Html.HiddenFor(Model => Model.ID)
+                            <div class="row">
+                                <div class='col-md-9'>
+                                </div>
+                                <div class='col-md-1'>
+                                    <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-save"></span>
+                                    </button>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="Detail" asp-controller="Product" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-action="Index" asp-controller="Product" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='Title'>Vật tư - thiết bị</label>
+                                        @(Html.TextBoxFor(Model => Model.Title, new { placeholder = "Vật tư - thiết bị", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='MetaTitle'>Ngắn gọn</label>
+                                        @(Html.TextBoxFor(Model => Model.MetaTitle, new { placeholder = "Ngắn gọn", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Urlcode'>Mã sản phẩm</label>
+                                        @(Html.TextBoxFor(Model => Model.Urlcode, new { placeholder = "Mã sản phẩm", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Tồn đầu kỳ</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInStockRoot, "{0:N0}", new { placeholder = "Tồn đầu kỳ", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Discount'>Chiết khấu</label>
+                                        @(Html.TextBoxFor(Model => Model.Discount, "{0:N0}", new { placeholder = "Chiết khấu", @class = "form-control" }))
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='CategoryId'>Nhóm</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.CategoryID)
+                                   .DataValueField("ID")
+                                   .DataTextField("CodeName")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
+                                    )
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng tồn</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInStock, "{0:N0}", new { placeholder = "Số lượng tồn", @readonly = "readonly", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng xuất</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityOutput, "{0:N0}", new { placeholder = "Số lượng xuất", @readonly = "readonly", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='QuantityInStockRoot'>Số lượng nhập</label>
+                                        @(Html.TextBoxFor(Model => Model.QuantityInput, "{0:N0}", new { placeholder = "Số lượng nhập", @readonly = "readonly", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <table>
+                                            <tr>
+                                                <td style="width:50%;" valign="top">
+                                                    @(Html.Kendo().Upload()
+                              .Name("Upload")
+                              .HtmlAttributes(new { @class = "form-control" })
+                                )
+                                                </td>
+                                                <td style="width:50%;" valign="top">
+                                                    <img src="@Url.Content("/images/Product/" + Model.Image)" alt="@Url.Content(Model.Image)" class="img-thumbnail" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12" style="width:100%;">
+                                    @Html.TextAreaFor(Model => Model.ContentMain)
+
+                                    <script src="/ckeditor/ckeditor.js"></script>
+                                    <script src="/ckeditor/adapters/jquery.js"></script>
+                                    <script>
+                                        CKEDITOR.replace("ContentMain", {
+                                            on: {
+                                                'instanceReady': function (evt) {
+                                                    evt.editor.resize("100%", "600");
+                                                }
+                                            }
+                                        });</script>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card w-100">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class='col-sm-12'>
+                                <h3>Hóa đơn nhập hàng</h3>
+                            </div>
+                        </div>
+                    </div>
+                    @(Html.Kendo().Grid<SOHU.Data.Models.Invoice>()
+                .Name("InvoiceInput")
+                .Columns(columns =>
+                {
+
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
+                    columns.Bound(t => t.Total).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.InvoiceCode);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                })
+                .Read(t => t.Action("GetInvoiceInputByProductIDToList", "Invoice").Data("filterInvoiceInput"))
+                ))
+                </div>
+                <div class="card w-100">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class='col-sm-12'>
+                                <h3>Hóa đơn xuất hàng</h3>
+                            </div>
+                        </div>
+                    </div>
+                    @(Html.Kendo().Grid<SOHU.Data.Models.Invoice>()
+                .Name("InvoiceOutput")
+                .Columns(columns =>
+                {
+
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
+                    columns.Bound(t => t.Total).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.InvoiceCode);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                })
+                .Read(t => t.Action("GetInvoiceOutputByProductIDToList", "Invoice").Data("filterInvoiceOutput"))
+                ))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function filterInvoiceInput(e) {
+        var productIDValue = $("#ID").val();
+        return { productID: productIDValue };
+    }
+    function filterInvoiceOutput(e) {
+        var productIDValue = $("#ID").val();
+        return { productID: productIDValue };
+    }
+</script>

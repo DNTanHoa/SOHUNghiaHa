@@ -72,7 +72,6 @@ namespace SOHU.MVC
 
             app.UseEndpoints(endpoints =>
             {
-
                 endpoints.MapControllerRoute(
                     name: "ProductDetail",
                     pattern: "{MetaTitle}-{ProductID}.html",

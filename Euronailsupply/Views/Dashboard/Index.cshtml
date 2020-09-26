@@ -1,0 +1,192 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập - Hệ thống quản lý khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using SOHU.Data.Models
+@using NghiaHa.CRM.Web.Models
+@model DashboardViewModel
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Báo cáo tổng quan</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Báo cáo</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Dashboard">Tổng quan</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!--Khách hàng-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@Model?.CustomerCount</h3>
+                        <p>Khách hàng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a asp-action="Index" asp-controller="Customer" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Doanh thu-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@Model?.Revenue</h3>
+                        <p>Doanh thu</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Hóa đơn-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@Model?.InvoiceCount</h3>
+                        <p>Hóa đơn</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Nhân viên-->
+            <div class="col-6 col-lg-3">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>@Model?.EmployeeCount</h3>
+                        <p>Nhân viên</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-people-carry"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h3 class="card-title">Biểu đồ thống kê</h3>
+                </div>
+                <div class="card-body">
+                    @(Html.Kendo().Chart()
+                    .Name("chart")
+                    .Title("Biểu đồ quan hệ Khách hàng - Hóa đơn - Doanh thu")
+                    .Legend(legend => legend
+                    .Position(ChartLegendPosition.Top))
+                    .ChartArea(chartArea => chartArea
+                    .Background("transparent"))
+                    .Series(series =>
+                    {
+                        series.Column(new double[] { 50, 20, 10, 43, 36, 32, 13, 24, 13, 18 }).Name("Khách hàng");
+                        series.Column(new double[] { 120, 134, 235, 256, 321, 123, 56, 89, 92, 11 }).Name("Hóa đơn");
+                        series.Line(new double[] { 120, 320, 450, 620, 670, 640, 560, 450, 320, 120 }).Name("Doanh thu");
+                    })
+                    .CategoryAxis(axis => axis
+                    .Name("series-axis")
+                    .Line(line => line.Visible(false)))
+                    .CategoryAxis(axis => axis
+                    .Name("label-axis")
+                    .Categories("Tháng 1/2020", "Tháng 1/2020", "Tháng 2/2020", "Tháng 3/2020", "Tháng 4/2020", "Tháng 5/2020", "Tháng 6/2020", "Tháng 7/2020", "Tháng 8/2020", "Tháng 9/2020"))
+                    .ValueAxis(axis => axis
+                    .Numeric()
+                    .Labels(labels => labels.Format("{0}"))
+                    .AxisCrossingValue(0, int.MinValue))
+                    .Tooltip(tooltip => tooltip
+                    .Visible(true)
+                    .Format("{0}%")
+                    .Template("#= series.name #: #= value #")))
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h3 class="card-title">Bảng kê chi tiết</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Khách hàng</th>
+                                <th scope="col">Hóa đơn</th>
+                                <th scope="col">Doanh thu (triệu)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tháng 1/2019</td>
+                                <td>50</td>
+                                <td>50</td>
+                                <td>220</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 2/2019</td>
+                                <td>20</td>
+                                <td>20</td>
+                                <td>230</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 3/2019</td>
+                                <td>10</td>
+                                <td>30</td>
+                                <td>430</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 4/2019</td>
+                                <td>43</td>
+                                <td>25</td>
+                                <td>320</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 5/2019</td>
+                                <td>36</td>
+                                <td>56</td>
+                                <td>450</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 6/2019</td>
+                                <td>32</td>
+                                <td>72</td>
+                                <td>720</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 7/2019</td>
+                                <td>13</td>
+                                <td>12</td>
+                                <td>560</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 8/2019</td>
+                                <td>24</td>
+                                <td>34</td>
+                                <td>240</td>
+                            </tr>
+                            <tr>
+                                <td>Tháng 9/2019</td>
+                                <td>18</td>
+                                <td>59</td>
+                                <td>130</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

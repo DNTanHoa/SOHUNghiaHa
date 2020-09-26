@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>9b3df887-dbc1-4290-86e0-a9933181c135</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +30,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SOHU.Data\SOHU.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\CartDetail\" />
+    <Folder Include="Views\Config\" />
   </ItemGroup>
 
 </Project>

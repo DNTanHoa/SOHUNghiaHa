@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GleamTech.AspNet.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using SOHU.Data.Models;
+using SOHU.Data.Repositories;
 
 namespace Euronailsupply.CRM
 {
@@ -26,16 +27,32 @@ namespace Euronailsupply.CRM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services
-                .AddControllersWithViews()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                // Maintain property names during serialization. See:
-                // https://github.com/aspnet/Announcements/issues/194
-                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddControllers(options => options.EnableEndpointRouting = false)
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
-            // Add Kendo UI services to the services container
+            services.AddDbContext<SOHUContext>();
+
+            services.AddTransient<IMembershipRepository, MembershipRepository>();
+            services.AddTransient<IProductConfigRepository, ProductConfigRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IConfigRepository, ConfigRepository>();
+            services.AddTransient<IInvoicePaymentRepository, InvoicePaymentRepository>();
+            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+            services.AddTransient<IInvoiceDetailRepository, InvoiceDetailRepository>();
+            services.AddTransient<IInvoicePropertyRepository, InvoicePropertyRepository>();
+            services.AddTransient<IMembershipPaymentRepository, MembershipPaymentRepository>();
+            services.AddTransient<ICartRepository, CartRepository>();
+            services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+            services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+
+            services.AddControllersWithViews();
+
             services.AddKendo();
+
+            services.AddGleamTech();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

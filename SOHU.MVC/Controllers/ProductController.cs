@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting.Internal;
-using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
@@ -17,17 +13,15 @@ namespace SOHU.MVC.Controllers
     public class ProductController : BaseController
     {
         private readonly IProductRepository _productResposistory;
-        private readonly IHostingEnvironment _hostingEnvironment;
-        public ProductController(IProductRepository productResposistory, IHostingEnvironment hostingEnvironment)
+
+        public ProductController(IProductRepository productResposistory)
         {
             _productResposistory = productResposistory;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
         {
-            ModelTemplate model = new ModelTemplate();
-            return View(model);
+            return View();
         }
 
         public IActionResult Detail(int ID)
@@ -35,25 +29,12 @@ namespace SOHU.MVC.Controllers
             var model = _productResposistory.GetByID(ID) ?? new Product();
             return View(model);
         }
-        public IActionResult DetailCompact(int ID)
-        {
-            Product product=_productResposistory.GetByID(ID) ?? new Product();
-            ProductDataTransfer model = product.MapTo<ProductDataTransfer>();
-            return View(model);
-        }
+
         public IActionResult GetAllToList()
         {
             return Json(_productResposistory.GetAllToList());
         }
-        public IActionResult GetByCategoryIDToList(int categoryID)
-        {
-            List<Product> list = new List<Product>();
-            if (categoryID > 0)
-            {
-                list = _productResposistory.GetByCategoryIDToList(categoryID);
-            }
-            return Json(list);
-        }
+
         public IActionResult GetByID(int ID)
         {
             return Json(_productResposistory.GetByID(ID));
@@ -79,7 +60,7 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _productResposistory.Update(model.ID, model);
+            int result = _productResposistory.Update(model.Id, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -105,91 +86,38 @@ namespace SOHU.MVC.Controllers
             }
             return Json(note);
         }
-        [AcceptVerbs("Post")]
-        public IActionResult SaveChange(ProductDataTransfer model)
+
+        public IActionResult SaveChange(Product model)
         {
             string note = AppGlobal.InitString;
             int result = 0;
-            if (!string.IsNullOrEmpty(model.Title))
+            if (model.Id > 0)
             {
-                if (Request.Form.Files.Count > 0)
+                model.Initialization(InitType.Update, RequestUserID);
+                result = _productResposistory.Update(model.Id, model);
+                if (result > 0)
                 {
-                    var file = Request.Form.Files[0];
-                    if (file != null)
-                    {
-                        string fileExtension = Path.GetExtension(file.FileName);
-                        string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-                        fileName = AppGlobal.SetName(fileName);
-                        fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
-                        var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, AppGlobal.URLImagesProduct, fileName);
-                        using (var stream = new FileStream(physicalPath, FileMode.Create))
-                        {
-                            file.CopyToAsync(stream);
-                            model.Image = AppGlobal.Domain + AppGlobal.URLImagesProduct + "/" + fileName;
-                        }
-                    }
-                }
-                if (string.IsNullOrEmpty(model.MetaTitle))
-                {
-                    model.MetaTitle = AppGlobal.SetName(model.Title);
-                }
-                if (string.IsNullOrEmpty(model.Urlcode))
-                {
-                    model.Urlcode = model.MetaTitle;
-                }
-                if (string.IsNullOrEmpty(model.MetaKeyword))
-                {
-                    model.MetaKeyword = model.Title;
-                }
-                if (string.IsNullOrEmpty(model.MetaDescription))
-                {
-                    model.MetaDescription = model.Title;
-                }
-                if (string.IsNullOrEmpty(model.Tags))
-                {
-                    model.Tags = model.Title;
-                }
-                if (string.IsNullOrEmpty(model.Description))
-                {
-                    model.Description = model.Title;
-                }
-                if (string.IsNullOrEmpty(model.Image))
-                {
-                    if (!string.IsNullOrEmpty(model.ContentMain))
-                    {
-                        model.Image = AppGlobal.SetImagesFileName(model.ContentMain);
-                    }
-                }
-
-                if (model.ID > 0)
-                {
-                    model.Initialization(InitType.Update, RequestUserID);
-                    result = _productResposistory.Update(model.ID, model);
-                    if (result > 0)
-                    {
-                        note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                    }
-                    else
-                    {
-                        note = AppGlobal.Success + " - " + AppGlobal.EditFail;
-                    }
+                    note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
                 }
                 else
                 {
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    result = _productResposistory.Create(model);
-                    if (result > 0)
-                    {
-                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                    }
-                    else
-                    {
-                        note = AppGlobal.Success + " - " + AppGlobal.CreateFail;
-                    }
+                    note = AppGlobal.Success + " - " + AppGlobal.EditFail;
                 }
             }
-            //return Json(note);
-            return RedirectToAction("DetailCompact", new { ID = model.ID });
+            else
+            {
+                model.Initialization(InitType.Insert, RequestUserID);
+                result = _productResposistory.Create(model);
+                if (result > 0)
+                {
+                    note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                }
+                else
+                {
+                    note = AppGlobal.Success + " - " + AppGlobal.CreateFail;
+                }
+            }
+            return Json(note);
         }
 
         public IActionResult NewProducts(int PageSize)

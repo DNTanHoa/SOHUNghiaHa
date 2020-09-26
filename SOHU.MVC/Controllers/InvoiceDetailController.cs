@@ -60,7 +60,7 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
-            int result = _invoiceDetailResposistory.Update(model.ID, model);
+            int result = _invoiceDetailResposistory.Update(model.Id, model);
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -91,10 +91,10 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             int result = 0;
-            if (model.ID > 0)
+            if (model.Id > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
-                result = _invoiceDetailResposistory.Update(model.ID, model);
+                result = _invoiceDetailResposistory.Update(model.Id, model);
                 if (result > 0)
                 {
                     note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

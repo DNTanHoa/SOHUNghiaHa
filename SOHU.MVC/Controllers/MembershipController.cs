@@ -55,11 +55,11 @@ namespace SOHU.MVC.Controllers
                     Response.Cookies.Append("Password", MD5Helper.EncryptDataMD5(model.Password, AppGlobal.MD5Key), cookie);
                     return Json(AppGlobal.Success + " - " + AppGlobal.RedirectDefault);
                 }
-                return Json(AppGlobal.Error + " - " + AppGlobal.LoginFail);
+                return Json(AppGlobal.Fail + " - " + AppGlobal.LoginFail);
             }   
             else
             {
-                return Json(AppGlobal.Error + " - " + AppGlobal.LoginFail);
+                return Json(AppGlobal.Fail + " - " + AppGlobal.LoginFail);
             }    
         }
 
@@ -67,11 +67,11 @@ namespace SOHU.MVC.Controllers
         {
             string note = AppGlobal.InitString;
             int result = 0;
-            if (model.ID > 0)
+            if (model.Id > 0)
             {
                 model.Initialization(InitType.Update, RequestUserID);
                 model.ConcatFullname();
-                result = _resposistory.Update(model.ID, model);
+                result = _resposistory.Update(model.Id, model);
                 if (result > 0)
                 {
                     note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

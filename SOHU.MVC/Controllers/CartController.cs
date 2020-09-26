@@ -36,9 +36,9 @@ namespace SOHU.MVC.Controllers
         {
             var product = _productRepository.GetByID(ProductID);
             var item = product.MapTo<CartDetail>();
-            item.ID = 0;
+            item.Id = 0;
             item.Quantity = Quantity;
-            item.ProductID = ProductID;
+            item.ProductId = ProductID;
             item.Initialization(InitType.Insert, 0);
             if (CartID == 0)
             {
@@ -49,12 +49,12 @@ namespace SOHU.MVC.Controllers
                 };
                 cart.Initialization(InitType.Insert, 0);
                 _cartRepository.Create(cart, out cart);
-                Response.Cookies.Append("CartID", cart.ID.ToString());
-                item.CartID = cart.ID;
+                Response.Cookies.Append("CartID", cart.Id.ToString());
+                item.CartId = cart.Id;
             }
             else
             {
-                item.CartID = CartID;
+                item.CartId = CartID;
             }
             _cartDetailRepository.Create(item);
             return Ok();

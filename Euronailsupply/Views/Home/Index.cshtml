@@ -1,0 +1,139 @@
+﻿@{    
+    Layout = null;
+}
+@model NghiaHa.CRM.Models.UserLoginViewModel
+@using SOHU.Data.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <meta name="keywords" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <meta name="author" content="@SOHU.Data.Helpers.AppGlobal.Title">
+    <title>Đăng nhập - @SOHU.Data.Helpers.AppGlobal.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <link rel="manifest" href="~/manifest.json">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="apple-touch-icon" href="https://crm.vietuc.com/Images/logo_VU.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://crm.vietuc.com/Images/logo_VU.png">
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/css/account.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body class="hold-transition login-page" style="background-image: url('images/background.jpg'); background-size:cover;">
+    <div class="d-flex justify-content-center align-items-center login-page" style="min-height:100%;" id="loginContent">
+        <div style="z-index: 2; padding-bottom: 10px;">
+            <p class="text-white h4 text-center h4"><b>@SOHU.Data.Helpers.AppGlobal.Title</b></p>
+            @Html.HiddenFor(Model => Model.RedirectUrl)
+        </div>
+        <div class="login-box">
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <div class="mt-2">
+                        <div class="text-danger text-center" id="loginResult">@Model?.ErrorMessage</div>
+                        <form id="loginForm">
+                            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                            <div class="input-group mb-2">
+                                @(Html.TextBoxFor(Model => Model.Account, new {@class="form-control", @placeholder = "Tài khoản" }))
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user-alt"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            <div class="input-group mb-2">
+                                @(Html.TextBoxFor(Model => Model.Password, new {@class="form-control", @type="password" ,@placeholder = "Mật Khẩu" }))
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="icheck-primary">
+                                        @Html.CheckBoxFor(model => model.RememberPassword, new { @id = "remember" })
+                                        <label for="remember">
+                                            Lưu mật khẩu
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <a onclick="onLogin()" style="cursor:pointer;" class="btn btn-primary btn-block text-white"><i class="fas fa-sign-in-alt"></i></a>
+                                </div>
+                            </div>                         
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).bind('keydown', function (e) {
+            if (e.which === 13) {
+                onLogin();
+            }
+        });
+
+        $(document).keypress("m", function (e) {
+            if (e.ctrlKey) {
+                let href = $("#loginEmailButton").attr('href');
+                window.location.href = href;
+            }
+        });
+
+        function onLogin() {
+            $.blockUI({
+                message: null
+            });
+            if ($("#loginForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    datatype: "JSON",
+                    url: '@Url.Action("Login", "Home")',
+                    data: $('#loginForm').serialize(),
+                    success: function (res) {
+                        var type = res.split(" - ")[0];
+                        var content = res.split(" - ")[1];
+                        if (type === "success") {
+                            if ($("#RedirectUrl").val() != '') {
+                                window.location = $("#RedirectUrl").val();
+                            }
+                            else {
+                                window.location = content;
+                            }
+                        }
+                        else {
+                            $("#loginResult").empty();
+                            $("#loginResult").append(content);
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        $.unblockUI()
+                    },
+                    complete: function () {
+                        $.unblockUI()
+                    },
+                });
+            }
+            else {
+                $.unblockUI()
+            }
+        }
+    </script>
+    <script src="~/js/jquery.blockUI.js"></script>
+</body>
+</html>
