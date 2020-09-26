@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using SOHU.Data.Results;
 
 namespace NghiaHa.API.Controllers
 {
@@ -21,41 +23,43 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> Detail(int ID)
         {
             var model = customerRepository.GetByID(ID);
-            return ObjectToJson(model);
+            return ObjectToJson(new BaseResponseModel(model));
         }
 
         [HttpPost]
         public ActionResult<string> Create(Customer model)
         {
             model.Initialization(InitType.Insert, RequestUserID);
-            string note = AppGlobal.InitString;
-            var result = customerRepository.Create(model);
-            if(result > 0)
+            int result = customerRepository.Create(model);
+
+            if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                RouteResult = new SuccessResult(AppGlobal.CreateSuccess);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
 
         [HttpPut]
         public ActionResult<string> Update(Customer model)
         {
             model.Initialization(InitType.Insert, RequestUserID);
-            string note = AppGlobal.InitString;
             var result = customerRepository.Update(model.ID, model);
+
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
+                RouteResult = new SuccessResult(AppGlobal.EditSuccess);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
+                RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
 
         [HttpDelete]
@@ -63,21 +67,23 @@ namespace NghiaHa.API.Controllers
         {
             string note = AppGlobal.InitString;
             var result = customerRepository.Delete(ID);
+
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+                RouteResult = new SuccessResult(AppGlobal.DeleteSuccess);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+                RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
 
         [HttpGet]
         public ActionResult<string> GetAllToList()
         {
-            return ObjectToJson(customerRepository.GetAllToList());
+            return ObjectToJson(new BaseResponseModel(customerRepository.GetAllToList()));
         }
     }
 }

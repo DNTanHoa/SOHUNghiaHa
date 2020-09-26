@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NghiaHa.API.ResponseModel;
+using SOHU.Data.Models;
+using SOHU.Data.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,8 @@ namespace NghiaHa.API.Controllers
     [ApiController]
     public class BaseController : ControllerBase//, IActionFilter
     {
+        protected BaseResult RouteResult;
+
         /// <summary>
         /// Not Implement
         /// </summary>
@@ -61,7 +66,7 @@ namespace NghiaHa.API.Controllers
             }
         }
 
-        public ActionResult<string> ObjectToJson(object obj)
+        public ActionResult<string> ObjectToJson(BaseResponseModel obj)
         {
             return Content(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NghiaHa.API.ResponseModel;
 using SOHU.Data.Helpers;
 
 namespace NghiaHa.API.Controllers
@@ -11,14 +12,14 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> GetYearFinanceToList()
         {
             var data = YearFinance.GetAllToList();
-            return ObjectToJson(data);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpGet]
         public ActionResult<string> GetMonthFinanceToList()
         {
             var data = MonthFinance.GetAllToList();
-            return ObjectToJson(data);
+            return ObjectToJson(new BaseResponseModel(data));
         }
     }
 }

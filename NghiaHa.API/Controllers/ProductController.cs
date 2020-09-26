@@ -5,6 +5,7 @@ using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using SOHU.Data.Results;
 using System.IO;
 
 namespace NghiaHa.API.Controllers
@@ -33,7 +34,7 @@ namespace NghiaHa.API.Controllers
         public ActionResult<string> Index01(int ID)
         {
             BaseViewModel model = new BaseViewModel();
-            return ObjectToJson(model);
+            return ObjectToJson(new BaseResponseModel(model));
         }
 
         [HttpGet]
@@ -42,37 +43,41 @@ namespace NghiaHa.API.Controllers
             Product model = new Product();
             model.ContentMain = "Tính theo thực tế";
             model.Discount = 0;
+
             if (ID > 0)
             {
                 model = _productRepository.GetByID(ID);
             }
-            return ObjectToJson(model);
+
+            return ObjectToJson(new BaseResponseModel(model));
         }
 
         [HttpGet]
         public ActionResult<string> GetAllToList()
         {
             var data = _productRepository.GetAllToList();
-            return ObjectToJson(data);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpGet]
         public ActionResult<string> GetAllOrderByTitleToList()
         {
             var data = _productRepository.GetAllOrderByTitleToList();
-            return ObjectToJson(data);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpGet]
         public ActionResult<string> GetByCategoryIDToList(int categoryID)
         {
             var data = _productRepository.GetByCategoryIDToList(categoryID);
-            return ObjectToJson(data);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpPost]
         public ActionResult<string> Save(Product model)
         {
+            int result;
+
             if (Request.Form.Files.Count > 0)
             {
                 var file = Request.Form.Files[0];
@@ -90,11 +95,22 @@ namespace NghiaHa.API.Controllers
                     }
                 }
             }
+
             if (model.ID > 0)
             {
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
-                _productRepository.Update(model.ID, model);
+
+                result = _productRepository.Update(model.ID, model);
+
+                if (result > 0)
+                {
+                    RouteResult = new SuccessResult(AppGlobal.EditSuccess);
+                }
+                else
+                {
+                    RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
+                }
             }
             else
             {
@@ -102,26 +118,36 @@ namespace NghiaHa.API.Controllers
                 model.Initialization(InitType.Insert, RequestUserID);
                 if (_productRepository.IsValidByTitle(model.Title) == true)
                 {
-                    _productRepository.Create(model);
+                    result = _productRepository.Create(model);
+
+                    if (result > 0)
+                    {
+                        RouteResult = new SuccessResult(AppGlobal.CreateSuccess);
+                    }
+                    else
+                    {
+                        RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
+                    }
                 }
             }
-            return RedirectToAction("Detail", new { ID = model.ID });
+
+            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
         }
 
         [HttpDelete]
         public ActionResult<string> Delete(int ID)
         {
-            string note = AppGlobal.InitString;
             int result = _productRepository.Delete(ID);
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+                RouteResult = new SuccessResult(AppGlobal.DeleteSuccess);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+                RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
     }
 }

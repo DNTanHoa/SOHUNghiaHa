@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using SOHU.Data.Results;
+using System.Collections.Generic;
 
 namespace NghiaHa.API.Controllers
 {
@@ -32,13 +35,15 @@ namespace NghiaHa.API.Controllers
         [HttpGet]
         public ActionResult<string> GetDataTransferByInvoiceIDToList(int invoiceID)
         {
-            return ObjectToJson(_invoiceDetailRepository.GetDataTransferByInvoiceIDToList(invoiceID));
+            var data = _invoiceDetailRepository.GetDataTransferByInvoiceIDToList(invoiceID);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpGet]
         public ActionResult<string> GetByInvoiceIDToList(int invoiceID)
         {
-            return ObjectToJson(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID));
+            var data = _invoiceDetailRepository.GetByInvoiceIDToList(invoiceID);
+            return ObjectToJson(new BaseResponseModel(data));
         }
 
         [HttpPost]
@@ -46,7 +51,6 @@ namespace NghiaHa.API.Controllers
         {
             model.InvoiceID = invoiceID;
             InitializationDataTransfer(model);
-            string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
 
@@ -57,36 +61,37 @@ namespace NghiaHa.API.Controllers
 
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                RouteResult = new SuccessResult(AppGlobal.CreateSuccess);
+
                 _invoiceRepository.InitializationByID(model.InvoiceID.Value);
                 _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
 
         [HttpPut]
         public ActionResult<string> Update(InvoiceDetailDataTransfer model)
         {
             InitializationDataTransfer(model);
-            string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
             int result = _invoiceDetailRepository.Update(model.ID, model);
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
+                RouteResult = new SuccessResult(AppGlobal.EditSuccess);
                 _invoiceRepository.InitializationByID(model.InvoiceID.Value);
                 _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.EditFail;
+                RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(note);
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
 
         [HttpDelete]
@@ -95,24 +100,27 @@ namespace NghiaHa.API.Controllers
             InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByID(ID);
             int? invoiceID = 0;
             int? productId = 0;
+
             if (invoiceDetail != null)
             {
                 invoiceID = invoiceDetail.InvoiceID.Value;
                 productId = invoiceDetail.ProductID.Value;
             }
-            string note = AppGlobal.InitString;
+
             int result = _invoiceDetailRepository.Delete(ID);
+
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+                RouteResult = new SuccessResult(AppGlobal.DeleteSuccess);
                 _invoiceRepository.InitializationByID(invoiceID.Value);
                 _productRepository.InitializationByID(productId.Value);
             }
             else
             {
-                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+                RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
-            return ObjectToJson(note);
+
+            return ObjectToJson(new BaseResponseModel(null, RouteResult));
         }
     }
 }
