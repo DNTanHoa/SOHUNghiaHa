@@ -28,5 +28,9 @@ namespace SOHU.Data.Repositories
             DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductConfigSelectMultipleByProductID", parameters);
             return SQLHelper.ToList<ProductConfigDataTransfer>(table);
         }
+        public List<ProductConfig> GetAttachedFilesByProductIDToList(int productID)
+        {
+            return _context.ProductConfig.Where(item => item.ProductID == productID && item.FileName.Length > 0).OrderBy(item => item.ID).ToList();
+        }
     }
 }

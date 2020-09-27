@@ -32,8 +32,7 @@ namespace Euronailsupply.Controllers
         {
             model.ProductID = model.Product.ID;
             model.UnitID = model.Unit.ID;
-            model.Total = model.UnitPrice * model.Quantity;
-            model.Total01 = model.UnitPrice * model.Quantity01;
+            model.Total = model.UnitPrice * model.Quantity;            
         }
         public IActionResult GetDataTransferByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {

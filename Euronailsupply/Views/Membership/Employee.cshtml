@@ -1,17 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Nhân viên";
+    ViewData["Title"] = "Employee";
 }
 @using Kendo.Mvc.UI
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Nhân viên</h1>
+                <h1>Employee</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Thành viên</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Employee" asp-controller="Membership">Nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="#">Membership</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Employee" asp-controller="Membership">Employee</a></li>
                 </ol>
             </div>
         </div>
@@ -39,11 +39,10 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
                     columns.Template(@"<a href='/Membership/EmployeeDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.FullName).Title("Nhân viên").Width(300);
-                    columns.Bound(t => t.Phone).Title("Điện thoại").Width(200);
-                    columns.Bound(t => t.CitizenIdentification).Title("CMND").Width(200);
-                    columns.Bound(t => t.Address).Title("Địa chỉ").Width(200);
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.FullName).Title("Full name").Width(500);
+                    columns.Bound(t => t.Phone).Title("Phone").Width(200);
+                    columns.Bound(t => t.Email).Title("Email").Width(200);
+                    columns.Bound(t => t.Address).Title("Address").Width(1000);
 
                 })
                 .ToolBar(toolBar => toolBar.Search())

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Thông tin chi tiết nhân viên";
+    ViewData["Title"] = "Employee infomation";
 }
 
 @using Kendo.Mvc.UI
@@ -8,11 +8,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thông tin chi tiết nhân viên</h1>
+                <h1>Employee infomation</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Thành viên</a></li>
+                    <li class="breadcrumb-item"><a href="#">Membership</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="Employee" asp-controller="Membership">Nhân viên</a></li>
                 </ol>
             </div>
@@ -50,22 +50,30 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class='form-group'>
-                                        <label for='FullName'>Nhân viên</label>
-                                        @(Html.TextBoxFor(Model => Model.FullName, new { placeholder = "Nhân viên", @class = "form-control" }))
+                                        <label for='FullName'>Full name</label>
+                                        @(Html.TextBoxFor(Model => Model.FullName, new { placeholder = "Full name", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Phone'>Điện thoại</label>
-                                        @(Html.TextBoxFor(Model => Model.Phone, new { placeholder = "Điện thoại", @class = "form-control" }))
+                                        <label for='Account'>Account</label>
+                                        @(Html.TextBoxFor(Model => Model.Account, new { placeholder = "Account", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Password'>Password</label>
+                                        @(Html.TextBoxFor(Model => Model.Password, new { placeholder = "Password", @class = "form-control", @type = "password" }))
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class='form-group'>
-                                        <label for='CitizenIdentification'>CMND</label>
-                                        @(Html.TextBoxFor(Model => Model.CitizenIdentification, new { placeholder = "CMND", @class = "form-control" }))
+                                        <label for='Phone'>Phone</label>
+                                        @(Html.TextBoxFor(Model => Model.Phone, new { placeholder = "Phone", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Address'>Địa chỉ</label>
-                                        @(Html.TextBoxFor(Model => Model.Address, new { placeholder = "Địa chỉ", @class = "form-control" }))
+                                        <label for='Email'>Email</label>
+                                        @(Html.TextBoxFor(Model => Model.Email, new { placeholder = "Email", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Address'>Address</label>
+                                        @(Html.TextBoxFor(Model => Model.Address, new { placeholder = "Address", @class = "form-control" }))
                                     </div>
                                 </div>
                             </div>

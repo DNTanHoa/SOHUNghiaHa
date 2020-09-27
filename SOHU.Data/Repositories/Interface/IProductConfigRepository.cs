@@ -9,5 +9,6 @@ namespace SOHU.Data.Repositories
     public interface IProductConfigRepository : IRepository<ProductConfig>
     {
         public List<ProductConfigDataTransfer> GetDataTransfersByProductIDToList(int ProductID);
+        public List<ProductConfig> GetAttachedFilesByProductIDToList(int productID);
     }
 }

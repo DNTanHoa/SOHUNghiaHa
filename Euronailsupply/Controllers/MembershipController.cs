@@ -22,8 +22,9 @@ namespace Euronailsupply.Controllers
         }
 
 
-        private void Initialization(Membership model)
+        private void Initialization(Membership model, int action)
         {
+            
             if (!string.IsNullOrEmpty(model.FullName))
             {
                 model.FullName = model.FullName.Trim();
@@ -35,18 +36,36 @@ namespace Euronailsupply.Controllers
             if (!string.IsNullOrEmpty(model.Address))
             {
                 model.Address = model.Address.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.TaxCode))
-            {
-                model.TaxCode = model.TaxCode.Trim();
-            }
-            if (!string.IsNullOrEmpty(model.CitizenIdentification))
-            {
-                model.CitizenIdentification = model.CitizenIdentification.Trim();
-            }
+            }                        
             if (!string.IsNullOrEmpty(model.Email))
             {
                 model.Email = model.Email.Trim();
+            }
+            if (string.IsNullOrEmpty(model.Account))
+            {
+                model.Account = model.Phone;
+            }
+            if (string.IsNullOrEmpty(model.Password))
+            {
+                model.Password = model.Account;
+            }
+            switch (action)
+            {
+                case 0:
+                    model.InitDefaultValue();
+                    model.EncryptPassword();
+                    break;
+                case 1:
+                    Membership model001 = _membershipRepository.GetByID(model.ID);
+                    if (model001 != null)
+                    {
+                        if (model.Password != model001.Password)
+                        {
+                            model.InitDefaultValue();
+                            model.EncryptPassword();
+                        }
+                    }
+                    break;
             }
         }
         public IActionResult Index()
@@ -125,7 +144,7 @@ namespace Euronailsupply.Controllers
         {
             if (model.ID > 0)
             {
-                Initialization(model);
+                Initialization(model, 1);
                 model.Initialization(InitType.Update, RequestUserID);
                 _membershipRepository.Update(model.ID, model);
             }
@@ -142,7 +161,7 @@ namespace Euronailsupply.Controllers
                 }
                 if (check == true)
                 {
-                    Initialization(model);
+                    Initialization(model, 0);
                     model.Initialization(InitType.Insert, RequestUserID);
                     _membershipRepository.Create(model);
                 }
@@ -153,7 +172,7 @@ namespace Euronailsupply.Controllers
         {
             if (model.ID > 0)
             {
-                Initialization(model);
+                Initialization(model, 1);
                 model.Initialization(InitType.Update, RequestUserID);
                 _membershipRepository.Update(model.ID, model);
             }
@@ -170,7 +189,7 @@ namespace Euronailsupply.Controllers
                 }
                 if (check == true)
                 {
-                    Initialization(model);
+                    Initialization(model, 0);
                     model.Initialization(InitType.Insert, RequestUserID);
                     _membershipRepository.Create(model);
                 }
@@ -206,13 +225,13 @@ namespace Euronailsupply.Controllers
             {
                 if (model.ID > 0)
                 {
-                    Initialization(model);
+                    Initialization(model, 1);
                     model.Initialization(InitType.Update, RequestUserID);
                     _membershipRepository.Update(model.ID, model);
                 }
                 else
                 {
-                    Initialization(model);
+                    Initialization(model, 0);
                     model.Initialization(InitType.Insert, RequestUserID);
                     _membershipRepository.Create(model);
                 }

@@ -34,6 +34,10 @@ namespace Euronailsupply.Controllers
                 model.Title = model.Title.Trim();
             }
         }
+        public IActionResult Index001()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();
@@ -45,8 +49,17 @@ namespace Euronailsupply.Controllers
         }
         public IActionResult Detail(int ID)
         {
+            Product model = new Product();            
+            model.Discount = 0;
+            if (ID > 0)
+            {
+                model = _productRepository.GetByID(ID);
+            }
+            return View(model);
+        }
+        public IActionResult Files(int ID)
+        {
             Product model = new Product();
-            model.ContentMain = "Tính theo thực tế";
             model.Discount = 0;
             if (ID > 0)
             {
@@ -68,7 +81,7 @@ namespace Euronailsupply.Controllers
         {
             var data = _productRepository.GetByCategoryIDToList(categoryID);
             return Json(data.ToDataSourceResult(request));
-        }
+        }      
         public IActionResult Save(Product model)
         {
             if (Request.Form.Files.Count > 0)

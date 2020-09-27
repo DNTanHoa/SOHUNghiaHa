@@ -33,6 +33,8 @@ namespace SOHU.Data.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? QuantityOutput { get; set; }
-
+        public decimal? PriceWebsite { get; set; }
+        public decimal? PriceWebsitePromotion { get; set; }
+        public decimal? PricePromotion { get; set; }
     }
 }

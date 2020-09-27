@@ -1,17 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Vật tư - thiết bị";
+    ViewData["Title"] = "Product";
 }
 @using Kendo.Mvc.UI
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Vật tư - thiết bị</h1>
+                <h1>Product</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Vật tư - thiết bị</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">Danh sách</a></li>
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">List</a></li>
                 </ol>
             </div>
         </div>
@@ -50,12 +50,11 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
                     columns.Template(@"<a href='/Product/Detail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);
-                    columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
-                    columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(200).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.Title).Title("Name").Width(300);
+                    columns.Bound(t => t.MetaTitle).Title("Code").Width(200);
+                    columns.Bound(t => t.QuantityInStock).Title("Quantity in stock").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityInput).Title("Quantity import").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityOutput).Title("Quantity export").Width(200).HtmlAttributes(new { style = "text-align:right;" });                   
 
                 })
                 .ToolBar(toolBar => toolBar.Search())

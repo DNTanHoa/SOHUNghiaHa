@@ -27,6 +27,14 @@ namespace SOHU.Data.Helpers
                 return result;
             }
         }
+        public static string URLImagesProduct
+        {
+            get
+            {
+                string result = AppGlobal.Images + "/Product";
+                return result;
+            }
+        }
         public static string LogoURLFull
         {
             get
@@ -81,6 +89,62 @@ namespace SOHU.Data.Helpers
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 return int.Parse(builder.Build().GetSection("AppSettings").GetSection("EuronailsupplyID").Value);
+            }
+        }
+        public static int ProductCategoryRootID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("ProductCategoryRootID").Value);
+            }
+        }
+        public static int InvoiceImportID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("InvoiceImportID").Value);
+            }
+        }
+        public static int InvoiceExportID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("InvoiceExportID").Value);
+            }
+        }
+        public static int ShoppingCartID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("ShoppingCartID").Value);
+            }
+        }
+        public static int UnitID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("UnitID").Value);
+            }
+        }
+        public static int GBPID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("GBPID").Value);
+            }
+        }
+        public static int USDID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("USDID").Value);
             }
         }
         public static int LanID
@@ -249,15 +313,7 @@ namespace SOHU.Data.Helpers
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 return builder.Build().GetSection("AppSettings").GetSection("URLImages").Value;
             }
-        }
-        public static string URLImagesProduct
-        {
-            get
-            {
-                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                return builder.Build().GetSection("AppSettings").GetSection("URLImagesProduct").Value;
-            }
-        }
+        }       
         public static string EditSuccess
         {
             get

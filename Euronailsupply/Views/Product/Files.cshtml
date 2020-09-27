@@ -1,0 +1,143 @@
+﻿@{ ViewData["Title"] = "Product attached files"; }
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Product
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Product attached files</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">List</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <form asp-action="SaveFiles" asp-controller="ProductConfig">
+                            @Html.HiddenFor(Model => Model.ID)                            
+                            <div class="row">
+                                <div class='col-md-9'>
+
+                                </div>
+                                <div class='col-md-1'>
+                                    <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-save"></span>
+                                    </button>
+                                </div>                               
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="Detail" asp-controller="Product" title="Detail" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Product" title="List" style="width:100%;" class="btn btn-info">
+                                        <span class="fas fa-arrow-left"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='Title'>Title</label>
+                                        @(Html.TextBoxFor(Model => Model.Title, new { placeholder = "Title", @class = "form-control" }))
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='Upload'>Select files</label>
+                                        @(Html.Kendo().Upload()
+                              .Name("Upload")
+                              .HtmlAttributes(new { @class = "form-control" })
+                                )
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                        @(Html.Kendo().Grid<SOHU.Data.Models.ProductConfig>()
+.Name("ProductConfig")
+.Columns(columns =>
+{
+    columns.Command(command => { command.Destroy().Text("&nbsp;").IconClass("fas fa-trash-alt").HtmlAttributes(new { style = "font-size: 16px; color:#ffffff; background-color:#d73925; padding-left:16px; padding-top:6px; border-radius: 6px; width:50px;" }); }).Width(70);
+    columns.Bound(t => t.Title).Title("Title").Width(200);
+    columns.Bound(t => t.Note).Title("Extension").Width(200);
+    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Images/Product/#=FileName#"");' class='btn btn-success' style='color:white; cursor:pointer;'><i class='fas fa-paperclip'></i></a>").Title("View").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+
+})
+.ToolBar(toolBar => toolBar.Search())
+.Editable(editable => editable.Mode(GridEditMode.InLine))
+.Sortable()
+.Scrollable()
+.Reorderable(r => r.Columns(true))
+.Resizable(r => r.Columns(true))
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+.ButtonCount(10))
+.Excel(excel => excel
+.FileName("Config.xlsx")
+.Filterable(true)
+.ProxyURL(Url.Action("ExportExcel", "Config"))
+)
+.Pdf(pdf => pdf
+.AllPages()
+.AvoidLinks()
+.PaperSize("A4")
+.Margin("2cm", "1cm", "1cm", "1cm")
+.Landscape()
+.RepeatHeaders()
+.FileName("Config.pdf")
+)
+.HtmlAttributes(new { @class = "KendoGrid" })
+.Search(search => { search.Field(f => f.Title); search.Field(f => f.Note); })
+.DataSource(dataSource => dataSource
+.Ajax()
+.PageSize(1000)
+.Model(model =>
+{
+    model.Id(t => t.ID);
+})
+.Events(t => { t.RequestEnd("onGridRequestEnd"); })
+.Read(t => t.Action("GetAttachedFilesByProductIDToList", "ProductConfig").Data("filterProductConfig"))
+.Destroy(t => t.Action("Delete", "ProductConfig"))
+)
+)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+<script>
+    function onGridRequestEnd(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#ProductConfig").data("kendoGrid").dataSource.read();
+        }
+    }
+    function filterProductConfig(e) {
+        var productIDValue = $("#ID").val();
+        return { productID: productIDValue };
+    }
+</script>
+

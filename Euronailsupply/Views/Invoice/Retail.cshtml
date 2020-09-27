@@ -1,18 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Hóa đơn nhập hàng";
+    ViewData["Title"] = "Retail";
 }
 @using Kendo.Mvc.UI
 @model Euronailsupply.Models.BaseViewModel
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Hóa đơn nhập hàng</h1>
+                <h1>Retail</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Chứng từ</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Hóa đơn nhập hàng</a></li>
+                    <li class="breadcrumb-item"><a href="#">Invoice</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Retail" asp-controller="Invoice">Retail</a></li>
                 </ol>
             </div>
         </div>
@@ -41,7 +42,7 @@
                             )
                         </div>
                         <div class='col-sm-1'>
-                            <button style="width:100%;" title="Tìm kiếm" class="btn btn-success" onclick="onSearch()">
+                            <button style="width:100%;" title="Search" class="btn btn-success" onclick="onSearch()">
                                 <span class="fas fa-search"></span>
                             </button>
                         </div>
@@ -49,7 +50,7 @@
 
                         </div>
                         <div class='col-sm-1'>
-                            <a asp-route-ID="0" asp-action="InvoiceInputDetail" asp-controller="Invoice" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                            <a asp-route-ID="0" asp-action="RetailDetail" asp-controller="Invoice" class="btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
@@ -61,14 +62,13 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
-                    columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(200);
-                    columns.Bound(t => t.Total).Title("Sau thuế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Template(@"<a href='/Invoice/RetailDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Date").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(200);
+                    columns.Bound(t => t.SellName).Title("Customer").Width(200);
+                    columns.Bound(t => t.Total).Title("Total").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalPaid).Title("Pay").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalDebt).Title("Debt").Width(200).HtmlAttributes(new { style = "text-align: right;" });          
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -106,7 +106,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetByShoppingCartAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>

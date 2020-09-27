@@ -47,7 +47,7 @@ namespace Euronailsupply.Controllers
         {
             return View();
         }
-        public IActionResult CustomerCategory()
+        public IActionResult MembershipCategory()
         {
             return View();
         }
