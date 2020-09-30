@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NghiaHa.API.RequestModel;
@@ -11,12 +13,14 @@ using SOHU.Data.Results;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Text;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
@@ -30,7 +34,7 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> Login(UserLoginViewModel model)
+        public ActionResult<BaseResponeModel> Login(UserLoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -56,14 +60,14 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.LoginError, AppGlobal.Loading);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpGet]
-        public ActionResult<string> GetMenuLeft()
+        public ActionResult<BaseResponeModel> GetMenuLeft()
         {            
             List<Config> listProductCategory = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ProductCategory);
-            return ObjectToJson(new BaseResponseModel(listProductCategory));
+            return new BaseResponeModel(listProductCategory);
         }
     }
 }

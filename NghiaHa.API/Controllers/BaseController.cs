@@ -65,10 +65,5 @@ namespace NghiaHa.API.Controllers
                 return null;
             }
         }
-
-        public ActionResult<string> ObjectToJson(BaseResponseModel obj)
-        {
-            return Content(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
-        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
@@ -8,11 +10,13 @@ using SOHU.Data.Repositories;
 using SOHU.Data.Results;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class InvoiceController : BaseController
     {
         private readonly IInvoiceRepository _invoiceRepository;
@@ -25,24 +29,24 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> Detail(int ID)
+        public ActionResult<BaseResponeModel> Detail(int ID)
         {
             var model = _invoiceRepository.GetByID(ID);
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> InvoiceInput()
+        public ActionResult<BaseResponeModel> InvoiceInput()
         {
             BaseViewModel viewModel = new BaseViewModel();
             viewModel.YearFinance = DateTime.Now.Year;
             viewModel.MonthFinance = DateTime.Now.Month;
 
-            return ObjectToJson(new BaseResponseModel(viewModel));
+            return new BaseResponeModel(viewModel);
         }
 
         [HttpGet]
-        public ActionResult<string> InvoiceInputDetail(int ID)
+        public ActionResult<BaseResponeModel> InvoiceInputDetail(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -60,11 +64,11 @@ namespace NghiaHa.API.Controllers
 
             model.CategoryID = AppGlobal.InvoiceInputID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> InvoiceInputDetailWindow(int ID)
+        public ActionResult<BaseResponeModel> InvoiceInputDetailWindow(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -81,11 +85,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.InvoiceInputID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             int result = _invoiceRepository.Delete(ID);
 
@@ -98,51 +102,51 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByID(int ID)
+        public ActionResult<BaseResponeModel> GetByID(int ID)
         {
-            return ObjectToJson(new BaseResponseModel(_invoiceRepository.GetByID(ID)));
+            return new BaseResponeModel(_invoiceRepository.GetByID(ID));
         }
 
         [HttpGet]
-        public ActionResult<string> GetAllToList()
+        public ActionResult<BaseResponeModel> GetAllToList()
         {
-            return ObjectToJson(new BaseResponseModel(_invoiceRepository.GetAllToList()));
+            return new BaseResponeModel(_invoiceRepository.GetAllToList());
         }
 
         [HttpGet]
-        public ActionResult<string> GetByDuAnAndYearAndMonthToList(int year, int month)
+        public ActionResult<BaseResponeModel> GetByDuAnAndYearAndMonthToList(int year, int month)
         {
             List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, year, month);
-            return ObjectToJson(new BaseResponseModel(Invoices));
+            return new BaseResponeModel(Invoices);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByInvoiceInputAndYearAndMonthToList(int year, int month)
+        public ActionResult<BaseResponeModel> GetByInvoiceInputAndYearAndMonthToList(int year, int month)
         {
             List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceInputID, year, month);
-            return ObjectToJson(new BaseResponseModel(Invoices));
+            return new BaseResponeModel(Invoices);
         }
 
         [HttpGet]
-        public ActionResult<string> GetInvoiceInputByProductIDToList(int productID)
+        public ActionResult<BaseResponeModel> GetInvoiceInputByProductIDToList(int productID)
         {
             List<Invoice> Invoices = _invoiceRepository.GetInvoiceInputByProductIDToList(productID);
-            return ObjectToJson(new BaseResponseModel(Invoices));
+            return new BaseResponeModel(Invoices);
         }
 
         [HttpGet]
-        public ActionResult<string> GetInvoiceOutputByProductIDToList(int productID)
+        public ActionResult<BaseResponeModel> GetInvoiceOutputByProductIDToList(int productID)
         {
             List<Invoice> Invoices = _invoiceRepository.GetInvoiceOutputByProductIDToList(productID);
-            return ObjectToJson(new BaseResponseModel(Invoices));
+            return new BaseResponeModel(Invoices);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveInvoiceInput(Invoice model)
+        public ActionResult<BaseResponeModel> SaveInvoiceInput(Invoice model)
         {
             int result;
 
@@ -183,11 +187,11 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveInvoiceInputWindow(Invoice model)
+        public ActionResult<BaseResponeModel> SaveInvoiceInputWindow(Invoice model)
         {
             int result;
 
@@ -227,7 +231,7 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
     }
 }

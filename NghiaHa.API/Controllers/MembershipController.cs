@@ -1,16 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NghiaHa.API.RequestModel;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
+using SOHU.Data.Providers;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using System;
+using System.Linq;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MembershipController : BaseController
     {
         private readonly IMembershipRepository _membershipRepository;
@@ -20,8 +27,37 @@ namespace NghiaHa.API.Controllers
             _membershipRepository = membershipRepository;
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult<BaseResponeModel> Login(UserLoginViewModel model)
+        {
+            var LoginResponeModel = new LoginResponeModel();
+            BaseResult Result;
+
+            if (ModelState.IsValid)
+            {
+                if (_membershipRepository.IsValid(model.Account, model.Password))
+                {
+                    Result = new SuccessResult();
+                    LoginResponeModel.TokenExpireDate = DateTime.Now.AddDays(1);
+                    LoginResponeModel.Token = TokenProvider.GenerateTokenString(model.ToDictionaryStringString());
+                }
+                else
+                {
+                    Result = new ErrorResult(ErrorType.LoginError,AppGlobal.LoginFail);
+                }
+            }
+            else
+            {
+                string message = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                Result = new ErrorResult(ErrorType.LoginError, message);
+            }
+
+            return new BaseResponeModel(LoginResponeModel, Result);
+        }
+
         [HttpGet]
-        public ActionResult<string> CustomerDetail(int ID)
+        public ActionResult<BaseResponeModel> CustomerDetail(int ID)
         {
             Membership model = new Membership();
 
@@ -31,11 +67,11 @@ namespace NghiaHa.API.Controllers
             }
             model.ParentID = AppGlobal.CustomerParentID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> SupplierDetail(int ID)
+        public ActionResult<BaseResponeModel> SupplierDetail(int ID)
         {
             Membership model = new Membership();
 
@@ -45,11 +81,11 @@ namespace NghiaHa.API.Controllers
             }
             model.ParentID = AppGlobal.SupplierParentID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> EmployeeDetail(int ID)
+        public ActionResult<BaseResponeModel> EmployeeDetail(int ID)
         {
             Membership model = new Membership();
 
@@ -59,46 +95,46 @@ namespace NghiaHa.API.Controllers
             }
             model.ParentID = AppGlobal.EmployeeParentID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> HeaderInfor()
+        public ActionResult<BaseResponeModel> HeaderInfor()
         {
             var member = _membershipRepository.GetByID(RequestUserID);
-            return ObjectToJson(new BaseResponseModel(member));
+            return new BaseResponeModel(member);
         }
 
         [HttpGet]
-        public ActionResult<string> SidebarInfor()
+        public ActionResult<BaseResponeModel> SidebarInfor()
         {
             var member = _membershipRepository.GetByID(RequestUserID);
-            return ObjectToJson(new BaseResponseModel(member));
+            return new BaseResponeModel(member);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByCustomerParentIDToList()
+        public ActionResult<BaseResponeModel> GetByCustomerParentIDToList()
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.CustomerParentID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetBySupplierParentIDToList()
+        public ActionResult<BaseResponeModel> GetBySupplierParentIDToList()
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.SupplierParentID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByEmployeeParentIDToList()
+        public ActionResult<BaseResponeModel> GetByEmployeeParentIDToList()
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.EmployeeParentID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveCustomer(Membership model)
+        public ActionResult<BaseResponeModel> SaveCustomer(Membership model)
         {
             int result;
 
@@ -149,11 +185,11 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveSupplier(Membership model)
+        public ActionResult<BaseResponeModel> SaveSupplier(Membership model)
         {
             int result;
 
@@ -202,11 +238,11 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             int result = _membershipRepository.Delete(ID);
 
@@ -219,11 +255,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveEmployee(Membership model)
+        public ActionResult<BaseResponeModel> SaveEmployee(Membership model)
         {
             bool check = false;
 
@@ -273,7 +309,7 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
     }
 }
