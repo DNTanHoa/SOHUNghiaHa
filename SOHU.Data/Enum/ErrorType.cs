@@ -9,6 +9,7 @@ namespace SOHU.Data.Enum
         None = 0,
         InsertError = 100,
         EditError = 101,
-        DeleteError = 102
+        DeleteError = 102,
+        LoginError = 500
     }
 }

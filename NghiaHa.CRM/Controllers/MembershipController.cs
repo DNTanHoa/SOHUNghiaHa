@@ -21,7 +21,10 @@ namespace NghiaHa.CRM.Controllers
             _membershipRepository = membershipRepository;
         }
 
-        
+        /// <summary>
+        /// CCode ngu vler
+        /// </summary>
+        /// <param name="model"></param>
         private void Initialization(Membership model)
         {
             if (!string.IsNullOrEmpty(model.FullName))
@@ -49,27 +52,22 @@ namespace NghiaHa.CRM.Controllers
                 model.Email = model.Email.Trim();
             }
         }
-        
         public IActionResult Index()
         {
             return View();
         }
-        
         public IActionResult Customer()
         {
             return View();
         }
-        
         public IActionResult Employee()
         {
             return View();
         }
-        
         public IActionResult Supplier()
         {
             return View();
         }
-        
         public IActionResult CustomerDetail(int ID)
         {
             Membership model = new Membership();
@@ -80,7 +78,6 @@ namespace NghiaHa.CRM.Controllers
             model.ParentID = AppGlobal.CustomerParentID;
             return View(model);
         }
-        
         public IActionResult SupplierDetail(int ID)
         {
             Membership model = new Membership();
@@ -91,7 +88,6 @@ namespace NghiaHa.CRM.Controllers
             model.ParentID = AppGlobal.SupplierParentID;
             return View(model);
         }
-        
         public IActionResult EmployeeDetail(int ID)
         {
             Membership model = new Membership();
@@ -102,7 +98,6 @@ namespace NghiaHa.CRM.Controllers
             model.ParentID = AppGlobal.EmployeeParentID;
             return View(model);
         }
-        
         public ActionResult HeaderInfor()
         {
             var member = _membershipRepository.GetByID(RequestUserID);
@@ -114,25 +109,21 @@ namespace NghiaHa.CRM.Controllers
             var member = _membershipRepository.GetByID(RequestUserID);
             return PartialView("~/Views/Membership/_SidebarInfor.cshtml", member);
         }
-        
         public ActionResult GetByCustomerParentIDToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.CustomerParentID);
             return Json(data.ToDataSourceResult(request));
         }
-        
         public ActionResult GetBySupplierParentIDToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.SupplierParentID);
             return Json(data.ToDataSourceResult(request));
         }
-        
         public ActionResult GetByEmployeeParentIDToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.EmployeeParentID);
             return Json(data.ToDataSourceResult(request));
         }
-        
         public IActionResult SaveCustomer(Membership model)
         {
             if (model.ID > 0)
@@ -161,7 +152,6 @@ namespace NghiaHa.CRM.Controllers
             }
             return RedirectToAction("CustomerDetail", new { ID = model.ID });
         }
-        
         public IActionResult SaveSupplier(Membership model)
         {
             if (model.ID > 0)
@@ -190,7 +180,6 @@ namespace NghiaHa.CRM.Controllers
             }
             return RedirectToAction("SupplierDetail", new { ID = model.ID });
         }
-        
         public IActionResult Delete(int ID)
         {
             string note = AppGlobal.InitString;
@@ -205,7 +194,6 @@ namespace NghiaHa.CRM.Controllers
             }
             return Json(note);
         }
-        
         public IActionResult SaveEmployee(Membership model)
         {
             bool check = false;
