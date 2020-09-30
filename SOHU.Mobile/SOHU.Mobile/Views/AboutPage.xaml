@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             Title="{Binding Title}"
+             x:Class="SOHU.Mobile.Views.AboutPage">
+    <StackLayout>
+        <Label Text="Ứng dụng CRM Nghĩa Hà"
+               TextColor="Navy"
+               FontSize="20"
+               Margin="5"></Label>
+        <Label Text=" - Bản quyền 2020 thuộc về Nghĩa Hà"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Label Text=" - Được phát triển bởi đội ngũ SOHU"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Label Text=" - Thiết kế chính : Dương Nguyễn Tấn Hòa"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+    </StackLayout>
+</ContentPage>

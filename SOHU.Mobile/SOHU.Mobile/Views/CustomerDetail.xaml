@@ -2,7 +2,78 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             Title="{Binding Title}"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="SOHU.Mobile.Views.CustomerDetail">
-  
+    <StackLayout>
+        <Label Text="Tên"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Entry VerticalOptions="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               Text="{Binding Name}"
+               PlaceholderColor="Black"/>
+        <Label Text="Điện thoại"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Entry VerticalOptions="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               Text="{Binding Phone}"
+               PlaceholderColor="Black"/>
+        <Label Text="Email"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Entry VerticalOptions="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               Text="{Binding Email}"
+               PlaceholderColor="Black"/>
+        <Label Text="Mã số thuế"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Entry VerticalOptions="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               Text="{Binding TaxCode}"
+               PlaceholderColor="Black"/>
+        <Label Text="Địa chỉ"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5"></Label>
+        <Entry VerticalOptions="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               Text="{Binding Address}"
+               PlaceholderColor="Black"/>
+        <StackLayout Orientation="Horizontal"
+                     VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="CenterAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button BackgroundColor="#007bff"
+                        CornerRadius="5"
+                        Text="Lưu"
+                        Margin="5"
+                        Command="{Binding SaveCommand}"
+                        Grid.Column="0"
+                        TextColor="White"></Button>
+                <Button BackgroundColor="#343a40"
+                        CornerRadius="5"
+                        Text="Thoát"
+                        Margin="5"
+                        Grid.Column="1"
+                        Command="{Binding BackCommand}"
+                        TextColor="White"></Button>
+            </Grid>
+        </StackLayout>
+    </StackLayout>
 </ContentPage>

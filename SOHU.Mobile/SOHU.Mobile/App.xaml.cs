@@ -30,6 +30,14 @@ namespace SOHU.Mobile
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
             containerRegistry.RegisterForNavigation<CustomerMaster, CustomerMasterViewModel>();
+            containerRegistry.RegisterForNavigation<CustomerDetail, CustomerDetailViewModel>();
+            containerRegistry.RegisterForNavigation<InvoiceMaster, InvoiceMasterViewModel>();
+            containerRegistry.RegisterForNavigation<InvoiceDetail, InvoiceDetailViewModel>();
+            containerRegistry.RegisterForNavigation<InWareHouseMaster, InWareHouseMasterViewModel>();
+            containerRegistry.RegisterForNavigation<OutWarehouseMaster, OutWarehouseMasterViewModel>();
+            containerRegistry.RegisterForNavigation<SupplierMaster, SupplierMasterViewModel>();
+            containerRegistry.RegisterForNavigation<ProjectPage, ProjectPageViewModel>();
+            containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
         }
     }
 }

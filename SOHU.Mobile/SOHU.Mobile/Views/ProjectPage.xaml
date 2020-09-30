@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             Title="{Binding Title}"
+             x:Class="SOHU.Mobile.Views.ProjectPage">
+    <StackLayout>
+        <StackLayout>
+            <SearchBar Placeholder="Tìm kiếm"
+                       PlaceholderColor="Gray"></SearchBar>
+        </StackLayout>
+        <ScrollView>
+            <ListView ItemsSource="{Binding Invoices}"
+                      SelectedItem="{Binding SelectedInvoice}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell></ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+        <RelativeLayout HorizontalOptions="EndAndExpand">
+            <Frame Padding="0"
+                   Margin="25"
+                   BackgroundColor="Navy"
+                   HeightRequest="60"
+                   VerticalOptions="EndAndExpand"
+                   WidthRequest="60"
+                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, Property=Width, Constant=0}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, Property=Height, Constant=0}"
+                   CornerRadius="30">
+                <Label Text="+"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="30"
+                       Margin="0"
+                       Padding="0"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"></Label>
+            </Frame>
+            <RelativeLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ItemTappedCommand}"
+                                      CommandParameter="0"/>
+            </RelativeLayout.GestureRecognizers>
+        </RelativeLayout>
+    </StackLayout>
+</ContentPage>

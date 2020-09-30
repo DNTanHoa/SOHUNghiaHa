@@ -27,7 +27,7 @@ namespace SOHU.Mobile.ViewModels
         public async Task ItemTappedCommandExecute()
         {
             NavigationParameters parameters = new NavigationParameters();
-            parameters.Add("CustomerId", SelectedCustomer.Id);
+            parameters.Add("CustomerId", SelectedCustomer?.Id);
             await NavigationService.NavigateAsync("CustomerDetail", parameters);
         }
     }

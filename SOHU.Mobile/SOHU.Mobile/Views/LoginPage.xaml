@@ -28,7 +28,7 @@
                                            Margin="10"
                                            TextColor="White"
                                            FontFamily="Time News Roman"
-                                           Text="Thông tin đăng nhập"
+                                           Text="Xin chào!"
                                            FontSize="Large"/>
                                     <StackLayout Orientation="Horizontal"
                                                  Margin="10,0,10,0"
@@ -45,13 +45,13 @@
                                                HeightRequest="24"
                                                WidthRequest="24"></Image>
                                         </Frame>
-                                        <telerikInput:RadEntry x:Name="Account"
-                                                               VerticalOptions="Center"
-                                                               HorizontalOptions="FillAndExpand"
-                                                               TextColor="White"
-                                                               Text="{Binding Username}"
-                                                               WatermarkText="Tên đăng nhập"
-                                                               WatermarkTextColor="White"/>
+                                        <Entry x:Name="Account"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="FillAndExpand"
+                                               TextColor="White"
+                                               Text="{Binding Username}"
+                                               Placeholder="Tên đăng nhập"
+                                               PlaceholderColor="White"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal"
                                                  Margin="10,0,10,20"
@@ -67,14 +67,14 @@
                                                HeightRequest="24"
                                                WidthRequest="24"></Image>
                                         </Frame>
-                                        <telerikInput:RadEntry x:Name="Password"
+                                        <Entry x:Name="Password"
                                                       VerticalOptions="Center"
                                                       HorizontalOptions="FillAndExpand"
                                                       TextColor="White"
                                                       Text="{Binding Password}"
                                                       IsPassword="True"
-                                                      WatermarkText="Mật khẩu"
-                                                      WatermarkTextColor="White"/>
+                                                      Placeholder="Mật khẩu"
+                                                      PlaceholderColor="White"/>
                                     </StackLayout>
                                 </StackLayout>
                                 <StackLayout HeightRequest="50"
