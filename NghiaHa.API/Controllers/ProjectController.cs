@@ -22,15 +22,15 @@ namespace NghiaHa.API.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProjectController : BaseController
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IMembershipRepository _membershipRepository;
         private readonly IInvoicePropertyRepository _invoicePropertyRepository;
         private readonly IInvoiceDetailRepository _invoiceDetailRepository;
         private readonly IProductRepository _productRepository;
-        public ProjectController(IHostingEnvironment hostingEnvironment, IProductRepository productRepository, IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
+        public ProjectController(IWebHostEnvironment webHostEnvironment, IProductRepository productRepository, IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _invoiceRepository = invoiceRepository;
             _invoiceDetailRepository = invoiceDetailRepository;
             _invoicePropertyRepository = invoicePropertyRepository;
@@ -159,7 +159,7 @@ namespace NghiaHa.API.Controllers
                 if (string.IsNullOrEmpty(model.HopDong))
                 {
                     string hopDong = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "HopDong.html");
+                    var physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, "html", "HopDong.html");
                     using (var stream = new FileStream(physicalPath, FileMode.Open))
                     {
                         using (StreamReader reader = new StreamReader(stream))
@@ -233,7 +233,7 @@ namespace NghiaHa.API.Controllers
                 if (string.IsNullOrEmpty(model.ChaoGia))
                 {
                     string chaoGia = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "ChaoGia.html");
+                    var physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, "html", "ChaoGia.html");
                     
                     using (var stream = new FileStream(physicalPath, FileMode.Open))
                     {
@@ -364,7 +364,7 @@ namespace NghiaHa.API.Controllers
                 if (string.IsNullOrEmpty(model.NghiemThu))
                 {
                     string nghiemThu = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "NghiemThu.html");
+                    var physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, "html", "NghiemThu.html");
                     
                     using (var stream = new FileStream(physicalPath, FileMode.Open))
                     {
@@ -489,7 +489,7 @@ namespace NghiaHa.API.Controllers
                 if (string.IsNullOrEmpty(model.ThanhLy))
                 {
                     string thanhLy = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "ThanhLy.html");
+                    var physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, "html", "ThanhLy.html");
                     
                     using (var stream = new FileStream(physicalPath, FileMode.Open))
                     {
@@ -1195,7 +1195,7 @@ namespace NghiaHa.API.Controllers
                             fileName = AppGlobal.SetName(fileName);
 
                             fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
-                            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, AppGlobal.URLImagesCustomer, fileName);
+                            var physicalPath = Path.Combine(_webHostEnvironment.WebRootPath, AppGlobal.URLImagesCustomer, fileName);
                             
                             using (var stream = new FileStream(physicalPath, FileMode.Create))
                             {

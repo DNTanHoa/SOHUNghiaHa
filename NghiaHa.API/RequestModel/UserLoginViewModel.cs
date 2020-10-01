@@ -14,10 +14,6 @@ namespace NghiaHa.API.RequestModel
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         public string Password { get; set; }
 
-        public string ErrorMessage { get; set; }
-
-        public string RedirectUrl { get; set; }
-
         public bool RememberPassword { get; set; }
 
     }
