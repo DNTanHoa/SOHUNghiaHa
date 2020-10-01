@@ -80,6 +80,51 @@ namespace SOHU.Mobile.ViewModels
             }
         }
 
+        private string _bankName;
+        public string BankName
+        {
+            get => _bankName;
+            set
+            {
+                this._bankName = value;
+                RaisePropertyChanged(nameof(BankName));
+            }
+        }
+
+        private string _bankAccount;
+        public string BankAccount
+        {
+            get => _bankAccount;
+            set
+            {
+                this._bankAccount = value;
+                RaisePropertyChanged(nameof(BankAccount));
+            }
+        }
+
+        private string _contactFullName;
+        public string ContactFullName
+        {
+            get => _contactFullName;
+            set
+            {
+                this._contactFullName = value;
+                RaisePropertyChanged(nameof(ContactFullName));
+            }
+        }
+
+
+        private string _contactPosition;
+        public string ContactPosition
+        {
+            get => _contactPosition;
+            set
+            {
+                this._contactPosition = value;
+                RaisePropertyChanged(nameof(ContactPosition));
+            }
+        }
+
         public DelegateCommand SaveCommand { get; private set; }
         
         public DelegateCommand BackCommand { get; private set; }

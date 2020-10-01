@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NghiaHa.MVC\NghiaHa.MVC.csproj" />
     <ProjectReference Include="..\SOHU.Data\SOHU.Data.csproj" />
   </ItemGroup>
 

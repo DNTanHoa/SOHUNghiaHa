@@ -8,7 +8,7 @@ namespace SOHU.Mobile.Global
 {
     public class AppGlobal
     {
-        public static string ApiServerEndpoint { get; set; }
+        public static string ApiServerEndpoint { get; set; } = "http://api.nghiaha.vn/api/";
 
         public static string Token { get; set; }
     }

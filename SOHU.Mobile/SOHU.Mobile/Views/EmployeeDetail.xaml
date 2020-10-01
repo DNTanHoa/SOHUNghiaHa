@@ -4,7 +4,7 @@
              xmlns:prism="http://prismlibrary.com"
              Title="{Binding Title}"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="SOHU.Mobile.Views.CustomerDetail">
+             x:Class="SOHU.Mobile.Views.EmployeeDetail">
     <ScrollView>
         <StackLayout Margin="10">
             <FlexLayout JustifyContent="Start"
@@ -42,7 +42,7 @@
             <FlexLayout JustifyContent="Start"
                         AlignItems="Center"
                         Direction="Row">
-                <Label Text="Email"
+                <Label Text="CMND"
                        TextColor="Black"
                        FontSize="16"
                        FlexLayout.Basis="30%"
@@ -51,7 +51,7 @@
                        HorizontalOptions="FillAndExpand"
                        TextColor="Black"
                        FlexLayout.Basis="70%"
-                       Text="{Binding Email}"
+                       Text="{Binding CitizenIdentification}"
                        PlaceholderColor="Black"/>
             </FlexLayout>
 
@@ -85,72 +85,7 @@
                        Text="{Binding Address}"
                        PlaceholderColor="Black"/>
             </FlexLayout>
-
-            <FlexLayout JustifyContent="Start"
-                        AlignItems="Center"
-                        Direction="Row">
-                <Label Text="Ngân hàng"
-                       TextColor="Black"
-                       FontSize="16"
-                       FlexLayout.Basis="30%"
-                       VerticalOptions="CenterAndExpand"></Label>
-                <Entry VerticalOptions="Center"
-                       HorizontalOptions="FillAndExpand"
-                       TextColor="Black"
-                       FlexLayout.Basis="70%"
-                       Text="{Binding BankName}"
-                       PlaceholderColor="Black"/>
-            </FlexLayout>
-
-            <FlexLayout JustifyContent="Start"
-                        AlignItems="Center"
-                        Direction="Row">
-                <Label Text="Số tài khoản"
-                       TextColor="Black"
-                       FlexLayout.Basis="30%"
-                       FontSize="16"
-                       VerticalOptions="CenterAndExpand"></Label>
-                <Entry VerticalOptions="Center"
-                       HorizontalOptions="FillAndExpand"
-                       TextColor="Black"
-                       FlexLayout.Basis="70%"
-                       Text="{Binding BankAccount}"
-                       PlaceholderColor="Black"/>
-            </FlexLayout>
-
-            <FlexLayout JustifyContent="Start"
-                        AlignItems="Center"
-                        Direction="Row">
-                <Label Text="Đại diện"
-                       TextColor="Black"
-                       FlexLayout.Basis="30%"
-                       FontSize="16"
-                       VerticalOptions="CenterAndExpand"></Label>
-                <Entry VerticalOptions="Center"
-                       HorizontalOptions="FillAndExpand"
-                       TextColor="Black"
-                       FlexLayout.Basis="70%"
-                       Text="{Binding ContactFullName}"
-                       PlaceholderColor="Black"/>
-            </FlexLayout>
-
-            <FlexLayout JustifyContent="Start"
-                        AlignItems="Center"
-                        Direction="Row">
-                <Label Text="Chức vụ"
-                       TextColor="Black"
-                       FlexLayout.Basis="30%"
-                       FontSize="16"
-                       VerticalOptions="CenterAndExpand"></Label>
-                <Entry VerticalOptions="Center"
-                       HorizontalOptions="FillAndExpand"
-                       TextColor="Black"
-                       FlexLayout.Basis="70%"
-                       Text="{Binding ContactPosition}"
-                       PlaceholderColor="Black"/>
-            </FlexLayout>
-
-
+           
             <StackLayout Orientation="Horizontal"
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand">

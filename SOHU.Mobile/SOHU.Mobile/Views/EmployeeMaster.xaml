@@ -4,14 +4,21 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              Title="{Binding Title}"
-             x:Class="SOHU.Mobile.Views.CustomerMaster">
+             x:Class="SOHU.Mobile.Views.EmployeeMaster">
     <StackLayout>
         <StackLayout>
             <SearchBar Placeholder="Tìm kiếm"
-                       PlaceholderColor="Gray"></SearchBar>
+                       Text="{Binding SearchContent}"
+                       SearchCommand="{Binding SearchCommand}"
+                       PlaceholderColor="Gray">
+                <SearchBar.Behaviors>
+                    <prism:EventToCommandBehavior EventName="TextChanged"
+                                                  Command="{Binding SearchCommand}"></prism:EventToCommandBehavior>
+                </SearchBar.Behaviors>
+            </SearchBar>
         </StackLayout>
         <ScrollView>
-            <ListView ItemsSource="{Binding Customers}"
+            <ListView ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"
                       HasUnevenRows="True"
                       SelectedItem="{Binding SelectedCustomer}">
                 <ListView.ItemTemplate>
@@ -33,7 +40,7 @@
                                            FontSize="18"></Label>
                                 </StackLayout>
                                 <StackLayout Orientation="Horizontal">
-                                    <Label Text="Email:"
+                                    <Label Text="CMND:"
                                            TextColor="Navy"
                                            FontAttributes="Italic"
                                            FontSize="16"></Label>

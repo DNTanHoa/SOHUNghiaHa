@@ -49,7 +49,7 @@
                                                VerticalOptions="Center"
                                                HorizontalOptions="FillAndExpand"
                                                TextColor="White"
-                                               Text="{Binding Username}"
+                                               Text="{Binding userName}"
                                                Placeholder="Tên đăng nhập"
                                                PlaceholderColor="White"/>
                                     </StackLayout>
@@ -71,7 +71,7 @@
                                                       VerticalOptions="Center"
                                                       HorizontalOptions="FillAndExpand"
                                                       TextColor="White"
-                                                      Text="{Binding Password}"
+                                                      Text="{Binding passWord}"
                                                       IsPassword="True"
                                                       Placeholder="Mật khẩu"
                                                       PlaceholderColor="White"/>

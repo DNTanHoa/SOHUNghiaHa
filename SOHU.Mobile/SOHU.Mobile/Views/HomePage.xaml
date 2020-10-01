@@ -118,14 +118,14 @@
                                             WidthRequest="70"
                                             BorderColor="Navy"
                                             BorderThickness="1"/>
-                <Label Text="Báo cáo"
+                <Label Text="Nhân viên"
                         HorizontalTextAlignment="Center"
                         TextColor="Navy"
                         Margin="0"
                         FontSize="16"></Label>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding MenuTappedCommand}"
-                                          CommandParameter="BI"/>
+                                          CommandParameter="EmployeeMaster"/>
                 </StackLayout.GestureRecognizers>
             </StackLayout>
         </Custom:WrapLayout>

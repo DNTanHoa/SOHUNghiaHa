@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SOHU.Mobile.Models
 {
-    public class Customer
+    public class Employee
     {
         public string FullName { get; set; }
 
@@ -22,8 +22,6 @@ namespace SOHU.Mobile.Models
 
         public int ParentID { get; set; }
 
-        public string ContactFullName { get; set; }
-
-        public string ContactPosition { get; set; }
+        public string CitizenIdentification { get; set; }
     }
 }
