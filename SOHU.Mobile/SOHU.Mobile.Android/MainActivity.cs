@@ -7,15 +7,12 @@ using Prism.Ioc;
 
 namespace SOHU.Mobile.Droid
 {
-    [Activity(Theme = "@style/MainTheme",
+    [Activity(Label = "Nghĩa Hà", Theme = "@style/MainTheme",  Icon = "@drawable/logo",
               ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(savedInstanceState);
             Window.AddFlags(WindowManagerFlags.Fullscreen);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

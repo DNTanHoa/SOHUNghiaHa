@@ -19,17 +19,17 @@
     </NavigationPage>
     <NavigationPage Title="Dự án" IconImageSource="project">
         <x:Arguments>
-            <local:HomePage />
+            <local:ProjectPage />
         </x:Arguments>
     </NavigationPage>
     <NavigationPage Title="Khách hàng" IconImageSource="chart">
         <x:Arguments>
-            <local:HomePage />
+            <local:CustomerMaster />
         </x:Arguments>
     </NavigationPage>
     <NavigationPage Title="Thông tin" IconImageSource="info">
         <x:Arguments>
-            <local:HomePage />
+            <local:AboutPage />
         </x:Arguments>
     </NavigationPage>
 </TabbedPage>
