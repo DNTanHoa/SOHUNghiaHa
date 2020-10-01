@@ -170,6 +170,7 @@ namespace NghiaHa.API.Controllers
                 if (check == true)
                 {
                     model.TrimModel();
+                    model.SetDefaultValue(); //set default username, password
                     model.Initialization(InitType.Insert, RequestUserID);
 
                     result = _membershipRepository.Create(model);
@@ -294,6 +295,7 @@ namespace NghiaHa.API.Controllers
                 else
                 {
                     model.TrimModel();
+                    model.SetDefaultValue();//set default username, password
                     model.Initialization(InitType.Insert, RequestUserID);
 
                     int result = _membershipRepository.Create(model);
