@@ -35,17 +35,16 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> GetUnitToList()
-        {
-            var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.Unit);
-            return ObjectToJson(new BaseResponseModel(data));
+        public ActionResult<BaseResponseModel> GetUnitToList()
+        {            
+            return new BaseResponseModel(_configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.Unit));
         }
 
         [HttpGet]
-        public ActionResult<string> GetProductCategoryToList()
+        public ActionResult<BaseResponseModel> GetProductCategoryToList()
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ProductCategory);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponseModel(data);
         }
 
         [HttpGet]
