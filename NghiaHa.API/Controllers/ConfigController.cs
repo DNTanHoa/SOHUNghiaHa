@@ -7,11 +7,14 @@ using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ConfigController : BaseController
     {
         private readonly IConfigRepository _configResposistory;
@@ -21,48 +24,49 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> GetByCRMAndProductCategoryToTree()
+        public ActionResult<BaseResponeModel> GetByCRMAndProductCategoryToTree()
         {
             var data = _configResposistory.GetByCRMAndProductCategoryToTree();
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetDataTransferByParentIDToList(int parentID)
+        public ActionResult<BaseResponeModel> GetDataTransferByParentIDToList(int parentID)
         {
             var data = _configResposistory.GetDataTransferByParentIDToList(parentID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<BaseResponseModel> GetUnitToList()
-        {            
-            return new BaseResponseModel(_configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.Unit));
+        public ActionResult<BaseResponeModel> GetUnitToList()
+        {
+            var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.Unit);
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<BaseResponseModel> GetProductCategoryToList()
+        public ActionResult<BaseResponeModel> GetProductCategoryToList()
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ProductCategory);
-            return new BaseResponseModel(data);
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetCustomerCategoryToList()
+        public ActionResult<BaseResponeModel> GetCustomerCategoryToList()
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.CustomerCategory);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetInvoiceCategoryToList()
+        public ActionResult<BaseResponeModel> GetInvoiceCategoryToList()
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.InvoiceCategory);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateInvoiceCategory(Config model)
+        public ActionResult<BaseResponeModel> CreateInvoiceCategory(Config model)
         {
             model.TrimModel();
             model.GroupName = AppGlobal.CRM;
@@ -84,11 +88,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateCustomerCategory(Config model)
+        public ActionResult<BaseResponeModel> CreateCustomerCategory(Config model)
         {
             model.TrimModel();
             model.GroupName = AppGlobal.CRM;
@@ -110,11 +114,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProductCategory(ConfigDataTransfer model)
+        public ActionResult<BaseResponeModel> CreateProductCategory(ConfigDataTransfer model)
         {
             model.TrimModel();
             model.ParentID = model.Parent.ID;
@@ -137,11 +141,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateUnit(Config model)
+        public ActionResult<BaseResponeModel> CreateUnit(Config model)
         {
             model.TrimModel();
             model.GroupName = AppGlobal.CRM;
@@ -163,11 +167,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateDataTransfer(ConfigDataTransfer model)
+        public ActionResult<BaseResponeModel> UpdateDataTransfer(ConfigDataTransfer model)
         {
             model.TrimModel();
             model.ParentID = model.Parent.ID;
@@ -183,11 +187,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> Update(Config model)
+        public ActionResult<BaseResponeModel> Update(Config model)
         {
             model.TrimModel();
             model.Initialization(InitType.Update, RequestUserID);
@@ -202,11 +206,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             int result = _configResposistory.Delete(ID);
 
@@ -219,7 +223,7 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
     }
 }

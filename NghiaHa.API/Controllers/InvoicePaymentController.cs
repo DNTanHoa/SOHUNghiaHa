@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
@@ -6,11 +8,13 @@ using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using System.Net;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class InvoicePaymentController : BaseController
     {
         private readonly IInvoicePaymentRepository _invoicePaymentRepository;
@@ -23,14 +27,14 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> GetByInvoiceIDToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetByInvoiceIDToList(int invoiceID)
         {
             var data = _invoicePaymentRepository.GetByInvoiceIDToList(invoiceID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpPost]
-        public ActionResult<string> Create(InvoicePayment model, int invoiceID)
+        public ActionResult<BaseResponeModel> Create(InvoicePayment model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
             model.TrimModel();
@@ -48,11 +52,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> Update(InvoicePayment model)
+        public ActionResult<BaseResponeModel> Update(InvoicePayment model)
         {
             model.TrimModel();
             model.Initialization(InitType.Update, RequestUserID);
@@ -69,11 +73,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             int invoiceID = _invoicePaymentRepository.GetByID(ID).InvoiceID.Value;
             string note = AppGlobal.InitString;
@@ -90,7 +94,7 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
     }
 }

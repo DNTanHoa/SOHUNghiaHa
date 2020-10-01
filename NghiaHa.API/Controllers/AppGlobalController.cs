@@ -1,25 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Helpers;
+using System.Net;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AppGlobalController : BaseController
     {
         [HttpGet]
-        public ActionResult<string> GetYearFinanceToList()
+        public ActionResult<BaseResponeModel> GetYearFinanceToList()
         {
             var data = YearFinance.GetAllToList();
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetMonthFinanceToList()
+        public ActionResult<BaseResponeModel> GetMonthFinanceToList()
         {
             var data = MonthFinance.GetAllToList();
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
     }
 }

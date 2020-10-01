@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using System.Net;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : BaseController
     {
         private readonly ICustomerRepository customerRepository;
@@ -20,14 +24,14 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> Detail(int ID)
+        public ActionResult<BaseResponeModel> Detail(int ID)
         {
             var model = customerRepository.GetByID(ID);
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpPost]
-        public ActionResult<string> Create(Customer model)
+        public ActionResult<BaseResponeModel> Create(Customer model)
         {
             model.Initialization(InitType.Insert, RequestUserID);
             int result = customerRepository.Create(model);
@@ -41,11 +45,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> Update(Customer model)
+        public ActionResult<BaseResponeModel> Update(Customer model)
         {
             model.Initialization(InitType.Insert, RequestUserID);
             var result = customerRepository.Update(model.ID, model);
@@ -59,11 +63,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             string note = AppGlobal.InitString;
             var result = customerRepository.Delete(ID);
@@ -77,13 +81,13 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpGet]
-        public ActionResult<string> GetAllToList()
+        public ActionResult<BaseResponeModel> GetAllToList()
         {
-            return ObjectToJson(new BaseResponseModel(customerRepository.GetAllToList()));
+            return new BaseResponeModel(customerRepository.GetAllToList());
         }
     }
 }
