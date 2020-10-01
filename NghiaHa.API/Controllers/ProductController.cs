@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
@@ -13,6 +15,7 @@ namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProductController : BaseController
     {
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -25,14 +28,14 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> Index01(int ID)
+        public ActionResult<BaseResponeModel> Index01(int ID)
         {
             BaseViewModel model = new BaseViewModel();
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> Detail(int ID)
+        public ActionResult<BaseResponeModel> Detail(int ID)
         {
             Product model = new Product();
             model.ContentMain = "Tính theo thực tế";
@@ -43,32 +46,32 @@ namespace NghiaHa.API.Controllers
                 model = _productRepository.GetByID(ID);
             }
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> GetAllToList()
+        public ActionResult<BaseResponeModel> GetAllToList()
         {
             var data = _productRepository.GetAllToList();
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetAllOrderByTitleToList()
+        public ActionResult<BaseResponeModel> GetAllOrderByTitleToList()
         {
             var data = _productRepository.GetAllOrderByTitleToList();
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByCategoryIDToList(int categoryID)
+        public ActionResult<BaseResponeModel> GetByCategoryIDToList(int categoryID)
         {
             var data = _productRepository.GetByCategoryIDToList(categoryID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpPost]
-        public ActionResult<string> Save(Product model)
+        public ActionResult<BaseResponeModel> Save(Product model)
         {
             int result;
 
@@ -125,11 +128,11 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             int result = _productRepository.Delete(ID);
             if (result > 0)
@@ -141,7 +144,7 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
     }
 }

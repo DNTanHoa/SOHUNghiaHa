@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
 using SOHU.Data.Enum;
@@ -7,11 +9,13 @@ using SOHU.Data.ModelExtensions;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using SOHU.Data.Results;
+using System.Net;
 
 namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class InvoiceDetailController : BaseController
     {
         private readonly IInvoiceDetailRepository _invoiceDetailRepository;
@@ -26,21 +30,21 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> GetDataTransferByInvoiceIDToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetDataTransferByInvoiceIDToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetDataTransferByInvoiceIDToList(invoiceID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetByInvoiceIDToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetByInvoiceIDToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetByInvoiceIDToList(invoiceID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpPost]
-        public ActionResult<string> Create(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
             model.InitializationForInvoice();
@@ -64,11 +68,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> Update(InvoiceDetailDataTransfer model)
+        public ActionResult<BaseResponeModel> Update(InvoiceDetailDataTransfer model)
         {
             model.InitializationForInvoice();
             model.Initialization(InitType.Update, RequestUserID);
@@ -86,11 +90,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int ID)
+        public ActionResult<BaseResponeModel> Delete(int ID)
         {
             InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByID(ID);
             int? invoiceID = 0;
@@ -115,7 +119,7 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
     }
 }

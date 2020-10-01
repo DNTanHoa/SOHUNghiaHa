@@ -31,5 +31,17 @@ namespace SOHU.Data.ModelExtensions
                 model.Email = model.Email.Trim();
             }
         }
+
+        public static void SetDefaultValue(this Membership model)
+        {
+            //default username by phone number
+            if (!string.IsNullOrEmpty(model.Phone))
+            {
+                model.Account = model.Phone;
+            }
+
+            //default password
+            model.Passport = "1234";
+        }
     }
 }

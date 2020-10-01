@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.DataTransferObject;
@@ -17,6 +19,7 @@ namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProjectController : BaseController
     {
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -36,17 +39,17 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> Index()
+        public ActionResult<BaseResponeModel> Index()
         {
             BaseViewModel viewModel = new BaseViewModel();
             viewModel.YearFinance = DateTime.Now.Year;
             viewModel.MonthFinance = DateTime.Now.Month;
 
-            return ObjectToJson(new BaseResponseModel(viewModel));
+            return new BaseResponeModel(viewModel);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailChamCong(int ID)
+        public ActionResult<BaseResponeModel> DetailChamCong(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -63,11 +66,11 @@ namespace NghiaHa.API.Controllers
                 model = _invoiceRepository.GetByID(ID);
             }
             model.CategoryID = AppGlobal.DuAnID;
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailDuToan(int ID)
+        public ActionResult<BaseResponeModel> DetailDuToan(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -86,11 +89,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailNhanSu(int ID)
+        public ActionResult<BaseResponeModel> DetailNhanSu(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -109,11 +112,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
             
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> Detail(int ID)
+        public ActionResult<BaseResponeModel> Detail(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -132,11 +135,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailHopDong(int ID)
+        public ActionResult<BaseResponeModel> DetailHopDong(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -206,11 +209,11 @@ namespace NghiaHa.API.Controllers
 
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailChaoGia(int ID)
+        public ActionResult<BaseResponeModel> DetailChaoGia(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -337,11 +340,11 @@ namespace NghiaHa.API.Controllers
             }
 
             model.CategoryID = AppGlobal.DuAnID;
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailNghiemThu(int ID)
+        public ActionResult<BaseResponeModel> DetailNghiemThu(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -462,11 +465,11 @@ namespace NghiaHa.API.Controllers
 
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailThanhLy(int ID)
+        public ActionResult<BaseResponeModel> DetailThanhLy(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -545,20 +548,20 @@ namespace NghiaHa.API.Controllers
 
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> DetailFiles(int ID)
+        public ActionResult<BaseResponeModel> DetailFiles(int ID)
         {
             InvoiceProperty model = new InvoiceProperty();
             model.InvoiceID = ID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> PrintPreviewHopDong(int ID)
+        public ActionResult<BaseResponeModel> PrintPreviewHopDong(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -578,11 +581,11 @@ namespace NghiaHa.API.Controllers
 
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> PrintPreviewThanhLy(int ID)
+        public ActionResult<BaseResponeModel> PrintPreviewThanhLy(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -601,11 +604,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> PrintPreviewNghiemThu(int ID)
+        public ActionResult<BaseResponeModel> PrintPreviewNghiemThu(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -624,11 +627,11 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> PrintPreviewChaoGia(int ID)
+        public ActionResult<BaseResponeModel> PrintPreviewChaoGia(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -647,74 +650,74 @@ namespace NghiaHa.API.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
 
-            return ObjectToJson(new BaseResponseModel(model));
+            return new BaseResponeModel(model);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectDuToanFullNameByInvoiceIDAndDuToanToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectDuToanFullNameByInvoiceIDAndDuToanToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.DuToanID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetInvoicePropertyByInvoiceIDToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetInvoicePropertyByInvoiceIDToList(int invoiceID)
         {
             var data = _invoicePropertyRepository.GetByInvoiceIDToList(invoiceID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectNhanSuByInvoiceIDAndNhanSuToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectNhanSuByInvoiceIDAndNhanSuToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.NhanSuID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectChamCongByInvoiceIDAndChamCongToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectChamCongByInvoiceIDAndChamCongToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.ChamCongID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectDuToanByInvoiceIDAndThiCongToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectDuToanByInvoiceIDAndThiCongToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndParentIDToList(invoiceID, AppGlobal.ThiCongID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectNhanSuByInvoiceIDAndChamCongToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectNhanSuByInvoiceIDAndChamCongToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectNhanSuByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ChamCongID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectDuToanByInvoiceIDAndDuToanToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectDuToanByInvoiceIDAndDuToanToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.DuToanID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectDuToanByInvoiceIDAndChaoGiaToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectDuToanByInvoiceIDAndChaoGiaToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectDuToanByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ChaoGiaID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpGet]
-        public ActionResult<string> GetProjectThiCongByInvoiceIDAndThiCongToList(int invoiceID)
+        public ActionResult<BaseResponeModel> GetProjectThiCongByInvoiceIDAndThiCongToList(int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ThiCongID);
-            return ObjectToJson(new BaseResponseModel(data));
+            return new BaseResponeModel(data);
         }
 
         [HttpDelete]
-        public ActionResult<string> DeleteInvoiceProperty(int ID)
+        public ActionResult<BaseResponeModel> DeleteInvoiceProperty(int ID)
         {
             int result = _invoicePropertyRepository.Delete(ID);
             if (result > 0)
@@ -726,11 +729,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> DeleteProjectThiCong(int ID)
+        public ActionResult<BaseResponeModel> DeleteProjectThiCong(int ID)
         {
             InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByID(ID);
             int invoiceID = 0;
@@ -757,11 +760,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpDelete]
-        public ActionResult<string> DeleteDetail(int ID)
+        public ActionResult<BaseResponeModel> DeleteDetail(int ID)
         {
             int result = _invoiceDetailRepository.Delete(ID);
 
@@ -774,12 +777,12 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.DeleteError, AppGlobal.DeleteFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
 
         [HttpPost]
-        public ActionResult<string> SaveProject(Invoice model)
+        public ActionResult<BaseResponeModel> SaveProject(Invoice model)
         {
             int result;
 
@@ -831,12 +834,12 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
 
         [HttpPost]
-        public ActionResult<string> SaveHopDong(Invoice model)
+        public ActionResult<BaseResponeModel> SaveHopDong(Invoice model)
         {
             if (model.ID > 0)
             {
@@ -867,12 +870,12 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
 
         [HttpPost]
-        public ActionResult<string> SaveChaoGia(Invoice model)
+        public ActionResult<BaseResponeModel> SaveChaoGia(Invoice model)
         {
             if (model.ID > 0)
             {
@@ -893,12 +896,12 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
 
         [HttpPost]
-        public ActionResult<string> SaveNghiemThu(Invoice model)
+        public ActionResult<BaseResponeModel> SaveNghiemThu(Invoice model)
         {
             if (model.ID > 0)
             {
@@ -919,12 +922,12 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
 
         [HttpPost]
-        public ActionResult<string> SaveThanhLy(Invoice model)
+        public ActionResult<BaseResponeModel> SaveThanhLy(Invoice model)
         {
             if (model.ID > 0)
             {
@@ -945,11 +948,11 @@ namespace NghiaHa.API.Controllers
                 }
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.ID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.ID }, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProjectDuToan(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> CreateProjectDuToan(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.CategoryID = AppGlobal.DuToanID;
             model.InvoiceID = invoiceID;
@@ -979,11 +982,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProjectThiCong(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> CreateProjectThiCong(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.CategoryID = AppGlobal.ThiCongID;
             model.InvoiceID = invoiceID;
@@ -1010,11 +1013,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProjectChaoGia(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> CreateProjectChaoGia(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.CategoryID = AppGlobal.ChaoGiaID;
             model.InvoiceID = invoiceID;
@@ -1036,11 +1039,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProjectNhanSu(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> CreateProjectNhanSu(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.CategoryID = AppGlobal.NhanSuID;
             model.InvoiceID = invoiceID;
@@ -1058,11 +1061,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProjectChamCong(InvoiceDetailDataTransfer model, int invoiceID)
+        public ActionResult<BaseResponeModel> CreateProjectChamCong(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.CategoryID = AppGlobal.ChamCongID;
             model.InvoiceID = invoiceID;
@@ -1086,11 +1089,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateProjectDuToan(InvoiceDetailDataTransfer model)
+        public ActionResult<BaseResponeModel> UpdateProjectDuToan(InvoiceDetailDataTransfer model)
         {
             model.InitializationForProject();
             model.Initialization(InitType.Update, RequestUserID);
@@ -1106,11 +1109,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateProjectThiCong(InvoiceDetailDataTransfer model)
+        public ActionResult<BaseResponeModel> UpdateProjectThiCong(InvoiceDetailDataTransfer model)
         {
             model.InitializationForProject();
             model.Initialization(InitType.Update, RequestUserID);
@@ -1128,11 +1131,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateProjectNhanSu(InvoiceDetailDataTransfer model)
+        public ActionResult<BaseResponeModel> UpdateProjectNhanSu(InvoiceDetailDataTransfer model)
         {
             model.EmployeeID = model.Employee.ID;
             model.Initialization(InitType.Update, RequestUserID);
@@ -1148,11 +1151,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateProjectChamCong(InvoiceDetailDataTransfer model)
+        public ActionResult<BaseResponeModel> UpdateProjectChamCong(InvoiceDetailDataTransfer model)
         {
             model.EmployeeID = model.Employee.ID;
             model.Quantity = model.Shift01 + model.Shift02 + model.Shift03;
@@ -1170,11 +1173,11 @@ namespace NghiaHa.API.Controllers
                 RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
             }
 
-            return ObjectToJson(new BaseResponseModel(null, RouteResult));
+            return new BaseResponeModel(null, RouteResult);
         }
 
         [HttpPost]
-        public ActionResult<string> SaveFiles(InvoiceProperty model)
+        public ActionResult<BaseResponeModel> SaveFiles(InvoiceProperty model)
         {
             try
             {
@@ -1216,7 +1219,7 @@ namespace NghiaHa.API.Controllers
 
             }
 
-            return ObjectToJson(new BaseResponseModel(new { ID = model.InvoiceID }, RouteResult));
+            return new BaseResponeModel(new { ID = model.InvoiceID }, RouteResult);
         }
     }
 }
