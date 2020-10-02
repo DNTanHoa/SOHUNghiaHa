@@ -1,4 +1,6 @@
-﻿using SOHU.Data.Helpers;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SOHU.Data.Extensions;
+using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -6,14 +8,15 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SOHU.Data.Repositories
 {
-    public class InvoiceRepository : Repository<Invoice>, IInvoiceRepository
+    public class InvoiceForAPIRepository : Repository<Invoice>, IInvoiceRepository
     {
         private readonly SOHUContext _context;
 
-        public InvoiceRepository(SOHUContext context) : base(context)
+        public InvoiceForAPIRepository(SOHUContext context) : base(context)
         {
             _context = context;
         }
@@ -24,9 +27,14 @@ namespace SOHU.Data.Repositories
         }
         public List<Invoice> GetByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month)
         {
-            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month)
-                                    .OrderByDescending(item => item.InvoiceCreated)
-                                    .ToList();
+            List<Invoice> ListInvoice = _context.Invoice.Where(item => item.CategoryID == categoryID
+                                                                   && item.InvoiceCreated.Value.Year == year
+                                                                   && item.InvoiceCreated.Value.Month == month)
+                                                        .OrderByDescending(item => item.InvoiceCreated)
+                                                        .Do(item => item.HopDong = null)
+                                                        .ToList();
+
+            return ListInvoice;
         }
         public void InitializationByID(int ID)
         {
@@ -65,7 +73,7 @@ namespace SOHU.Data.Repositories
         }
         public List<Invoice> GetInvoiceInputByProductIDToList(int productID)
         {
-            List<Invoice> list = new List<Invoice>();
+            List<Invoice> ListInvoice = new List<Invoice>();
             if (productID > 0)
             {
                 SqlParameter[] parameters =
@@ -73,13 +81,16 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@ProductID",productID),
             };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceInputSelectByProductID", parameters);
-                list = SQLHelper.ToList<Invoice>(dt);
+                ListInvoice = SQLHelper.ToList<Invoice>(dt);
             }
-            return list;
+
+            ListInvoice.ForEach(item => item.HopDong = null);
+
+            return ListInvoice;
         }
         public List<Invoice> GetInvoiceOutputByProductIDToList(int productID)
         {
-            List<Invoice> list = new List<Invoice>();
+            List<Invoice> ListInvoice = new List<Invoice>();
             if (productID > 0)
             {
                 SqlParameter[] parameters =
@@ -87,13 +98,16 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@ProductID",productID),
             };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceOutputSelectByProductID", parameters);
-                list = SQLHelper.ToList<Invoice>(dt);
-                for (int i = 0; i < list.Count; i++)
+                ListInvoice = SQLHelper.ToList<Invoice>(dt);
+                for (int i = 0; i < ListInvoice.Count; i++)
                 {
-                    list[i].ID = int.Parse(dt.Rows[i]["ID"].ToString());
+                    ListInvoice[i].ID = int.Parse(dt.Rows[i]["ID"].ToString());
                 }
             }
-            return list;
+
+            ListInvoice.ForEach(item => item.HopDong = null);
+
+            return ListInvoice;
         }
     }
 }

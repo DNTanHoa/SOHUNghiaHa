@@ -7,8 +7,8 @@ namespace SOHU.Data.Results
 {
     public class BaseResult
     {
-        public ResultType ResultType;
+        public ResultType ResultType { get; set; }
 
-        public string Message;
+        public string Message { get; set; }
     }
 }
