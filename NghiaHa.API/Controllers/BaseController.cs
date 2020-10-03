@@ -12,27 +12,9 @@ namespace NghiaHa.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController : ControllerBase//, IActionFilter
+    public class BaseController : ControllerBase
     {
         protected BaseResult RouteResult;
-
-        /// <summary>
-        /// Not Implement
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Check user has allow
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            throw new NotImplementedException();
-        }
 
         public int RequestUserID
         {

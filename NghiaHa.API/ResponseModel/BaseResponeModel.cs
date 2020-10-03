@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Results;
@@ -28,6 +29,7 @@ namespace NghiaHa.API.ResponseModel
         }
 
         public BaseResult Result { get; set; }
+
         public Object Data { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NghiaHa.API.RequestModel;
 using NghiaHa.API.ResponseModel;
 using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
@@ -118,16 +119,23 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetByDuAnAndYearAndMonthToList([FromBody]int year, int month)
+        public ActionResult<BaseResponeModel> GetByDuAnAndYearAndMonthToList(DateFilterRequestModel model)
         {
-            List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, year, month);
+            List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, model.Year, model.Month);
             return new BaseResponeModel(Invoices);
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetByInvoiceInputAndYearAndMonthToList(int year, int month)
+        public ActionResult<BaseResponeModel> GetAllProjectToList()
         {
-            List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceInputID, year, month);
+            List<Invoice> Invoices = _invoiceRepository.GetAllProjectToList();
+            return new BaseResponeModel(Invoices);
+        }
+
+        [HttpGet]
+        public ActionResult<BaseResponeModel> GetByInvoiceInputAndYearAndMonthToList(DateFilterRequestModel model)
+        {
+            List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceInputID, model.Year, model.Month);
             return new BaseResponeModel(Invoices);
         }
 

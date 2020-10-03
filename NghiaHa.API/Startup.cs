@@ -31,7 +31,7 @@ namespace NghiaHa.API
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IConfigRepository, ConfigRepository>();
             services.AddTransient<IInvoicePaymentRepository, InvoicePaymentRepository>();
-            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+            services.AddTransient<IInvoiceRepository, InvoiceForAPIRepository>();
             services.AddTransient<IInvoiceDetailRepository, InvoiceDetailRepository>();
             services.AddTransient<IMembershipPaymentRepository, MembershipPaymentRepository>();
             services.AddTransient<ICartRepository, CartRepository>();

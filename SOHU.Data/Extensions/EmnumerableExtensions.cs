@@ -19,5 +19,22 @@ namespace SOHU.Data.Extensions
                 };
             }
         }
+
+
+        /// <summary>
+        /// To set value to IEnumerable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Do<T>(this IEnumerable<T> self, Action<T> action)
+        {
+            foreach (var item in self)
+            {
+                action(item);
+                yield return item;
+            }
+        }
     }
 }
