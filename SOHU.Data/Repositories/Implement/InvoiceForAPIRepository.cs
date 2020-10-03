@@ -109,5 +109,18 @@ namespace SOHU.Data.Repositories
 
             return ListInvoice;
         }
+
+        public List<Invoice> GetAllProjectToList()
+        {
+            List<Invoice> ListInvoice = _context.Invoice.Where(item => item.CategoryID == 59)
+                                                        .OrderByDescending(item => item.InvoiceCreated)
+                                                        .Do(item => item.HopDong = null)
+                                                        .Do(item => item.ChaoGia = null)
+                                                        .Do(item => item.NghiemThu = null)
+                                                        .Do(item => item.ThanhLy = null)
+                                                        .ToList();
+
+            return ListInvoice;
+        }
     }
 }

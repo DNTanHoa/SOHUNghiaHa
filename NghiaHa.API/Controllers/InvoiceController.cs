@@ -126,6 +126,13 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
+        public ActionResult<BaseResponeModel> GetAllProjectToList()
+        {
+            List<Invoice> Invoices = _invoiceRepository.GetAllProjectToList();
+            return new BaseResponeModel(Invoices);
+        }
+
+        [HttpGet]
         public ActionResult<BaseResponeModel> GetByInvoiceInputAndYearAndMonthToList(DateFilterRequestModel model)
         {
             List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceInputID, model.Year, model.Month);

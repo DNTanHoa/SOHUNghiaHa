@@ -95,5 +95,10 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+
+        public List<Invoice> GetAllProjectToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
