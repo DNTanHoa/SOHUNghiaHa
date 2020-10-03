@@ -118,7 +118,7 @@ namespace NghiaHa.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<BaseResponeModel> GetByDuAnAndYearAndMonthToList(int year, int month)
+        public ActionResult<BaseResponeModel> GetByDuAnAndYearAndMonthToList([FromBody]int year, int month)
         {
             List<Invoice> Invoices = _invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, year, month);
             return new BaseResponeModel(Invoices);

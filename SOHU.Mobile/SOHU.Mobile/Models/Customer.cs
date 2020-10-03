@@ -25,5 +25,9 @@ namespace SOHU.Mobile.Models
         public string ContactFullName { get; set; }
 
         public string ContactPosition { get; set; }
+
+        public string BankAccount { get; set; }
+
+        public string BankName { get; set; }
     }
 }

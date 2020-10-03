@@ -6,12 +6,26 @@ namespace SOHU.Mobile.Models
 {
     public class Project
     {
-        public string Code { get; set; }
-
-        public decimal? Cost { get; set; }
-
         public int Id { get; set; }
 
-        public Customer customer { get; set; }
+        public string BuyName { get; set; }
+
+        public string BuyAddress { get; set; }
+
+        public string InvoiceName { get; set; }
+
+        public string HopDongTitle { get; set; }
+
+        public string HopDongTitleSub { get; set; }
+
+        public decimal TotalNoTax { get; set; }
+
+        public decimal TotalTax { get; set; }
+
+        public decimal Total { get; set; }
+
+        public decimal TotalPaid { get; set; }
+
+        public decimal TotalDebt { get; set; }
     }
 }

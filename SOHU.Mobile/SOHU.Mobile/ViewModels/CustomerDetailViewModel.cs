@@ -3,6 +3,8 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
+using SOHU.Mobile.Models;
+using SOHU.Mobile.Services.Membership;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +15,38 @@ namespace SOHU.Mobile.ViewModels
     public class CustomerDetailViewModel : ViewModelBase
     {
         private readonly IPageDialogService dialogService;
+        private readonly IMembershipService membershipService;
 
         public CustomerDetailViewModel(INavigationService navigationService,
-                                       IPageDialogService dialogService) : base(navigationService)
+                                       IPageDialogService dialogService,
+                                       IMembershipService membershipService) : base(navigationService)
         {
             Title = "Chi tiết khách hàng";
             this.dialogService = dialogService;
-
+            this.membershipService = membershipService;
             SaveCommand = new DelegateCommand(async () => await SaveCommandExecute());
             BackCommand = new DelegateCommand(async () => await BackCommandExecute());
         }
 
-        private string _name;
-        public string Name
+        private int _Id;
+        public int Id
         {
-            get => _name;
+            get => _Id;
             set
             {
-                this._name = value;
-                RaisePropertyChanged(nameof(Name));
+                _Id = value;
+                RaisePropertyChanged(nameof(Id));
+            }
+        }
+
+        private string _fullName;
+        public string FullName
+        {
+            get => _fullName;
+            set
+            {
+                this._fullName = value;
+                RaisePropertyChanged(nameof(FullName));
             }
         }
 
@@ -132,12 +147,56 @@ namespace SOHU.Mobile.ViewModels
 
         public async Task SaveCommandExecute()
         {
-            await dialogService.DisplayAlertAsync("Thông báo", "Ứng dụng chưa được kết nối dữ liệu", "OK");
+            var customer = new Customer()
+            {
+                FullName = this.FullName,
+                Code = string.Empty,
+                Id = this.Id,
+                Address = this.Address,
+                TaxCode = this.TaxCode,
+                Email = this.Email,
+                Phone = this.Phone,
+                ContactFullName = this.ContactFullName,
+                ContactPosition = this.ContactPosition,
+                ParentID = 46,
+                BankAccount = this.BankAccount,
+                BankName  = this.BankName
+            };
+            var result = membershipService.SaveCustomer(customer, out string message);
+            if (result)
+            {
+                await dialogService.DisplayAlertAsync("Thông báo", "Lưu thành công", "OK");
+                await NavigationService.NavigateAsync("CustomerMaster");
+            }
+            else
+            {
+                await dialogService.DisplayAlertAsync("Thông báo", message, "OK");
+            }
         }
 
         public async Task BackCommandExecute()
         {
             await NavigationService.NavigateAsync("CustomerMaster");
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            var customerId = parameters.GetValue<int>("CustomerId");
+            if(customerId > 0)
+            {
+                var customer = membershipService.GetByID(customerId);
+                this.Id = customer.Id;
+                this.FullName = customer.FullName;
+                this.Phone = customer.Phone;
+                this.TaxCode = customer.TaxCode;
+                this.Address = customer.Address;
+                this.BankAccount = customer.BankAccount;
+                this.BankName = customer.BankName;
+                this.Email = customer.Email;
+                this.ContactFullName = customer.ContactFullName;
+                this.ContactPosition = customer.ContactPosition;
+            }    
+            base.OnNavigatedTo(parameters);
         }
     }
 }

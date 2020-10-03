@@ -19,7 +19,7 @@
                        HorizontalOptions="FillAndExpand"
                        TextColor="Black"
                        FlexLayout.Basis="70%"
-                       Text="{Binding Name}"
+                       Text="{Binding FullName}"
                        PlaceholderColor="Black"/>
             </FlexLayout>
 

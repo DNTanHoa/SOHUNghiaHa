@@ -62,6 +62,10 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <prism:EventToCommandBehavior EventName="ItemTapped"
+                                          Command="{Binding ItemTappedCommand}"/>
+                </ListView.Behaviors>
             </ListView>
         </ScrollView>
         <RelativeLayout HorizontalOptions="EndAndExpand">

@@ -1,7 +1,10 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
+using SOHU.Mobile.Helpers;
 using SOHU.Mobile.Models;
+using SOHU.Mobile.Services.Invoice;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,9 +15,18 @@ namespace SOHU.Mobile.ViewModels
 {
     public class ProjectPageViewModel : ViewModelBase
     {
-        public ProjectPageViewModel(INavigationService navigationService) : base(navigationService)
+        private readonly IInvoiceService invoiceService;
+        private readonly IPageDialogService pageDialogService;
+
+        public ProjectPageViewModel(INavigationService navigationService,
+                                    IInvoiceService invoiceService,
+                                    IPageDialogService pageDialogService) : base(navigationService)
         {
             Title = "Danh sách dự án";
+            this.invoiceService = invoiceService;
+            this.pageDialogService = pageDialogService;
+
+            this.Projects = invoiceService.GetProjects(2020,10).ToObservableCollection();
         }
 
         public ObservableCollection<Project> Projects { get; set; }

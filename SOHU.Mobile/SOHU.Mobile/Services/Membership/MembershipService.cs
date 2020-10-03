@@ -13,6 +13,30 @@ namespace SOHU.Mobile.Services.Membership
 {
     public class MembershipService : IMembershipService
     {
+        public Customer GetByID(int ID)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = AppGlobal.ApiServerEndpoint + "membership/CustomerDetail?ID=" + ID;
+                try
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppGlobal.Token);
+                    var response = client.GetAsync(uri);
+                    if (response.Result.StatusCode == HttpStatusCode.OK)
+                    {
+                        var content = response.Result.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<SaveResponeModel>(content.Result);
+                        return result.Data.ToObject<Customer>();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return new Customer();
+        }
+
         public List<Customer> GetCustomers()
         {
             using (var client = new HttpClient())
@@ -97,6 +121,43 @@ namespace SOHU.Mobile.Services.Membership
                 }
             }
             message = "Đăng nhập thất bại";
+            return false;
+        }
+
+        public bool SaveCustomer(Customer customer, out string message)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = AppGlobal.ApiServerEndpoint + "membership/SaveCustomer";
+                try
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppGlobal.Token);
+                    var parameters = JsonConvert.SerializeObject(customer);
+                    var response = client.PostAsync(uri, new StringContent(parameters, Encoding.UTF8, "application/json"));
+                    if (response.Result.StatusCode == HttpStatusCode.OK)
+                    {
+                        var content = response.Result.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<SaveResponeModel>(content.Result);
+                        var apiResult = result.Result.ToObject<APIResult>();
+                        message = apiResult?.Message;
+                        if(apiResult.ResultType == 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    message = ex.Message;
+                    return false;
+                }
+            }
+            message = string.Empty;
             return false;
         }
     }

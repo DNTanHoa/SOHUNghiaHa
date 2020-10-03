@@ -6,6 +6,7 @@ using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
 using SOHU.Mobile.Services.Membership;
+using SOHU.Mobile.Services.Invoice;
 
 namespace SOHU.Mobile
 {
@@ -41,6 +42,7 @@ namespace SOHU.Mobile
             containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
 
             containerRegistry.RegisterSingleton<IMembershipService, MembershipService>();
+            containerRegistry.RegisterSingleton<IInvoiceService, InvoiceService>();
             containerRegistry.RegisterForNavigation<EmployeeMaster, EmployeeMasterViewModel>();
             containerRegistry.RegisterForNavigation<EmployeeDetail, EmployeeDetailViewModel>();
         }

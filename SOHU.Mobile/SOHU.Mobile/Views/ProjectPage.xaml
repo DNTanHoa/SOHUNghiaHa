@@ -11,16 +11,46 @@
                        PlaceholderColor="Gray"></SearchBar>
         </StackLayout>
         <ScrollView>
-            <ListView ItemsSource="{Binding Invoices}"
-                      SelectedItem="{Binding SelectedInvoice}">
+            <ListView ItemsSource="{Binding Projects}"
+                      HasUnevenRows="True"
+                      SelectedItem="{Binding SelectedProject}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell></ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="8">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding InvoiceName}"
+                                           TextColor="Navy"
+                                           FontAttributes="Bold"
+                                           FontSize="18"></Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Khách hàng:"
+                                           TextColor="Navy"
+                                           FontAttributes="Italic"
+                                           FontSize="16"></Label>
+                                    <Label Text="{Binding BuyName}"
+                                           TextColor="Black"
+                                           FontAttributes="Italic"
+                                           FontSize="14"></Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Thi công tại:"
+                                           TextColor="Navy"
+                                           FontAttributes="Italic"
+                                           FontSize="16"></Label>
+                                    <Label Text="{Binding BuyAddress}"
+                                           TextColor="Black"
+                                           FontAttributes="Italic"
+                                           FontSize="14"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollView>
-        <RelativeLayout HorizontalOptions="EndAndExpand">
+        <!--<RelativeLayout HorizontalOptions="EndAndExpand">
             <Frame Padding="0"
                    Margin="25"
                    BackgroundColor="Navy"
@@ -43,6 +73,6 @@
                 <TapGestureRecognizer Command="{Binding ItemTappedCommand}"
                                       CommandParameter="0"/>
             </RelativeLayout.GestureRecognizers>
-        </RelativeLayout>
+        </RelativeLayout>-->
     </StackLayout>
 </ContentPage>
