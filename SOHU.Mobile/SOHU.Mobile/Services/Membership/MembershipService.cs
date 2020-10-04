@@ -61,6 +61,30 @@ namespace SOHU.Mobile.Services.Membership
             return new List<Customer>();
         }
 
+        public Employee GetEmployeeByID(int ID)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = AppGlobal.ApiServerEndpoint + "membership/EmployeeDetail?ID=" + ID;
+                try
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppGlobal.Token);
+                    var response = client.GetAsync(uri);
+                    if (response.Result.StatusCode == HttpStatusCode.OK)
+                    {
+                        var content = response.Result.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<SaveResponeModel>(content.Result);
+                        return result.Data.ToObject<Employee>();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return new Employee();
+        }
+
         public List<Employee> GetEmployees()
         {
             using (var client = new HttpClient())
@@ -141,6 +165,43 @@ namespace SOHU.Mobile.Services.Membership
                         var apiResult = result.Result.ToObject<APIResult>();
                         message = apiResult?.Message;
                         if(apiResult.ResultType == 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    message = ex.Message;
+                    return false;
+                }
+            }
+            message = string.Empty;
+            return false;
+        }
+
+        public bool SaveEmployee(Employee employee, out string message)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = AppGlobal.ApiServerEndpoint + "membership/SaveEmployee";
+                try
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppGlobal.Token);
+                    var parameters = JsonConvert.SerializeObject(employee);
+                    var response = client.PostAsync(uri, new StringContent(parameters, Encoding.UTF8, "application/json"));
+                    if (response.Result.StatusCode == HttpStatusCode.OK)
+                    {
+                        var content = response.Result.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<SaveResponeModel>(content.Result);
+                        var apiResult = result.Result.ToObject<APIResult>();
+                        message = apiResult?.Message;
+                        if (apiResult.ResultType == 0)
                         {
                             return true;
                         }

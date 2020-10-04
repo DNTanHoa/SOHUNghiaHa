@@ -64,7 +64,8 @@
                 </ListView.ItemTemplate>
                 <ListView.Behaviors>
                     <prism:EventToCommandBehavior EventName="ItemTapped"
-                                          Command="{Binding ItemTappedCommand}"/>
+                                          Command="{Binding ItemTappedCommand}"
+                                          CommandParameter="Edit"/>
                 </ListView.Behaviors>
             </ListView>
         </ScrollView>
@@ -89,7 +90,7 @@
             </Frame>
             <RelativeLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ItemTappedCommand}"
-                                      CommandParameter="0"/>
+                                      CommandParameter="Add"/>
             </RelativeLayout.GestureRecognizers>
         </RelativeLayout>
     </StackLayout>

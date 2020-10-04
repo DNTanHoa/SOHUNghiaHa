@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms;
-using static Android.Provider.CalendarContract;
 
 namespace SOHU.Mobile.Views
 {

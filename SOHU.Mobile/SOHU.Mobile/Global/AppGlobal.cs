@@ -1,6 +1,4 @@
-﻿using Android.Media;
-using Android.Views.TextClassifiers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 

@@ -262,37 +262,39 @@ namespace NghiaHa.API.Controllers
         [HttpPost]
         public ActionResult<BaseResponeModel> SaveEmployee(Membership model)
         {
-            bool check = false;
 
-            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            if (model.ID > 0)
             {
-                check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
-            }
+                model.TrimModel();
+                model.Initialization(InitType.Update, RequestUserID);
 
-            if (model.ParentID == AppGlobal.EmployeeParentID)
-            {
-                check = _membershipRepository.IsValidByPhone(model.Phone);
-            }
+                int result = _membershipRepository.Update(model.ID, model);
 
-            if (check == true)
-            {
-                if (model.ID > 0)
+                if (result > 0)
                 {
-                    model.TrimModel();
-                    model.Initialization(InitType.Update, RequestUserID);
-
-                    int result = _membershipRepository.Update(model.ID, model);
-
-                    if (result > 0)
-                    {
-                        RouteResult = new SuccessResult(AppGlobal.EditSuccess);
-                    }
-                    else
-                    {
-                        RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
-                    }
+                    RouteResult = new SuccessResult(AppGlobal.EditSuccess);
                 }
                 else
+                {
+                    RouteResult = new ErrorResult(ErrorType.EditError, AppGlobal.EditFail);
+                }
+            }
+            else
+            {
+                bool check = false;
+
+                if ((model.ParentID == AppGlobal.CustomerParentID)
+                    || (model.ParentID == AppGlobal.SupplierParentID))
+                {
+                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                }
+
+                if (model.ParentID == AppGlobal.EmployeeParentID)
+                {
+                    check = _membershipRepository.IsValidByPhone(model.Phone);
+                }
+
+                if (check == true)
                 {
                     model.TrimModel();
                     model.SetDefaultValue();//set default username, password

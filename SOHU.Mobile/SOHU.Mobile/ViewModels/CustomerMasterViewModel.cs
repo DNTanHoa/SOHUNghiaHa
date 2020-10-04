@@ -19,7 +19,7 @@ namespace SOHU.Mobile.ViewModels
         public CustomerMasterViewModel(INavigationService navigationService,
                                        IMembershipService membershipService) : base(navigationService)
         {
-            ItemTappedCommand = new DelegateCommand(async () => await ItemTappedCommandExecute());
+            ItemTappedCommand = new DelegateCommand<string>(ItemTappedCommandExecute);
             Title = "Danh sách khách hàng";
             this.membershipService = membershipService;
 
@@ -30,13 +30,20 @@ namespace SOHU.Mobile.ViewModels
 
         public Customer SelectedCustomer { get; set; }
 
-        public DelegateCommand ItemTappedCommand { get; private set; }
+        public DelegateCommand<string> ItemTappedCommand { get; private set; }
 
-        public async Task ItemTappedCommandExecute()
+        public void ItemTappedCommandExecute(string commandType)
         {
             NavigationParameters parameters = new NavigationParameters();
-            parameters.Add("CustomerId", SelectedCustomer?.Id);
-            await NavigationService.NavigateAsync("CustomerDetail", parameters);
+            if (commandType.Equals("Add"))
+            {
+                parameters.Add("CustomerId",0);
+            }
+            else
+            {
+                parameters.Add("CustomerId", SelectedCustomer?.Id);
+            }
+            NavigationService.NavigateAsync("CustomerDetail", parameters);
         }
     }
 }

@@ -20,7 +20,7 @@
         <ScrollView>
             <ListView ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"
                       HasUnevenRows="True"
-                      SelectedItem="{Binding SelectedCustomer}">
+                      SelectedItem="{Binding SelectedEmployee}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -44,7 +44,7 @@
                                            TextColor="Navy"
                                            FontAttributes="Italic"
                                            FontSize="16"></Label>
-                                    <Label Text="{Binding Email}"
+                                    <Label Text="{Binding CitizenIdentification}"
                                            TextColor="Black"
                                            FontAttributes="Italic"
                                            FontSize="14"></Label>
@@ -69,6 +69,11 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <prism:EventToCommandBehavior EventName="ItemTapped"
+                                          Command="{Binding ItemTappedCommand}"
+                                          CommandParameter="Edit"/>
+                </ListView.Behaviors>
             </ListView>
         </ScrollView>
         <RelativeLayout HorizontalOptions="EndAndExpand">
@@ -92,7 +97,7 @@
             </Frame>
             <RelativeLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ItemTappedCommand}"
-                                      CommandParameter="0"/>
+                                      CommandParameter="Add"/>
             </RelativeLayout.GestureRecognizers>
         </RelativeLayout>
     </StackLayout>
