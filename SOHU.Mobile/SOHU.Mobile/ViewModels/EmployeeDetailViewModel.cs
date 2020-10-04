@@ -108,11 +108,11 @@ namespace SOHU.Mobile.ViewModels
                 Address = this.Address,
                 TaxCode = this.TaxCode,
                 CitizenIdentification = this.CitizenIdentification,
-                //Email = this.Email,
                 Phone = this.Phone,
+                ParentID = 48
+                //Email = this.Email,
                 //ContactFullName = this.ContactFullName,
                 //ContactPosition = this.ContactPosition,
-                ParentID = 48,
                 //BankAccount = this.BankAccount,
                 //BankName = this.BankName
             };

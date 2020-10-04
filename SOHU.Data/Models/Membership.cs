@@ -41,7 +41,8 @@ namespace SOHU.Data.Models
 
         public virtual void ConcatFullname()
         {
-            this.FullName = this.LastName + " " + this.FirstName;
+            if(!string.IsNullOrWhiteSpace(this.LastName) && !string.IsNullOrWhiteSpace(this.FirstName))
+                this.FullName = this.LastName + " " + this.FirstName;
         }
     }
 }
