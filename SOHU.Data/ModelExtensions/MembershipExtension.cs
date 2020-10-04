@@ -41,7 +41,7 @@ namespace SOHU.Data.ModelExtensions
             }
 
             //default password
-            model.Passport = "1234";
+            model.Password = "1234";
         }
     }
 }

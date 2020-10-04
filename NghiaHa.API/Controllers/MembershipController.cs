@@ -184,6 +184,10 @@ namespace NghiaHa.API.Controllers
                         RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
                     }
                 }
+                else
+                {
+                    RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail + ": Trùng MST hoặc số CMND!");
+                }
             }
 
             return new BaseResponeModel(new { ID = model.ID }, RouteResult);
@@ -221,6 +225,7 @@ namespace NghiaHa.API.Controllers
                 {
                     check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
                 }
+
                 if (check == true)
                 {
                     model.TrimModel();
@@ -236,6 +241,10 @@ namespace NghiaHa.API.Controllers
                     {
                         RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
                     }
+                }
+                else
+                {
+                    RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail + ": Trùng MST hoặc số CMND!");
                 }
             }
 
@@ -300,6 +309,9 @@ namespace NghiaHa.API.Controllers
                     model.SetDefaultValue();//set default username, password
                     model.Initialization(InitType.Insert, RequestUserID);
 
+                    //ConcatFullname, InitDefaultValue, EncryptPassword;
+                    _membershipRepository.InitBeforeSave(model, InitType.Insert);
+
                     int result = _membershipRepository.Create(model);
 
                     if (result > 0)
@@ -310,6 +322,10 @@ namespace NghiaHa.API.Controllers
                     {
                         RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail);
                     }
+                }
+                else
+                {
+                    RouteResult = new ErrorResult(ErrorType.InsertError, AppGlobal.CreateFail + ": Trùng MST hoặc SĐT!");
                 }
             }
 
