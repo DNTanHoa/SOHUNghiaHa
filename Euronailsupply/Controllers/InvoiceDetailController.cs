@@ -32,7 +32,11 @@ namespace Euronailsupply.Controllers
         {
             model.ProductID = model.Product.ID;
             model.UnitID = model.Unit.ID;
-            model.Total = model.UnitPrice * model.Quantity;            
+            if (model.UnitID == null)
+            {
+                model.UnitID = AppGlobal.UnitID;
+            }
+            model.Total = model.UnitPrice * model.Quantity;
         }
         public IActionResult GetDataTransferByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
@@ -42,6 +46,55 @@ namespace Euronailsupply.Controllers
         {
             return Json(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
         }
+        public IActionResult CreateByInvoiceIDAndProductMetaTitle(int invoiceID, string productMetaTitle)
+        {
+            string note = AppGlobal.InitString;
+            if (!string.IsNullOrEmpty(productMetaTitle))
+            {
+                Product product = _productRepository.GetByMetaTitle(productMetaTitle);
+                if (product != null)
+                {
+                    int result = 0;
+                    InvoiceDetail model = _invoiceDetailRepository.GetByInvoiceIDAndProductID(invoiceID, product.ID);
+                    if (model == null)
+                    {
+                        model = new InvoiceDetail();
+                        model.InvoiceID = invoiceID;
+                        model.ProductID = product.ID;
+                        model.UnitPrice = product.Price;
+                        model.ManufacturingCode = product.MetaTitle;
+                        model.Quantity = 1;
+                        model.UnitID = AppGlobal.UnitID;
+                        model.Total = model.UnitPrice * model.Quantity;
+                        model.Initialization(InitType.Insert, RequestUserID);
+
+                        if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                        {
+                            result = _invoiceDetailRepository.Create(model);
+                        }
+                    }
+                    else
+                    {
+                        model.UnitPrice = product.Price;
+                        model.Quantity = model.Quantity + 1;
+                        model.Total = model.UnitPrice * model.Quantity;
+                        model.Initialization(InitType.Update, RequestUserID);
+                        result = _invoiceDetailRepository.Update(model.ID, model);
+                    }
+                    if (result > 0)
+                    {
+                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                        _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                        _productRepository.InitializationByID(model.ProductID.Value);
+                    }
+                    else
+                    {
+                        note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                    }
+                }
+            }
+            return Json(_invoiceRepository.GetByID(invoiceID));
+        }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
@@ -49,8 +102,7 @@ namespace Euronailsupply.Controllers
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
-
-            if ((model.ProductID > 0) && (model.UnitID > 0))
+            if ((model.ProductID > 0) && (model.InvoiceID > 0))
             {
                 result = _invoiceDetailRepository.Create(model);
             }

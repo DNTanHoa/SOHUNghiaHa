@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWindowPrintPreview.cshtml";
+    ViewData["Title"] = Model.InvoiceCode + " - Invoice preview";
+}
+
+@model SOHU.Data.Models.Invoice
+<style>
+    body {
+        margin: 0px; /* this affects the margin on the content before sending to printer */
+        font-family: 'Times New Roman';
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
+        color-adjust: exact !important; /*Firefox*/
+    }
+
+    .border, .border td, .border th {
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        padding: 4px;
+    }
+
+    .border {
+        border-collapse: collapse;
+    }
+
+        .border th {
+            text-align: center;
+        }
+
+        .border td {
+            text-align: right;
+        }
+
+        .border .text {
+            text-align: left;
+        }
+</style>
+<div style="width:310px; height:auto; padding:10px; margin:auto; background-color:#ffffff;">
+    <p style="text-transform:uppercase; font-size:14px; font-weight:bold; text-align:center;">Euro Nail Supply LTD</p>
+    <p style="font-size:12px; text-align:center;">Tel: 020 3730 1523 - Website: euronailsupply.com</p>
+    <p style="font-size:12px; text-align:center;">Address: 52-52A-52C Well street, Hackney, London</p>
+    <p style="font-size:12px; text-align:center;">***************************</p>
+    <table class="border" style="font-size:12px; width:100%;">
+        <thead>
+            <tr>
+                <th style="text-align:center; width:60%;">
+                    Description
+                </th>
+                <th style="text-align:center; width:10%;">
+                    Quantity
+                </th>
+                <th style="text-align:center; width:10%;">
+                    Price
+                </th>
+                <th style="text-align:center; width:20%;">
+                    Sub
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.Raw(Model.HopDong)
+        </tbody>
+    </table>
+    <p style="font-size:14px; text-align:right;"><b>Print: @Model.DateCreated.Value.ToString("MM/dd/yyyy HH:mm") - Total: <span style="font-size:16px;">@Model.Total.Value.ToString("N2")</span></b></p>
+    <p style="font-size:12px; text-align:center;">***************************</p>
+    <p style="font-size:12px; text-align:center;">Thanks you very much, see you again</p>
+</div>
+
+<script>
+    $(document).ready(function () {
+        window.print();
+    });
+</script>

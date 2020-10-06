@@ -60,24 +60,24 @@
                                         @(Html.TextBoxFor(Model => Model.Title, new { placeholder = "Name", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Urlcode'>URL webiste</label>
-                                        @(Html.TextBoxFor(Model => Model.Urlcode, new { placeholder = "URL", @class = "form-control" }))
+                                        <label for='Urlcode'>URL (Auto by Name)</label>
+                                        @(Html.TextBoxFor(Model => Model.Urlcode, new { placeholder = "URL (Auto by Name)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Price'>Price</label>
-                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Price", @class = "form-control" }))
+                                        <label for='Price'>Price (GBP)</label>
+                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Price (GBP)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='PricePromotion'>Price promotion</label>
-                                        @(Html.TextBoxFor(Model => Model.PricePromotion, "{0:N0}", new { placeholder = "Price promotion", @class = "form-control" }))
+                                        <label for='PricePromotion'>Price promotion (GBP)</label>
+                                        @(Html.TextBoxFor(Model => Model.PricePromotion, "{0:N0}", new { placeholder = "Price promotion (GBP)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='PriceWebsite'>Price website</label>
-                                        @(Html.TextBoxFor(Model => Model.PriceWebsite, "{0:N0}", new { placeholder = "Price website", @class = "form-control" }))
+                                        <label for='PriceWebsite'>Price website (GBP) (Auto by Price)</label>
+                                        @(Html.TextBoxFor(Model => Model.PriceWebsite, "{0:N0}", new { placeholder = "Price website (GBP)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='PriceWebsitePromotion'>Price website promotion</label>
-                                        @(Html.TextBoxFor(Model => Model.PriceWebsitePromotion, "{0:N0}", new { placeholder = "Price website promotion", @class = "form-control" }))
+                                        <label for='PriceWebsitePromotion'>Price website promotion (GBP)</label>
+                                        @(Html.TextBoxFor(Model => Model.PriceWebsitePromotion, "{0:N0}", new { placeholder = "Price website promotion (GBP)", @class = "form-control" }))
                                     </div>
                                 </div>
                                 <div class="col-md-6">

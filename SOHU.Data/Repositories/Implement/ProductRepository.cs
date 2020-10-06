@@ -18,6 +18,10 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
+        public Product GetByMetaTitle(string metaTitle)
+        {
+            return _context.Set<Product>().FirstOrDefault(item => item.MetaTitle.Equals(metaTitle));
+        }
         public bool IsValidByTitle(string title)
         {
             Product item = _context.Set<Product>().FirstOrDefault(item => item.Title.Equals(title));
@@ -71,6 +75,7 @@ namespace SOHU.Data.Repositories
         {
             return _context.Product.Where(item => item.CategoryID == categoryID).OrderByDescending(item => item.DateUpdated).ToList();
         }
+
         public List<Product> GetAllOrderByTitleToList()
         {
             return _context.Product.OrderBy(item => item.Title).ToList();

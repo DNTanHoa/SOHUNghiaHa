@@ -33,6 +33,14 @@ namespace Euronailsupply.Controllers
             {
                 model.Title = model.Title.Trim();
             }
+            if (string.IsNullOrEmpty(model.Urlcode))
+            {
+                model.Urlcode = AppGlobal.SetName(model.Title);
+            }
+            if (model.PriceWebsite == null)
+            {
+                model.PriceWebsite = model.Price;
+            }
         }
         public IActionResult Index001()
         {
@@ -49,7 +57,7 @@ namespace Euronailsupply.Controllers
         }
         public IActionResult Detail(int ID)
         {
-            Product model = new Product();            
+            Product model = new Product();
             model.Discount = 0;
             if (ID > 0)
             {
@@ -81,7 +89,7 @@ namespace Euronailsupply.Controllers
         {
             var data = _productRepository.GetByCategoryIDToList(categoryID);
             return Json(data.ToDataSourceResult(request));
-        }      
+        }
         public IActionResult Save(Product model)
         {
             if (Request.Form.Files.Count > 0)
@@ -101,8 +109,16 @@ namespace Euronailsupply.Controllers
                     }
                 }
             }
+            if(string.IsNullOrEmpty(model.MetaTitle))
+            {
+                model.MetaTitle = AppGlobal.DateTimeCode;
+            }    
             if (model.ID > 0)
             {
+                if (string.IsNullOrEmpty(model.Image))
+                {
+                    model.Image = _productRepository.GetByID(model.ID).Image;
+                }
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
                 _productRepository.Update(model.ID, model);

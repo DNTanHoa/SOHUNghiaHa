@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Retail store";
+}
+
+@using Kendo.Mvc.UI
+@model SOHU.Data.Models.Invoice
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        @Html.HiddenFor(Model => Model.ID)
+                        <div class="row">
+                            <div class='col-md-9'>
+                            </div>
+                            <div class='col-md-1'>
+                                <button style="width:100%;" title="Save" onclick="onSave()" class="btn btn-primary">
+                                    <span class="fas fa-save"></span>
+                                </button>
+                            </div>
+                            <div class='col-md-1'>
+                                <a onclick='javascript:OpenWindowByURL600("/Invoice/RetailStorePreview?ID=@Model.ID");' title="Print" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">
+                                    <span class="fas fa-print"></span>
+                                </a>
+                            </div>
+                            <div class='col-md-1'>
+                                <a asp-action="RetailStore" asp-controller="Invoice" title="New" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-plus"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='ManageCode'>Barcode</label>
+                                    @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Barcode", @class = "form-control", style = "text-align:right;", @autocomplete = "off", @autofocus = "autofocus" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='InvoiceCode'>Invoice code</label>
+                                    @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Invoice code", @class = "form-control", @readonly = "readonly", }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='InvoiceCreated'>Date</label>
+                                    @(Html.TextBoxFor(Model => Model.InvoiceCreated, "{0:MM/dd/yyyy}", new { placeholder = "Date", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='Total'>Total</label>
+                                    @(Html.TextBoxFor(Model => Model.Total, "{0:N2}", new { placeholder = "Total", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                        </div>
+                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("InvoiceDetail")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
+                    }).Width(150);
+                    columns.Bound(t => t.Product.TextName).Title("Product").EditorTemplateName("Product").Width(300);
+                    columns.Bound(t => t.Quantity).Title("Quantity").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Price").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Total").Width(100).HtmlAttributes(new { style = "text-align: right;" });                    
+                })
+                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Quantity).DefaultValue(1);
+                    model.Field(t => t.UnitPrice).DefaultValue(1);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndInvoiceDetail"); })
+                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                .Destroy(t => t.Action("Delete", "InvoiceDetail"))
+                .Create(t => t.Action("Create", "InvoiceDetail").Data("filterInvoiceDetail"))
+                .Update(t => t.Action("Update", "InvoiceDetail"))))
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+<script>
+    function onGridRequestEndInvoiceDetail(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#InvoiceDetail").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
+    function filterInvoiceDetail(e) {
+        var invoiceIDValue = $("#ID").val();
+        return { invoiceID: invoiceIDValue };
+    }
+    $("#ManageCode").change(function () {
+        createByInvoiceIDAndProductMetaTitle();
+    });
+    function onSave() {
+        createByInvoiceIDAndProductMetaTitle();
+    }
+    function createByInvoiceIDAndProductMetaTitle() {
+        var manageCode = $("#ManageCode").val();
+        $("#ManageCode").val("");
+        var ID = $("#ID").val();
+        BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("CreateByInvoiceIDAndProductMetaTitle", "InvoiceDetail")',
+                data: {
+                    invoiceID: ID,
+                    productMetaTitle: manageCode
+                },
+                success: function (result) {
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#Total").val(TotalString);
+                    $("#InvoiceDetail").data("kendoGrid").dataSource.read();
+                    EndRequestHandler();
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+     function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#ID").val() },
+                success: function (result) {
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#Total").val(TotalString);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+</script>

@@ -8,6 +8,7 @@ namespace SOHU.Data.Repositories
 {
     public interface IConfigRepository : IRepository<Config>
     {
+        public bool IsValidByGroupNameAndCodeAndCodeNameAndParentID(string groupName, string code, string codeName, int parentID);
         public bool IsValidByGroupNameAndCodeAndCodeName(string groupName, string code, string codeName);
         public List<ConfigDataTransfer> GetDataTransferByParentIDToList(int parentID);
         public List<Config> GetByCRMAndProductCategoryToTree();

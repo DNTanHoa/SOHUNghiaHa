@@ -32,6 +32,16 @@
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
                             )
                         </div>
+                        <div class='col-sm-1'>
+                            <button style="width:100%;" title="Search" class="btn btn-success" onclick="onSearch()">
+                                <span class="fas fa-search"></span>
+                            </button>
+                        </div>
+                        <div class='col-sm-1'>
+                            <button style="width:100%;" title="Refresh" class="btn btn-success" onclick="onRefresh()">
+                                <span class="fas fa-sync"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.ConfigDataTransfer>()
@@ -45,7 +55,7 @@
                     }).Width(150);
                     columns.Bound(t => t.Parent.TextName).Title("Parent").EditorTemplateName("Config_ProductCategory").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.CodeName).Title("Product category").Width(300);
-                    columns.Bound(t => t.ID).Title("ID").Width(100);
+                    columns.Bound(t => t.SortOrder).Title("Sort order").Width(200);
 
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
@@ -108,6 +118,7 @@
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
             $("#Config").data("kendoGrid").dataSource.read();
+
         }
     }
     function onProductCategoryDataBound() {
@@ -119,11 +130,16 @@
         }
     }
     function onProductCategoryChange() {
+    }
+    function onSearch() {
         $("#Config").data("kendoGrid").dataSource.read();
+    }
+    function onRefresh() {
+        $("#ProductCategory").data("kendoDropDownList").dataSource.read();
     }
     function filterConfig(e) {
         var parentIDValue = $("#ProductCategory").data("kendoDropDownList").value();
         return { parentID: parentIDValue };
 
-    }    
+    }
 </script>

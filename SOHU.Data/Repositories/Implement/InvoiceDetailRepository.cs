@@ -18,6 +18,10 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
+        public InvoiceDetail GetByInvoiceIDAndProductID(int invoiceID, int productID)
+        {
+            return _context.InvoiceDetail.FirstOrDefault(item => item.InvoiceID == invoiceID && item.ProductID == productID);
+        }
         public List<InvoiceDetail> GetByInvoiceIDToList(int invoiceID)
         {
             return _context.InvoiceDetail.Where(item => item.InvoiceID == invoiceID).OrderBy(item => item.ID).ToList();
@@ -153,7 +157,7 @@ namespace SOHU.Data.Repositories
                 {
                     list[i].Parent = new ModelTemplate();
                     list[i].Parent.ParentID = list[i].ID;
-                    list[i].Parent.TextName = list[i].ParentName;                    
+                    list[i].Parent.TextName = list[i].ParentName;
                 }
             }
             return list;

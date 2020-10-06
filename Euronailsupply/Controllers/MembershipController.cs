@@ -47,7 +47,7 @@ namespace Euronailsupply.Controllers
             }
             if (string.IsNullOrEmpty(model.Password))
             {
-                model.Password = model.Account;
+                model.Password = "0";
             }
             switch (action)
             {
@@ -150,21 +150,24 @@ namespace Euronailsupply.Controllers
             }
             else
             {
-                bool check = false;
-                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
-                {
-                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
-                }
-                if (model.ParentID == AppGlobal.EmployeeParentID)
-                {
-                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-                }
-                if (check == true)
-                {
-                    Initialization(model, 0);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
+                Initialization(model, 0);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
+                //bool check = false;
+                //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+                //{                    
+                //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                //}
+                //if (model.ParentID == AppGlobal.EmployeeParentID)
+                //{
+                //    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                //}
+                //if (check == true)
+                //{
+                //    Initialization(model, 0);
+                //    model.Initialization(InitType.Insert, RequestUserID);
+                //    _membershipRepository.Create(model);
+                //}
             }
             return RedirectToAction("CustomerDetail", new { ID = model.ID });
         }
@@ -178,21 +181,22 @@ namespace Euronailsupply.Controllers
             }
             else
             {
-                bool check = false;
-                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
-                {
-                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
-                }
-                if (model.ParentID == AppGlobal.EmployeeParentID)
-                {
-                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-                }
-                if (check == true)
-                {
-                    Initialization(model, 0);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
+                Initialization(model, 0);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
+                //bool check = false;
+                //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+                //{
+                //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                //}
+                //if (model.ParentID == AppGlobal.EmployeeParentID)
+                //{
+                //    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                //}
+                //if (check == true)
+                //{
+                    
+                //}
             }
             return RedirectToAction("SupplierDetail", new { ID = model.ID });
         }
@@ -212,29 +216,30 @@ namespace Euronailsupply.Controllers
         }
         public IActionResult SaveEmployee(Membership model)
         {
-            bool check = false;
-            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            if (model.ID > 0)
             {
-                check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                Initialization(model, 1);
+                model.Initialization(InitType.Update, RequestUserID);
+                _membershipRepository.Update(model.ID, model);
             }
-            if (model.ParentID == AppGlobal.EmployeeParentID)
+            else
             {
-                check = _membershipRepository.IsValidByPhone(model.Phone);
-            }
-            if (check == true)
-            {
-                if (model.ID > 0)
-                {
-                    Initialization(model, 1);
-                    model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.ID, model);
-                }
-                else
-                {
-                    Initialization(model, 0);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
+                Initialization(model, 0);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
+                //bool check = false;
+                //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+                //{
+                //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                //}
+                //if (model.ParentID == AppGlobal.EmployeeParentID)
+                //{
+                //    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                //}
+                //if (check == true)
+                //{
+
+                //}
             }
             return RedirectToAction("EmployeeDetail", new { ID = model.ID });
         }

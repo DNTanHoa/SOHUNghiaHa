@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +12,20 @@ using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using SOHU.Data.DataTransferObject;
 
 namespace Euronailsupply.Controllers
 {
     public class InvoiceController : BaseController
     {
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IInvoiceDetailRepository _invoiceDetailRepository;
         private readonly IMembershipRepository _membershipRepository;
 
-        public InvoiceController(IInvoiceRepository invoiceRepository, IMembershipRepository membershipRepository)
+        public InvoiceController(IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IMembershipRepository membershipRepository)
         {
             _invoiceRepository = invoiceRepository;
+            _invoiceDetailRepository = invoiceDetailRepository;
             _membershipRepository = membershipRepository;
         }
         private void Initialization(Invoice model)
@@ -30,6 +34,55 @@ namespace Euronailsupply.Controllers
             {
                 model.InvoiceCode = model.InvoiceCode.Trim();
             }
+        }
+        public IActionResult RetailStore()
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCode = AppGlobal.DateTimeCode;
+            model.InvoiceCreated = DateTime.Now;
+            model.Tax = 0;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            model.CategoryID = AppGlobal.InvoiceExportID;
+            model.ParentID = AppGlobal.InvoiceExportID;
+            model.BuyID = AppGlobal.GuestID;
+            model.SellID = AppGlobal.SellID;
+            model.Active = false;
+            model.Initialization(InitType.Insert, RequestUserID);
+            _invoiceRepository.Create(model);
+            return View(model);
+        }
+        public IActionResult RetailStorePreview(int ID)
+        {
+            Invoice model = new Invoice();
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetDataTransferByInvoiceIDToList(ID);
+                StringBuilder txt = new StringBuilder();
+                foreach (InvoiceDetailDataTransfer item in list)
+                {
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:left;'>" + item.ProductTitle + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N2") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N2") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N2") + "</b></td>");
+                    txt.AppendLine(@"</tr>");
+                }
+                model.HopDong = txt.ToString();
+                model.Active = true;
+                model.Initialization(InitType.Update, RequestUserID);
+                _invoiceRepository.Update(model.ID, model);
+            }
+            model.DateCreated = DateTime.Now;
+            if (model.Total == null)
+            {
+                model.Total = 0;
+            }
+            return View(model);
         }
         public IActionResult Retail()
         {

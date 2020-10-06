@@ -138,7 +138,8 @@ namespace Euronailsupply.Controllers
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
-            if (_configResposistory.IsValidByGroupNameAndCodeAndCodeName(model.GroupName, model.Code, model.CodeName) == true)
+            model.CodeName = model.CodeName.ToUpper();
+            if (_configResposistory.IsValidByGroupNameAndCodeAndCodeNameAndParentID(model.GroupName, model.Code, model.CodeName, model.ParentID.Value) == true)
             {
                 result = _configResposistory.Create(model);
             }

@@ -23,6 +23,10 @@ namespace SOHU.Data.Repositories
             Config item = _context.Set<Config>().FirstOrDefault(item => item.GroupName.Equals(groupName) && item.Code.Equals(code) && item.CodeName.Equals(codeName));
             return item == null ? true : false;
         }
+        public bool IsValidByGroupNameAndCodeAndCodeNameAndParentID(string groupName, string code, string codeName, int parentID)
+        {
+            return _context.Set<Config>().FirstOrDefault(item => item.GroupName.Equals(groupName) && item.Code.Equals(code) && item.CodeName.Equals(codeName) && item.ParentID == parentID) == null ? true : false;
+        }
         public List<Config> GetByCodeToList(string code)
         {
             return _context.Config.Where(item => item.Code.Equals(code)).ToList();
@@ -44,7 +48,7 @@ namespace SOHU.Data.Repositories
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocConfigSelectByParentID", parameters);
                 list = SQLHelper.ToList<ConfigDataTransfer>(dt).ToList();
                 for (int i = 0; i < list.Count; i++)
-                {                    
+                {
                     list[i].Parent = new ModelTemplate();
                     list[i].Parent.ID = int.Parse(dt.Rows[i]["ParentID"].ToString());
                     list[i].Parent.TextName = list[i].ParentName;
@@ -57,7 +61,7 @@ namespace SOHU.Data.Repositories
             List<Config> list = new List<Config>();
 
             DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocConfigSelectByCRMAndProductCategoryToTree");
-            list = SQLHelper.ToList<Config>(dt).ToList();            
+            list = SQLHelper.ToList<Config>(dt).ToList();
             return list;
         }
     }
