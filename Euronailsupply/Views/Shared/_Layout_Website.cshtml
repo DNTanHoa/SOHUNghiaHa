@@ -1,0 +1,280 @@
+﻿@using System.Text
+@using SOHU.Data.Models
+@using SOHU.Data.Helpers
+@using SOHU.Data.Repositories
+@using SOHU.Data.Extensions
+@inject IConfigRepository _configRepository
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@(ViewData["Title"] + " - " +  AppGlobal.Title)</title>
+    @RenderSection("Meta", required: false)
+    <!-- iPad icons -->
+    <link rel="apple-touch-icon-precomposed" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" sizes="72x72">
+    <link rel="apple-touch-icon-precomposed" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" sizes="144x144">
+    <!-- iPhone and iPod touch icons -->
+    <link rel="apple-touch-icon-precomposed" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" sizes="57x57">
+    <link rel="apple-touch-icon-precomposed" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" sizes="114x114">
+    <!-- Nokia Symbian -->
+    <link rel="nokia-touch-icon" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull">
+    <!-- Android icon precomposed so it takes precedence -->
+    <link rel="apple-touch-icon-precomposed" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" sizes="1x1">
+    <link rel="shortcut icon" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="@SOHU.Data.Helpers.AppGlobal.LogoURLFull">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/vendor/animate/animate.min.css">
+    <link rel="stylesheet" href="~/vendor/simple-line-icons/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="~/vendor/owl.carousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/vendor/owl.carousel/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/vendor/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" href="~/vendor/bootstrap-star-rating/css/star-rating.min.css">
+    <link rel="stylesheet" href="~/vendor/bootstrap-star-rating/themes/krajee-fas/theme.min.css">
+    <link rel="stylesheet" href="~/css/theme.css">
+    <link rel="stylesheet" href="~/css/theme-elements.css">
+    <link rel="stylesheet" href="~/css/theme-shop.css">
+    <link rel="stylesheet" href="~/css/skins/default.css">
+    <link rel="stylesheet" href="~/css/custom.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <script src="~/vendor/modernizr/modernizr.min.js"></script>
+</head>
+<body>
+    <div class="body">
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v8.0" nonce="rsOxDCOk"></script>
+        <header id="header" data-plugin-options="{'stickyEnabled': true, 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': true, 'stickyStartAt': 135, 'stickySetTop': '-135px', 'stickyChangeLogo': true}">
+            <div class="header-body border-color-primary border-bottom-0 box-shadow-none" data-sticky-header-style="{'minResolution': 0}" data-sticky-header-style-active="{'background-color': '#f7f7f7'}" data-sticky-header-style-deactive="{'background-color': '#FFF'}">
+                <div class="header-top header-top-borders">
+                    <div class="container h-100">
+                        <div class="header-row h-100">
+                            <div class="header-column justify-content-start">
+                                <div class="header-row">
+                                    <nav class="header-nav-top">
+                                        <ul class="nav nav-pills">
+                                            <li class="nav-item nav-item-borders py-2 d-none d-lg-inline-flex">
+                                                <a href="@("tel:" + AppGlobal.PhoneContact)"><i class="fab fa-whatsapp text-4 text-color-primary" style="top: 0;"></i> @AppGlobal.PhoneContact</a>
+                                            </li>
+                                            <li class="nav-item nav-item-borders py-2 d-none d-sm-inline-flex">
+                                                <a href=@("mailto:" + AppGlobal.EmailContact)><i class="far fa-envelope text-4 text-color-primary" style="top: 1px;"></i> @AppGlobal.EmailContact</a>
+                                            </li>
+                                            <li class="nav-item nav-item-borders py-2">
+                                                <span class="pl-0"><i class="far fa-dot-circle text-4 text-color-primary" style="top: 1px;"></i> @AppGlobal.AddressContact</span>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="header-column justify-content-end">
+                                <div class="header-row">
+                                    <nav class="header-nav-top">
+                                        <ul class="nav nav-pills">
+                                            @*<li class="nav-item nav-item-anim-icon d-none d-md-block">
+                                                    <a class="nav-link pl-0" href="about-us.html"><i class="fas fa-angle-right"></i> About Us</a>
+                                                </li>*@
+                                            <li class="nav-item nav-item-anim-icon d-none d-md-block">
+                                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i> Contact Us</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-container container">
+                    <div class="header-row py-2">
+                        <div class="header-column">
+                            <div class="header-row">
+                                <div class="header-logo">
+                                    <a href="@AppGlobal.Domain">
+                                        <img alt="@AppGlobal.Title" width="80" height="80" data-sticky-width="82" data-sticky-height="40" data-sticky-top="84" src="@SOHU.Data.Helpers.AppGlobal.LogoURLFull">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-column justify-content-end">
+                            <div class="header-row">
+                                <ul class="header-extra-info d-flex align-items-center mr-3">
+                                    <li class="d-none d-sm-inline-flex">
+                                        <div class="header-extra-info-text">
+                                            <label>SEND US AN EMAIL</label>
+                                            <strong><a href="@("mailto:" + AppGlobal.EmailContact)">@AppGlobal.EmailContact</a></strong>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="header-extra-info-text">
+                                            <label>CALL US NOW</label>
+                                            <strong><a href="@("tel:" + AppGlobal.PhoneContact)">@AppGlobal.PhoneContact</a></strong>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="header-nav-features" id="cart">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="header-nav-bar bg-color-light-scale-1 mb-3 px-3 px-lg-0">
+                        <div class="header-row">
+                            <div class="header-column">
+                                <div class="header-row justify-content-end">
+                                    <div class="header-nav header-nav-links justify-content-start" data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'margin-left': '150px'}" data-sticky-header-style-deactive="{'margin-left': '0'}">
+                                        <div class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-dropdown-arrow header-nav-main-effect-3 header-nav-main-sub-effect-1">
+                                            <nav class="collapse">
+                                                @*<div id="MenuTop"></div>*@
+
+                                                @{ 
+                                                    string menuTop = _configRepository.MenuTop();
+                                                    @Html.Raw(menuTop);
+                                                }
+                                            </nav>
+                                        </div>
+                                        <button class="btn header-btn-collapse-nav" data-toggle="collapse" data-target=".header-nav-main nav">
+                                            <i class="fas fa-bars"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div role="main" class="main shop py-4">
+            @RenderBody()
+        </div>
+
+        <footer id="footer">
+            <div class="container my-4 py-2">
+                <div class="row py-4">
+                    <div class="col-lg-4 text-center text-lg-left">
+                        <h5 class="text-4 text-color-light mb-3">SUBSCRIBE NEWSLETTER</h5>
+                        <p class="text-3 mb-0">Get all the latest informaton on Events, Sales and Offfers.</p>
+                        <p class="text-3 mb-0">Sign up for newsletter today.</p>
+                    </div>
+                    <div class="col-lg-5 text-center text-lg-left px-4 mt-1 mt-lg-3">
+                        <div class="pt-1 pt-lg-3 mt-1">
+                            <div class="alert alert-success d-none" id="newsletterSuccess">
+                                <strong>Success!</strong> You've been added to our email list.
+                            </div>
+                            <div class="alert alert-danger d-none" id="newsletterError"></div>
+                            <div class="input-group input-group-rounded">
+                                <input class="form-control form-control-sm bg-light px-4 text-3" placeholder="Email Address..." name="newsletterEmail" id="newsletterEmail" type="text">
+                                <span class="input-group-append">
+                                    <button class="btn btn-primary  text-color-light text-2 py-3 px-4" type="submit"><strong>SUBSCRIBE!</strong></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-center text-lg-left">
+                        <div class="pt-3 mt-1">
+                            <ul class="footer-social-icons social-icons social-icons-clean social-icons-big social-icons-opacity-light social-icons-icon-light mt-0 mt-lg-3">
+                                <li class="social-icons-facebook"><a href="@AppGlobal.Facebook" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                <li class="social-icons-twitter"><a href="@AppGlobal.Twitter" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                                <li class="social-icons-youtube"><a href="@AppGlobal.Youtube" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4 pt-2 pb-5 footer-top-light-border">
+                <div class="row py-4">
+                    <div class="col-md-3 text-center text-md-left">
+                        <h5 class="text-4 text-color-light mb-3 mt-4 mt-lg-0">CONTACT INFO</h5>
+                        <p class="text-3 mb-0 text-color-light opacity-7">ADDRESS</p>
+                        <p class="text-3 mb-3">52-52A-52C Well street, Hackney, London</p>
+                        <p class="text-3 mb-0 text-color-light opacity-7">PHONE</p>
+                        <p class="text-3 mb-3">Tel: 020 3730 1523</p>
+                        <p class="text-3 mb-0 text-color-light opacity-7">EMAIL</p>
+                        <p class="text-3 mb-0"><a href="mailto:sale@euronailsupply.com" class="">sale@euronailsupply.com</a></p>
+                    </div>
+                    <div class="col-md-9 text-center text-md-left">
+                        <div class="row">
+                            <div class="col-md-7 col-lg-5 mb-0">
+                                <h5 class="text-4 text-color-light mb-3 mt-4 mt-lg-0">MY ACCOUNT</h5>
+                                <div class="row">
+                                    @*<div class="col-md-5">
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">About us</a></p>
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">Contact Us</a></p>
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">My account</a></p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">Orders history</a></p>
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">Advanced search</a></p>
+                                            <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">Login</a></p>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-lg-4">
+                                <h5 class="text-4 text-color-light mb-3 mt-4 mt-lg-0">MAIN FEATURES</h5>
+                                @*<p class="mb-1"><a href="#" class="text-3 link-hover-style-1">Super Fast Theme</a></p>
+                                    <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">SEO Optmized</a></p>
+                                    <p class="mb-1"><a href="#" class="text-3 link-hover-style-1">RTL Support</a></p>*@
+                            </div>
+                            <div class="col-lg-3">
+                                <p class="mb-1 mt-lg-3 pt-lg-3"><a href="" class="text-3">Design by</a></p>
+                                <p class="mb-1"><a target="_blank" href="//sohu.vn" class="text-3 link-hover-style-1">sohu.vn</a></p>
+                            </div>
+                        </div>
+                        <div class="row footer-top-light-border mt-4 pt-4">
+                            <div class="col-lg-5 text-center text-md-left">
+                                <p class="text-2 mt-1">© Copyright 2020. All Rights Reserved.</p>
+                            </div>
+                            <div class="col-lg-3 text-center text-md-left">
+                                <p class="text-3 mb-0 font-weight-semibold text-color-light opacity-8">BUSINESS HOURS</p>
+                                <p class="text-3 mb-0">Mon - Sun | 9:00AM -8:00PM</p>
+                            </div>
+                            <div class="col-lg-4 text-center text-md-left">
+                                <img src="images/payment.jpg" alt="Payment" class="img-fluid mt-4 mt-lg-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/jquery.appear/jquery.appear.min.js"></script>
+    <script src="~/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="~/vendor/jquery.cookie/jquery.cookie.min.js"></script>
+    <script src="~/vendor/popper/umd/popper.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/vendor/common/common.min.js"></script>
+    <script src="~/vendor/jquery.validation/jquery.validate.min.js"></script>
+    <script src="~/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+    <script src="~/vendor/jquery.gmap/jquery.gmap.min.js"></script>
+    <script src="~/vendor/jquery.lazyload/jquery.lazyload.min.js"></script>
+    <script src="~/vendor/isotope/jquery.isotope.min.js"></script>
+    <script src="~/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="~/vendor/vide/jquery.vide.min.js"></script>
+    <script src="~/vendor/vivus/vivus.min.js"></script>
+    <script src="~/vendor/bootstrap-star-rating/js/star-rating.min.js"></script>
+    <script src="~/vendor/bootstrap-star-rating/themes/krajee-fas/theme.min.js"></script>
+
+    <script>
+        $(document).ready(() => {
+             $.ajax({
+            type: 'GET',
+            url: "@Url.Action("MenuTop", "Home")",
+            data: {
+            },
+             success: function (result) {
+                 $("#MenuTop").append(result);
+            }
+        }).done(() => {
+        });
+        });
+    </script>
+
+    <script src="~/js/theme.js"></script>
+    <script src="~/js/views/view.shop.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/theme.init.js"></script>
+</body>
+</html>

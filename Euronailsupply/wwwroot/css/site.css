@@ -340,8 +340,7 @@ p .k-button {
 
 .k-grid {
     font-size: 14px;
-    height: 600px;
-    max-height:600px;
+    height: 700px;
 }
 
 
@@ -396,8 +395,34 @@ p .k-button {
     color:black;
 }
 
-.k-button-icontext .k-icon, .k-button-icontext .k-image, .k-button-icontext .k-sprite {
-     margin:0 !important; 
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .carousel-inner {
+        width: 100%;
+        min-height: 300px !important;
+        height: 300px !important;
+    }
+    .carousel-item {
+        height: 100% !important;
+    }
+    .carousel-item > img{
+        height: 100% !important;
+    }
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+    .carousel-inner {
+        width: 100%;
+        min-height: 300px !important;
+        height: 300px !important;
+    }
+    .carousel-item {
+        height: 100% !important;
+    }
+    .carousel-item > img{
+        height: 100% !important;
+    }
 }
 
 

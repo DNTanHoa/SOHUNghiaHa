@@ -1,4 +1,5 @@
-﻿using SOHU.Data.DataTransferObject;
+﻿using Microsoft.AspNetCore.Razor.Language;
+using SOHU.Data.DataTransferObject;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using System;
@@ -30,6 +31,10 @@ namespace SOHU.Data.Repositories
         public List<Config> GetByCodeToList(string code)
         {
             return _context.Config.Where(item => item.Code.Equals(code)).ToList();
+        }
+        public List<Config> GetMenuTopByParentIDToList(int parentID)
+        {
+            return _context.Config.Where(item => item.ParentID == parentID).OrderBy(item => item.SortOrder).ToList();
         }
         public List<Config> GetByGroupNameAndCodeToList(string groupName, string code)
         {
@@ -63,6 +68,42 @@ namespace SOHU.Data.Repositories
             DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocConfigSelectByCRMAndProductCategoryToTree");
             list = SQLHelper.ToList<Config>(dt).ToList();
             return list;
+        }
+        public string MenuTopSub(int parentID)
+        {
+            string menuTop = "";
+            List<Config> list = GetMenuTopByParentIDToList(parentID);
+            if (list.Count > 0)
+            {
+                StringBuilder txt = new StringBuilder();
+                txt.AppendLine(@"<ul class='nav nav-pills'>");
+                foreach (Config item in list)
+                {
+                    string url = AppGlobal.Domain + item.CodenameSub + "-" + item.ID;
+                    if (GetMenuTopByParentIDToList(item.ID).Count > 0)
+                    {
+                        txt.AppendLine(@"<li class='dropdown'>");
+                        txt.AppendLine(@"<a href='#' class='nav-link dropdown-toggle' style='font-size:14px; color:#000000;'>" + item.CodeName + "</a>");
+                        txt.AppendLine(MenuTopSub(item.ID));
+                        txt.AppendLine(@"</li>");
+                    }
+                    else
+                    {
+                        txt.AppendLine(@"<li>");
+                        txt.AppendLine(@"<a href='" + url + "' class='nav-link' style='font-size:14px; color:#000000;'>" + item.CodeName + "</a>");
+                        txt.AppendLine(@"</li>");
+                    }
+
+                }
+                txt.AppendLine(@"</ul>");
+                menuTop = txt.ToString();
+            }
+            return menuTop;
+        }
+        public string MenuTop()
+        {
+            string menuTop = MenuTopSub(40);
+            return menuTop;
         }
     }
 }

@@ -138,6 +138,11 @@ namespace Euronailsupply.Controllers
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
+            if (string.IsNullOrEmpty(model.CodenameSub))
+            {
+                model.CodenameSub = model.CodeName.ToLower();
+            }
+            model.CodenameSub = AppGlobal.SetName(model.CodenameSub);
             model.CodeName = model.CodeName.ToUpper();
             if (_configResposistory.IsValidByGroupNameAndCodeAndCodeNameAndParentID(model.GroupName, model.Code, model.CodeName, model.ParentID.Value) == true)
             {
@@ -180,6 +185,12 @@ namespace Euronailsupply.Controllers
             Initialization(model);
             model.ParentID = model.Parent.ID;
             string note = AppGlobal.InitString;
+            if (string.IsNullOrEmpty(model.CodenameSub))
+            {
+                model.CodenameSub = model.CodeName.ToLower();               
+            }
+            model.CodenameSub = AppGlobal.SetName(model.CodenameSub);
+            model.CodeName = model.CodeName.ToUpper();
             model.Initialization(InitType.Update, RequestUserID);
             int result = _configResposistory.Update(model.ID, model);
             if (result > 0)

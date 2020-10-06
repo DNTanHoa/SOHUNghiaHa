@@ -55,6 +55,7 @@
                     }).Width(150);
                     columns.Bound(t => t.Parent.TextName).Title("Parent").EditorTemplateName("Config_ProductCategory").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.CodeName).Title("Product category").Width(300);
+                    columns.Bound(t => t.CodenameSub).Title("URL").Width(300);
                     columns.Bound(t => t.SortOrder).Title("Sort order").Width(200);
 
                 })
