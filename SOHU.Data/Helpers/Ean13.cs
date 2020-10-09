@@ -223,6 +223,7 @@ namespace SOHU.Data.Helpers
             {
                 model.MetaTitle = model.MetaDescription;
             }
+            model.ImageThumbnail = fileName;
             return fileName;
         }
         public static string CreateEAN13Image01(Ean13 ean13, string DuongDanTapTin)
