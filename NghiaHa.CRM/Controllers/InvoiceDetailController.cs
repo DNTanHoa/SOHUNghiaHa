@@ -43,6 +43,44 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
         }
+        public IActionResult CreateByInvoiceIDAndProductMetaTitle(int invoiceID, string productMetaTitle)
+        {
+            string note = AppGlobal.InitString;
+            if (!string.IsNullOrEmpty(productMetaTitle))
+            {
+                Product product = _productRepository.GetByMetaTitle(productMetaTitle);
+                if (product != null)
+                {
+                    int result = 0;
+                    InvoiceDetail model = new InvoiceDetail();
+                    model.DateTrack = DateTime.Now;
+                    model.CategoryID = AppGlobal.ThiCongID;
+                    model.InvoiceID = invoiceID;
+                    model.ProductID = product.ID;
+                    model.UnitPrice = product.Price;
+                    model.ManufacturingCode = product.MetaTitle;
+                    model.Quantity = 1;
+                    model.UnitID = AppGlobal.UnitID;
+                    model.Total = model.UnitPrice * model.Quantity;
+                    model.Initialization(InitType.Insert, RequestUserID);
+                    if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                    {
+                        result = _invoiceDetailRepository.Create(model);
+                    }
+                    if (result > 0)
+                    {
+                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                        _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                        _productRepository.InitializationByID(model.ProductID.Value);
+                    }
+                    else
+                    {
+                        note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                    }
+                }
+            }
+            return Json(_invoiceRepository.GetByID(invoiceID));
+        }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;

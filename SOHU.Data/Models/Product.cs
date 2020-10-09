@@ -7,7 +7,7 @@ namespace SOHU.Data.Models
     public partial class Product : BaseModel
     {
         public int? CategoryID { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; }        
         public string Urlcode { get; set; }
         public string MetaTitle { get; set; }
         public string MetaKeyword { get; set; }

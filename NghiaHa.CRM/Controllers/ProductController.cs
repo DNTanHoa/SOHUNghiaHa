@@ -19,19 +19,40 @@ namespace NghiaHa.CRM.Web.Controllers
 {
     public class ProductController : BaseController
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IProductRepository _productRepository;
 
-        public ProductController(IHostingEnvironment hostingEnvironment, IProductRepository productRepository)
+        public ProductController(IWebHostEnvironment hostingEnvironment, IProductRepository productRepository)
         {
             _hostingEnvironment = hostingEnvironment;
             _productRepository = productRepository;
         }
-        private void Initialization(Product model)
+        private void InitializationBarcode(Product model)
         {
+            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "images/Product/Barcode");
+            model.ImageThumbnail = Ean13.CreateEAN13Image_Product(model, physicalPath);
+        }
+        private void Initialization(Product model)
+        {            
             if (!string.IsNullOrEmpty(model.Title))
             {
                 model.Title = model.Title.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.Author))
+            {
+                model.Author = model.Author.Trim();
+            }
+            if (!string.IsNullOrEmpty(model.MetaTitle))
+            {
+                model.MetaTitle = model.MetaTitle.Trim();
+            }
+            if (model.Price == null)
+            {
+                model.Price = 0;
+            }
+            if (model.Discount == null)
+            {
+                model.Discount = 0;
             }
         }
         public IActionResult Index()
@@ -97,11 +118,9 @@ namespace NghiaHa.CRM.Web.Controllers
             else
             {
                 Initialization(model);
+                InitializationBarcode(model);
                 model.Initialization(InitType.Insert, RequestUserID);
-                if (_productRepository.IsValidByTitle(model.Title) == true)
-                {
-                    _productRepository.Create(model);
-                }
+                _productRepository.Create(model);
             }
             return RedirectToAction("Detail", new { ID = model.ID });
         }

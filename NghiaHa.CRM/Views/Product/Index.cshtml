@@ -50,8 +50,10 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
                     columns.Template(@"<a href='/Product/Detail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);
-                    columns.Bound(t => t.MetaTitle).Title("Ngắn gọn").Width(200);
+                    columns.Bound(t => t.MetaTitle).Title("Barcode").Width(200);
+                    columns.Bound(t => t.MetaKeyword).Title("Ngắn gọn").Width(200);
+                    columns.Bound(t => t.Urlcode).Title("Mã sản phẩm").Width(200);
+                    columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(300);                    
                     columns.Bound(t => t.QuantityInStock).Title("Số lượng tồn").Width(200).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityInput).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityOutput).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align:right;" });
@@ -81,7 +83,7 @@
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
                 .Search(search=> {
-                    search.Field(f => f.Title);
+                    search.Field(f => f.MetaKeyword); search.Field(f => f.MetaTitle); search.Field(f => f.Urlcode); search.Field(f => f.Title);
                 })
                 .DataSource(dataSource => dataSource
                 .Ajax()

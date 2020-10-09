@@ -20,7 +20,12 @@ namespace SOHU.Data.Repositories
         }
         public Product GetByMetaTitle(string metaTitle)
         {
-            return _context.Set<Product>().FirstOrDefault(item => item.MetaTitle.Equals(metaTitle));
+            Product model = _context.Set<Product>().FirstOrDefault(item => item.MetaTitle.Equals(metaTitle));
+            if (model == null)
+            {
+                model = _context.Set<Product>().FirstOrDefault(item => item.MetaDescription.Equals(metaTitle));
+            }
+            return model;
         }
         public bool IsValidByTitle(string title)
         {

@@ -65,6 +65,16 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.InvoiceInputID;
             return View(model);
         }
+        public IActionResult InvoiceInputDetailBarcode(int ID)
+        {
+            Invoice model = new Invoice();            
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.ManageCode = "";
+            return View(model);
+        }
         public IActionResult InvoiceInputDetailWindow(int ID)
         {
             Invoice model = new Invoice();

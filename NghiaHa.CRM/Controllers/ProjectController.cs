@@ -143,6 +143,16 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
+        public IActionResult DetailThiCongBarcode(int ID)
+        {
+            Invoice model = new Invoice();          
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.InvoiceCode = "";
+            return View(model);
+        }
         public IActionResult Detail(int ID)
         {
             Invoice model = new Invoice();

@@ -1,13 +1,12 @@
-﻿@{ ViewData["Title"] = Model.InvoiceName + " - Dự toán - Chào giá"; }
+﻿@{ ViewData["Title"] = @Model.InvoiceName + " - Barcode"; ViewData["InvoiceID"] = @Model.ID; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
-@Html.HiddenFor(Model => Model.ID)
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><b>@Model.InvoiceName</b> - Dự toán - Chào giá</h1>
+                <h1><b>@Model.InvoiceName</b> - Barcode</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -22,17 +21,28 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-primary">                   
+                <div class="card card-primary">
                     <div class="card-body">
+                        @Html.HiddenFor(Model => Model.ID)
                         <div class="row">
                             <div class='col-md-1'>
-                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>
                             <div class='col-md-1'>
+                                <button style="width:100%;" type="submit" onclick="onSave" title="Save" class="btn btn-primary">
+                                    <span class="fas fa-save"></span>
+                                </button>
+                            </div>
+                            <div class='col-md-1'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-qrcode"></span>
+                                </a>
+                            </div>
+                            <div class='col-md-2'>
+                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    Dự án
                                 </a>
                             </div>
                             <div class='col-md-2'>
@@ -56,9 +66,22 @@
                                 </a>
                             </div>
                         </div>
-                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class='form-group'>
+                                    <label for='ManageCode'>Barcode</label>
+                                    @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Barcode", @class = "form-control", @autofocus = "autofocus" }))
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class='form-group'>
+                                    <label for='InvoiceName'>Dự án</label>
+                                    @(Html.TextBoxFor(Model => Model.InvoiceName, new { placeholder = "Dự án", @class = "form-control", @readonly = "readonly" }))
+                                </div>
+                            </div>
+                        </div>                        
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
-                .Name("ProjectDuToan")
+                .Name("ProjectThiCong")
                 .Columns(columns =>
                 {
                     columns.Command(command =>
@@ -66,14 +89,16 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100);
+                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(300);
+                    columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
+                    columns.Bound(t => t.ProductCode).Title("Model").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Số seri").Width(200);
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -108,90 +133,23 @@
                     model.Id(t => t.ID);
                     model.Field(t => t.Total).Editable(false);
                     model.Field(t => t.ID).Editable(false);
+                    model.Field(t => t.Employee).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-                    model.Field(t => t.Quantity).DefaultValue(1);
-                    model.Field(t => t.UnitPrice).DefaultValue(1000);
-                    model.Field(t => t.IsChaoGia).DefaultValue(true);
-
-                })
-                .Events(t => { t.RequestEnd("onGridRequestEndProjectDuToan"); })
-                .Read(t => t.Action("GetProjectDuToanByInvoiceIDAndDuToanToList", "Project").Data("filterProjectDuToan"))
-                .Destroy(t => t.Action("DeleteDetail", "Project"))
-                .Create(t => t.Action("CreateProjectDuToan", "Project").Data("filterProjectDuToan"))
-                .Update(t => t.Action("UpdateProjectDuToan", "Project"))))
-                    </div>
-                </div>
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Chào giá</h3>
-                    </div>
-                    <div class="card-body">
-                        <br />
-                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
-                .Name("ProjectChaoGia")
-                .Columns(columns =>
-                {
-                    columns.Command(command =>
-                    {
-                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
-                        command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(150);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                })
-                .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
-                .ToolBar(toolBar => toolBar.Search())
-                .Editable(editable => editable.Mode(GridEditMode.InLine))
-                .Sortable()
-                .Scrollable()
-                .Reorderable(r => r.Columns(true))
-                .Resizable(r => r.Columns(true))
-                .Pageable(pageable => pageable
-                .Refresh(true)
-                .PageSizes(true)
-                .ButtonCount(10))
-                .Excel(excel => excel
-                .FileName("CauHinh.xlsx")
-                .Filterable(true)
-                .ProxyURL(Url.Action("ExportExcel", "Config")))
-                .Pdf(pdf => pdf
-                .AllPages()
-                .AvoidLinks()
-                .PaperSize("A4")
-                .Margin("2cm", "1cm", "1cm", "1cm")
-                .Landscape()
-                .RepeatHeaders()
-                .FileName("Config.pdf"))
-                .Search(search=> {
-                })
-                .DataSource(dataSource => dataSource
-                .Ajax()
-                .PageSize(1000)
-                .Model(model =>
-                {
-                    model.Id(t => t.ID);
-                    model.Field(t => t.Total).Editable(false);
-                    model.Field(t => t.ID).Editable(false);
-                    model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-                    model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.DateTrack).DefaultValue(DateTime.Now);
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
 
 
                 })
-                .Events(t => { t.RequestEnd("onGridRequestEndProjectChaoGia"); })
-                .Read(t => t.Action("GetProjectDuToanByInvoiceIDAndChaoGiaToList", "Project").Data("filterProjectDuToan"))
-                .Destroy(t => t.Action("DeleteDetail", "Project"))
-                .Create(t => t.Action("CreateProjectChaoGia", "Project").Data("filterProjectDuToan"))
-                .Update(t => t.Action("UpdateProjectDuToan", "Project"))))
+                .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCong"); })
+                .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
+                .Destroy(t => t.Action("DeleteProjectThiCong", "Project"))
+                .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
+                .Update(t => t.Action("UpdateProjectThiCong", "Project"))))
                     </div>
-                </div>
+                </div>               
             </div>
         </div>
     </div>
@@ -201,31 +159,47 @@
     .Position(p => p.Pinned(true).Top(30).Right(30))
     .Width(400)
 )
-
 <script>
-    function onGridRequestEndProjectDuToan(e) {
+    function onGridRequestEndProjectThiCong(e) {
         if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
             var response = e.response;
             var messageType = response.split('-')[0];
             var note = response.split('-')[1];
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
-            $("#ProjectDuToan").data("kendoGrid").dataSource.read();
-            $("#ProjectChaoGia").data("kendoGrid").dataSource.read();
+            $("#ProjectThiCong").data("kendoGrid").dataSource.read();
+            setInvoice();
         }
     }
-    function onGridRequestEndProjectChaoGia(e) {
-        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
-            var response = e.response;
-            var messageType = response.split('-')[0];
-            var note = response.split('-')[1];
-            var notification = $("#Notification").data("kendoNotification");
-            notification.show(note, messageType);
-            $("#ProjectChaoGia").data("kendoGrid").dataSource.read();
-        }
-    }
-    function filterProjectDuToan(e) {
+    function filterProjectThiCong(e) {
         var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
-
-    }</script>
+    }
+    $("#ManageCode").change(function () {
+        createByInvoiceIDAndProductMetaTitle();
+    });
+    function onSave() {
+        createByInvoiceIDAndProductMetaTitle();
+    }
+    function createByInvoiceIDAndProductMetaTitle() {
+        var manageCode = $("#ManageCode").val();
+        $("#ManageCode").val("");
+        var ID = $("#ID").val();       
+        BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("CreateByInvoiceIDAndProductMetaTitle", "InvoiceDetail")',
+                data: {
+                    invoiceID: ID,
+                    productMetaTitle: manageCode
+                },
+                success: function (result) {    
+                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();
+                    EndRequestHandler();
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+</script>

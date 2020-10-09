@@ -158,7 +158,7 @@ namespace NghiaHa.CRM.Controllers
             foreach (Config item in listProductCategory)
             {
                 txt.AppendLine(@"<li class='nav-item'>");
-                txt.AppendLine(@"<a class='nav-link' href='/Product/Index01/" + item.ID + "'>");
+                txt.AppendLine(@"<a class='nav-link' href='/Product/Index01?ID=" + item.ID + "'>");
                 txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
                 txt.AppendLine(@"<p>");
                 txt.AppendLine(@"" + item.CodeName);

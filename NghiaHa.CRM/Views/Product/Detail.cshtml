@@ -47,20 +47,24 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class='form-group'>
+                                        <label for='MetaTitle'>Barcode</label>
+                                        @(Html.TextBoxFor(Model => Model.MetaTitle, new { placeholder = "Barcode", @class = "form-control", @autofocus = "autofocus" }))
+                                    </div>
+                                    <div class='form-group'>
                                         <label for='Title'>Vật tư - thiết bị</label>
                                         @(Html.TextBoxFor(Model => Model.Title, new { placeholder = "Vật tư - thiết bị", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='MetaTitle'>Ngắn gọn</label>
-                                        @(Html.TextBoxFor(Model => Model.MetaTitle, new { placeholder = "Ngắn gọn", @class = "form-control" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='Urlcode'>Mã sản phẩm</label>
-                                        @(Html.TextBoxFor(Model => Model.Urlcode, new { placeholder = "Mã sản phẩm", @class = "form-control" }))
+                                        <label for='MetaKeyword'>Ngắn gọn</label>
+                                        @(Html.TextBoxFor(Model => Model.MetaKeyword, new { placeholder = "Ngắn gọn", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='QuantityInStockRoot'>Tồn đầu kỳ</label>
                                         @(Html.TextBoxFor(Model => Model.QuantityInStockRoot, "{0:N0}", new { placeholder = "Tồn đầu kỳ", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Price'>Giá xuất kho</label>
+                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Giá xuất kho", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='Discount'>Chiết khấu</label>
