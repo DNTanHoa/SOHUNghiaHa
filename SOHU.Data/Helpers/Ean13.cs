@@ -206,13 +206,13 @@ namespace SOHU.Data.Helpers
             bool equals = false;
             if (string.IsNullOrEmpty(model.MetaTitle))
             {
-                model.MetaTitle = DateTime.Now.ToString("yyMMddHHmmss");
+                model.MetaTitle = DateTime.Now.ToString("yMMddHHmmss");
                 equals = true;
             }
             Ean13 ean13 = new Ean13();
             ean13.CountryCode = model.MetaTitle.Substring(0, 2);
             ean13.ManufacturerCode = model.MetaTitle.Substring(2, 6);
-            ean13.ProductCode = model.MetaTitle.Substring(6, 6);
+            ean13.ProductCode = model.MetaTitle.Substring(6, 4);
             ean13.Scale = 8;
             System.Drawing.Bitmap bmp = ean13.CreateBitmap();
             model.MetaDescription = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;

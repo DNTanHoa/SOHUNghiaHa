@@ -152,9 +152,6 @@ namespace NghiaHa.CRM.Web.Controllers
                     model.MetaTitle = "";
                     model.MetaDescription = "";
                     InitializationBarcode(model);
-                }
-                if (model.ID > 0)
-                {
                     model.Initialization(InitType.Update, RequestUserID);
                     _productRepository.Update(model.ID, model);
                 }

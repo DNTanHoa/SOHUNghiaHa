@@ -25,6 +25,7 @@
                     <div class="card-body">
                         <form asp-action="Save" asp-controller="Product">
                             @Html.HiddenFor(Model => Model.ID)
+                            @Html.HiddenFor(Model => Model.ImageThumbnail)
                             <div class="row">
                                 <div class='col-md-6'>
                                     @(Html.Kendo().DropDownListFor(Model => Model.ParentID)
