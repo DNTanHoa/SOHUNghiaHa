@@ -33,7 +33,7 @@ namespace NghiaHa.CRM.Web.Controllers
             model.ImageThumbnail = Ean13.CreateEAN13Image_Product(model, physicalPath);
         }
         private void Initialization(Product model)
-        {            
+        {
             if (!string.IsNullOrEmpty(model.Title))
             {
                 model.Title = model.Title.Trim();
@@ -109,6 +109,10 @@ namespace NghiaHa.CRM.Web.Controllers
                     }
                 }
             }
+            if (string.IsNullOrEmpty(model.MetaTitle))
+            {
+                InitializationBarcode(model);
+            }
             if (model.ID > 0)
             {
                 Initialization(model);
@@ -118,7 +122,6 @@ namespace NghiaHa.CRM.Web.Controllers
             else
             {
                 Initialization(model);
-                InitializationBarcode(model);
                 model.Initialization(InitType.Insert, RequestUserID);
                 _productRepository.Create(model);
             }

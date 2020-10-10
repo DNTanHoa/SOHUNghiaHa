@@ -207,6 +207,16 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public InvoiceDetail GetByCategoryIDAndManufacturingCode(int categoryID, string manufacturingCode)
+        {
+            SqlParameter[] parameters =
+                    {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@ManufacturingCode",manufacturingCode),
+                };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailSelectByCategoryIDAndManufacturingCode", parameters);
+            return SQLHelper.ToList<InvoiceDetail>(dt).FirstOrDefault();
+        }
         public void DeleteByProductIsNull()
         {
             SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailDeleteByProductIsNull");

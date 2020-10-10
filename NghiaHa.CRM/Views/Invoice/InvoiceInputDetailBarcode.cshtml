@@ -40,7 +40,7 @@
                                 </a>
                             </div>
                             <div class='col-md-1'>
-                                <a asp-route-ID="@Model.ID" asp-action="InvoiceInputDetailBarcode" asp-controller="Invoice" title="Files" style="width:100%;" class="btn btn-success">
+                                <a asp-route-ID="@Model.ID" asp-action="InvoiceInputDetailBarcode" asp-controller="Invoice" title="Barcode" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-qrcode"></span>
                                 </a>
                             </div>
@@ -64,6 +64,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class='form-group'>
+                                    <label for='MakeCode'>Mã sản xuất</label>
+                                    @(Html.TextBoxFor(Model => Model.MakeCode, new { placeholder = "Mã sản xuất", @class = "form-control", @autofocus = "autofocus" }))
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class='form-group'>
                                     <label for='InvoiceCode'>Số hóa đơn</label>
                                     @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control", @readonly = "readonly" }))
                                 </div>
@@ -78,6 +84,8 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
+                    columns.Bound(t => t.ProductCode).Title("Barcode").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -85,9 +93,6 @@
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
                     columns.Bound(t => t.Total).Title("Thành tiền thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total01).Title("Thành tiền hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ProductCode).Title("Model").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Số seri").Width(200);
-
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -167,25 +172,28 @@
         return { invoiceID: invoiceIDValue };
     }
 
-    $("#ManageCode").change(function () {
-        createByInvoiceIDAndProductMetaTitle();
+    $("#MakeCode").change(function () {
+        createByInvoiceIDAndProductCodeAndManufacturingCode();
     });
     function onSave() {
-        createByInvoiceIDAndProductMetaTitle();
+        createByInvoiceIDAndProductCodeAndManufacturingCode();
     }
-    function createByInvoiceIDAndProductMetaTitle() {
-        var manageCode = $("#ManageCode").val();
+    function createByInvoiceIDAndProductCodeAndManufacturingCode() {
+        var productCodeValue = $("#ManageCode").val();
+        var manufacturingCodeValue = $("#ManufacturingCode").val();
         $("#ManageCode").val("");
+        $("#ManufacturingCode").val("");
         var ID = $("#ID").val();
         BeginRequestHandler();
         $.ajax(
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("CreateByInvoiceIDAndProductMetaTitle", "InvoiceDetail")',
+                url: '@Url.Action("CreateByInvoiceIDAndProductCodeAndManufacturingCode", "InvoiceDetail")',
                 data: {
                     invoiceID: ID,
-                    productMetaTitle: manageCode
+                    productCode: productCodeValue,
+                    manufacturingCode: manufacturingCodeValue
                 },
                 success: function (result) {
                     $("#InvoiceDetail").data("kendoGrid").dataSource.read();

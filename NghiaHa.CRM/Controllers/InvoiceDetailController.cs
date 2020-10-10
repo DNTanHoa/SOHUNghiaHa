@@ -81,6 +81,85 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return Json(_invoiceRepository.GetByID(invoiceID));
         }
+        public IActionResult CreateByInvoiceIDAndManufacturingCode(int invoiceID, string manufacturingCode)
+        {
+            string note = AppGlobal.InitString;
+            if (!string.IsNullOrEmpty(manufacturingCode))
+            {
+                InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByCategoryIDAndManufacturingCode(AppGlobal.InvoiceInputID, manufacturingCode);
+                if (invoiceDetail != null)
+                {
+                    int result = 0;
+                    InvoiceDetail model = new InvoiceDetail();
+                    model.DateTrack = DateTime.Now;
+                    model.CategoryID = AppGlobal.ThiCongID;
+                    model.InvoiceID = invoiceID;
+                    model.ProductID = invoiceDetail.ProductID;
+                    model.UnitPrice = _productRepository.GetByID(invoiceDetail.ProductID.Value).Price;
+                    model.ProductCode = invoiceDetail.ProductCode;
+                    model.ManufacturingCode = manufacturingCode;
+                    model.Quantity = 1;
+                    model.UnitID = AppGlobal.UnitID;
+                    model.Total = model.UnitPrice * model.Quantity;
+                    model.Initialization(InitType.Insert, RequestUserID);
+                    if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                    {
+                        result = _invoiceDetailRepository.Create(model);
+                    }
+                    if (result > 0)
+                    {
+                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                        _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                        _productRepository.InitializationByID(model.ProductID.Value);
+                    }
+                    else
+                    {
+                        note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                    }
+                }
+            }
+            return Json(_invoiceRepository.GetByID(invoiceID));
+        }
+
+        public IActionResult CreateByInvoiceIDAndProductCodeAndManufacturingCode(int invoiceID, string productCode, string manufacturingCode)
+        {
+            string note = AppGlobal.InitString;
+            if (!string.IsNullOrEmpty(productCode))
+            {
+                Product product = _productRepository.GetByMetaTitle(productCode);
+                if (product != null)
+                {
+                    int result = 0;
+                    InvoiceDetail model = new InvoiceDetail();
+                    model.DateTrack = DateTime.Now;
+                    model.CategoryID = AppGlobal.ThiCongID;
+                    model.InvoiceID = invoiceID;
+                    model.ProductID = product.ID;
+                    model.UnitPrice = product.Price;
+                    model.ProductCode = productCode;
+                    model.ManufacturingCode = manufacturingCode;
+                    model.Quantity = 1;
+                    model.UnitID = AppGlobal.UnitID;
+                    model.Total = model.UnitPrice * model.Quantity;
+                    model.Initialization(InitType.Insert, RequestUserID);
+                    if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                    {
+                        result = _invoiceDetailRepository.Create(model);
+                    }
+                    if (result > 0)
+                    {
+                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                        _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                        _productRepository.InitializationByID(model.ProductID.Value);
+                    }
+                    else
+                    {
+                        note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                    }
+                }
+            }
+            return Json(_invoiceRepository.GetByID(invoiceID));
+        }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;

@@ -8,6 +8,7 @@ namespace SOHU.Data.Repositories
 {
     public interface IInvoiceDetailRepository : IRepository<InvoiceDetail>
     {
+        public InvoiceDetail GetByCategoryIDAndManufacturingCode(int categoryID, string manufacturingCode);
         public InvoiceDetail GetByInvoiceIDAndProductID(int invoiceID, int productID);
         public List<InvoiceDetail> GetByInvoiceIDToList(int invoiceID);
         public List<InvoiceDetailDataTransfer> GetDataTransferByInvoiceIDToList(int invoiceID);

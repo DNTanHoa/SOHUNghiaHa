@@ -69,8 +69,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class='form-group'>
-                                    <label for='ManageCode'>Barcode</label>
-                                    @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Barcode", @class = "form-control", @autofocus = "autofocus" }))
+                                    <label for='ManageCode'>Mã sản xuất</label>
+                                    @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Mã sản xuất", @class = "form-control", @autofocus = "autofocus" }))
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -182,7 +182,7 @@
         createByInvoiceIDAndProductMetaTitle();
     }
     function createByInvoiceIDAndProductMetaTitle() {
-        var manageCode = $("#ManageCode").val();
+        var manufacturingCodeValue = $("#ManageCode").val();
         $("#ManageCode").val("");
         var ID = $("#ID").val();       
         BeginRequestHandler();
@@ -190,10 +190,10 @@
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("CreateByInvoiceIDAndProductMetaTitle", "InvoiceDetail")',
+                url: '@Url.Action("CreateByInvoiceIDAndManufacturingCode", "InvoiceDetail")',
                 data: {
                     invoiceID: ID,
-                    productMetaTitle: manageCode
+                    manufacturingCode: manufacturingCodeValue
                 },
                 success: function (result) {    
                     $("#ProjectThiCong").data("kendoGrid").dataSource.read();
