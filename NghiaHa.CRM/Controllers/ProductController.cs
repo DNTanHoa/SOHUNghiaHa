@@ -56,18 +56,17 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.Discount = 0;
             }
         }
-        public IActionResult BarcodePreview()
+        public IActionResult BarcodePreview(int ID)
         {
             BaseViewModel model = new BaseViewModel();
-            string listProductID = Request.Cookies["ListProductID"];
-            if (!string.IsNullOrEmpty(listProductID))
+            if (ID > 0)
             {
+                Product product = _productRepository.GetByID(ID);
                 StringBuilder txt = new StringBuilder();
                 txt.AppendLine(@"<table>");
-                int i = 0;
-                foreach (string IDString in listProductID.Split(';'))
+                for (int i = 0; i < 10; i++)
                 {
-                    if (!string.IsNullOrEmpty(IDString))
+                    if (!string.IsNullOrEmpty(product.ImageThumbnail))
                     {
                         if (i % 2 == 0)
                         {
@@ -75,17 +74,17 @@ namespace NghiaHa.CRM.Web.Controllers
                         }
                         try
                         {
-                            int ID = int.Parse(IDString);
+
                             txt.AppendLine(@"<td>");
                             if (i % 2 == 0)
                             {
-                                txt.AppendLine(@"<div style='width: 160px; height: 90px; padding: 9px; border-right-color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                                txt.AppendLine(@"<div style='width: 180px; height: 100px; padding: 10px; border-right-color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
                             else
                             {
-                                txt.AppendLine(@"<div style='width:160px; height:90px; padding:9px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                                txt.AppendLine(@"<div style='width:180px; height:100px; padding:10px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
-                            txt.AppendLine(@"<img src='http://crm.nghiaha.vn/images/Product/Barcode/" + _productRepository.GetByID(ID).ImageThumbnail + "' width='100%' height='100%' />");
+                            txt.AppendLine(@"<img src='http://crm.nghiaha.vn/images/Product/Barcode/" + product.ImageThumbnail + "' width='100%' height='100%' />");
                             txt.AppendLine(@"</div>");
                             txt.AppendLine(@"</td>");
                         }
@@ -93,17 +92,16 @@ namespace NghiaHa.CRM.Web.Controllers
                         {
 
                         }
-                        if ((i % 2 == 1) || (i == listProductID.Split(';').Length - 1))
+                        if (i % 2 == 1)
                         {
                             txt.AppendLine(@"</tr>");
                         }
-                        i = i + 1;
+
                     }
                 }
                 txt.AppendLine(@"</table>");
                 model.Content = txt.ToString();
-            }
-            Response.Cookies.Append("ListProductID", "");
+            }            
             return View(model);
         }
         public IActionResult Index()
@@ -178,13 +176,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     }
                 }
             }
-            if (model.PriceUnitID > 0)
-            {
-                string listProductID = Request.Cookies["ListProductID"];
-                listProductID = listProductID + ";" + model.ID;
-                Response.Cookies.Append("ListProductID", listProductID);
-            }
-            model.PriceUnitID = null;
+           
             if (string.IsNullOrEmpty(model.ImageThumbnail))
             {
                 model.MetaTitle = "";

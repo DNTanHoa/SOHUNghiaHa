@@ -47,7 +47,7 @@
                                     </button>
                                 </div>
                                 <div class='col-sm-1'>
-                                    <a target="_blank" asp-action="BarcodePreview" asp-controller="Product" style="width:100%;" class="btn btn-success"><i class="fas fa-print"></i></a>
+                                    <a target="_blank" asp-route-ID="@Model.ID" asp-action="BarcodePreview" asp-controller="Product" style="width:100%;" class="btn btn-success"><i class="fas fa-print"></i></a>
                                 </div>
                                 <div class='col-md-1'>
                                     <a target="_blank" href="@Url.Content("/images/Product/Barcode/" + Model.ImageThumbnail)" title="Barcode" style="width:100%;" class="btn btn-success">
@@ -92,11 +92,7 @@
                                         @(Html.TextBoxFor(Model => Model.Discount, "{0:N0}", new { placeholder = "Chiết khấu", @class = "form-control" }))
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class='form-group'>
-                                        <label for='PriceUnitID'>In mã vạch</label>
-                                        @(Html.TextBoxFor(Model => Model.PriceUnitID, "{0:N0}", new { placeholder = "In mã vạch", @class = "form-control" }))
-                                    </div>
+                                <div class="col-md-6">                                  
                                     <div class='form-group'>
                                         <label for='CategoryId'>Nhóm</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.CategoryID)
@@ -278,7 +274,7 @@
         return { productID: productIDValue };
     }
     function onSearch() {
-        var productIDValue = $("#ParentID").data("kendoDropDownList").value();        
+        var productIDValue = $("#ParentID").data("kendoDropDownList").value();
         var url = "/Product/Detail?ID=" + productIDValue;
         window.location.replace(url);
     }
