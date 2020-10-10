@@ -1,0 +1,57 @@
+﻿@{ ViewData["Title"] = "Đồng bộ"; }
+@using Kendo.Mvc.UI
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Đồng bộ</h1>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    <div class="row">
+                        <div class='col-sm-2'>
+                            <a onclick="onTaoMaVach()" style="width:100%;" class="btn btn-success">Tạo mã vạch</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@(Html.Kendo().Notification()
+    .Name("Notification")
+    .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Width(400)
+)
+<script>
+    function onTaoMaVach() {
+         BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("TaoMaVach", "Product")',
+                data: {
+
+                },
+                success: function (result) {
+                    EndRequestHandler();
+                    var messageType = response.split('-')[0];
+                    var note = response.split('-')[1];
+                    var notification = $("#Notification").data("kendoNotification");
+                    notification.show(note, messageType);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+</script>

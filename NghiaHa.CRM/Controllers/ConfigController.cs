@@ -35,6 +35,10 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.Note = model.Note.Trim();
             }
         }
+        public IActionResult Synchronized()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();

@@ -98,7 +98,7 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"</tr>");
                         }
                         i = i + 1;
-                    }                    
+                    }
                 }
                 txt.AppendLine(@"</table>");
                 model.Content = txt.ToString();
@@ -142,6 +142,25 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             var data = _productRepository.GetByCategoryIDToList(categoryID);
             return Json(data.ToDataSourceResult(request));
+        }
+        public IActionResult TaoMaVach()
+        {
+            foreach (Product model in _productRepository.GetAllToList())
+            {
+                if (string.IsNullOrEmpty(model.ImageThumbnail))
+                {
+                    model.MetaTitle = "";
+                    model.MetaDescription = "";
+                    InitializationBarcode(model);
+                }
+                if (model.ID > 0)
+                {
+                    model.Initialization(InitType.Update, RequestUserID);
+                    _productRepository.Update(model.ID, model);
+                }
+            }
+            string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+            return Json(note);
         }
         public IActionResult Save(Product model)
         {
