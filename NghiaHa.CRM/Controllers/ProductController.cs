@@ -31,7 +31,7 @@ namespace NghiaHa.CRM.Web.Controllers
         private void InitializationBarcode(Product model)
         {
             var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "images/Product/Barcode");
-            model.ImageThumbnail = Ean13.CreateEAN13Image_Product(model, physicalPath);
+            Ean13.CreateEAN13Image_Product(model, physicalPath);
         }
         private void Initialization(Product model)
         {
@@ -79,13 +79,13 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td>");
                             if (i % 2 == 0)
                             {
-                                txt.AppendLine(@"<div style='width: 160px; height: 90px; padding: 9px; border - right - color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                                txt.AppendLine(@"<div style='width: 160px; height: 90px; padding: 9px; border-right-color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
                             else
                             {
                                 txt.AppendLine(@"<div style='width:160px; height:90px; padding:9px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
-                            txt.AppendLine(@"<img src='" + AppGlobal.Domain + "images/Product/Barcode/" + _productRepository.GetByID(ID).ImageThumbnail + "' width='100%' height='100%' />");
+                            txt.AppendLine(@"<img src='http://crm.nghiaha.vn/images/Product/Barcode/" + _productRepository.GetByID(ID).ImageThumbnail + "' width='100%' height='100%' />");
                             txt.AppendLine(@"</div>");
                             txt.AppendLine(@"</td>");
                         }
@@ -103,7 +103,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 txt.AppendLine(@"</table>");
                 model.Content = txt.ToString();
             }
-            //Response.Cookies.Append("ListProductID", "");
+            Response.Cookies.Append("ListProductID", "");
             return View(model);
         }
         public IActionResult Index()
@@ -169,8 +169,10 @@ namespace NghiaHa.CRM.Web.Controllers
                 Response.Cookies.Append("ListProductID", listProductID);
             }
             model.PriceUnitID = null;
-            if (string.IsNullOrEmpty(model.MetaTitle))
+            if (string.IsNullOrEmpty(model.ImageThumbnail))
             {
+                model.MetaTitle = "";
+                model.MetaDescription = "";
                 InitializationBarcode(model);
             }
             if (model.ID > 0)
