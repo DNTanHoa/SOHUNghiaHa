@@ -26,12 +26,27 @@
                         <form asp-action="Save" asp-controller="Product">
                             @Html.HiddenFor(Model => Model.ID)
                             <div class="row">
-                                <div class='col-md-8'>
+                                <div class='col-md-6'>
+                                    @(Html.Kendo().DropDownListFor(Model => Model.ParentID)
+                                   .DataValueField("ID")
+                                   .DataTextField("Title")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetAllOrderByTitleToList", "Product")))
+                                    )
+                                </div>
+                                <div class='col-md-1'>
+                                    <a style="width:100%; color:white;" onclick="onSearch()" title="Search" class="btn btn-success">
+                                        <span class="fas fa-search"></span>
+                                    </a>
                                 </div>
                                 <div class='col-md-1'>
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
                                         <span class="fas fa-save"></span>
                                     </button>
+                                </div>
+                                <div class='col-sm-1'>
+                                    <a target="_blank" asp-action="BarcodePreview" asp-controller="Product" style="width:100%;" class="btn btn-success"><i class="fas fa-print"></i></a>
                                 </div>
                                 <div class='col-md-1'>
                                     <a target="_blank" href="@Url.Content("/images/Product/Barcode/" + Model.ImageThumbnail)" title="Barcode" style="width:100%;" class="btn btn-success">
@@ -68,8 +83,8 @@
                                         @(Html.TextBoxFor(Model => Model.QuantityInStockRoot, "{0:N0}", new { placeholder = "Tồn đầu kỳ", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Price'>Giá xuất kho</label>
-                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Giá xuất kho", @class = "form-control" }))
+                                        <label for='Price'>Giá bán (Catalogue)</label>
+                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Giá bán (Catalogue)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='Discount'>Chiết khấu</label>
@@ -77,6 +92,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='PriceUnitID'>In mã vạch</label>
+                                        @(Html.TextBoxFor(Model => Model.PriceUnitID, "{0:N0}", new { placeholder = "In mã vạch", @class = "form-control" }))
+                                    </div>
                                     <div class='form-group'>
                                         <label for='CategoryId'>Nhóm</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.CategoryID)
@@ -256,5 +275,10 @@
     function filterInvoiceOutput(e) {
         var productIDValue = $("#ID").val();
         return { productID: productIDValue };
+    }
+    function onSearch() {
+        var productIDValue = $("#ParentID").data("kendoDropDownList").value();        
+        var url = "/Product/Detail?ID=" + productIDValue;
+        window.location.replace(url);
     }
 </script>

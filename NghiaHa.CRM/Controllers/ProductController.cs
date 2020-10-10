@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,6 +56,56 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.Discount = 0;
             }
         }
+        public IActionResult BarcodePreview()
+        {
+            BaseViewModel model = new BaseViewModel();
+            string listProductID = Request.Cookies["ListProductID"];
+            if (!string.IsNullOrEmpty(listProductID))
+            {
+                StringBuilder txt = new StringBuilder();
+                txt.AppendLine(@"<table>");
+                int i = 0;
+                foreach (string IDString in listProductID.Split(';'))
+                {
+                    if (!string.IsNullOrEmpty(IDString))
+                    {
+                        if (i % 2 == 0)
+                        {
+                            txt.AppendLine(@"<tr>");
+                        }
+                        try
+                        {
+                            int ID = int.Parse(IDString);
+                            txt.AppendLine(@"<td>");
+                            if (i % 2 == 0)
+                            {
+                                txt.AppendLine(@"<div style='width: 160px; height: 90px; padding: 9px; border - right - color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                            }
+                            else
+                            {
+                                txt.AppendLine(@"<div style='width:160px; height:90px; padding:9px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                            }
+                            txt.AppendLine(@"<img src='" + AppGlobal.Domain + "images/Product/Barcode/" + _productRepository.GetByID(ID).ImageThumbnail + "' width='100%' height='100%' />");
+                            txt.AppendLine(@"</div>");
+                            txt.AppendLine(@"</td>");
+                        }
+                        catch
+                        {
+
+                        }
+                        if ((i % 2 == 1) || (i == listProductID.Split(';').Length - 1))
+                        {
+                            txt.AppendLine(@"</tr>");
+                        }
+                        i = i + 1;
+                    }                    
+                }
+                txt.AppendLine(@"</table>");
+                model.Content = txt.ToString();
+            }
+            //Response.Cookies.Append("ListProductID", "");
+            return View(model);
+        }
         public IActionResult Index()
         {
             return View();
@@ -67,12 +118,14 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult Detail(int ID)
         {
             Product model = new Product();
+            model.ID = ID;
             model.ContentMain = "Tính theo thực tế";
             model.Discount = 0;
             if (ID > 0)
             {
                 model = _productRepository.GetByID(ID);
             }
+            model.ParentID = model.ID;
             return View(model);
         }
         public ActionResult GetAllToList([DataSourceRequest] DataSourceRequest request)
@@ -109,6 +162,13 @@ namespace NghiaHa.CRM.Web.Controllers
                     }
                 }
             }
+            if (model.PriceUnitID > 0)
+            {
+                string listProductID = Request.Cookies["ListProductID"];
+                listProductID = listProductID + ";" + model.ID;
+                Response.Cookies.Append("ListProductID", listProductID);
+            }
+            model.PriceUnitID = null;
             if (string.IsNullOrEmpty(model.MetaTitle))
             {
                 InitializationBarcode(model);
@@ -116,6 +176,10 @@ namespace NghiaHa.CRM.Web.Controllers
             if (model.ID > 0)
             {
                 Initialization(model);
+                if (string.IsNullOrEmpty(model.Image))
+                {
+                    model.Image = _productRepository.GetByID(model.ID).Image;
+                }
                 model.Initialization(InitType.Update, RequestUserID);
                 _productRepository.Update(model.ID, model);
             }

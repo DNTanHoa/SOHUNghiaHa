@@ -22,9 +22,9 @@
                 <div class="card-header">
                     <div class="row">
                         <div class='col-sm-11'>
-                        </div>
+                        </div>                       
                         <div class='col-sm-1'>
-                            <a asp-route-ID="0" asp-action="Detail" asp-controller="Product" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                            <a asp-route-ID="0" asp-action="Detail" asp-controller="Product" style="width:100%;" class="btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Product/Detail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a href='/Product/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.MetaTitle).Title("Barcode").Width(200);
                     columns.Bound(t => t.MetaKeyword).Title("Ngắn gọn").Width(200);
                     columns.Bound(t => t.Urlcode).Title("Mã sản phẩm").Width(200);

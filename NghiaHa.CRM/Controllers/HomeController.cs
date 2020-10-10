@@ -70,8 +70,8 @@ namespace NghiaHa.CRM.Controllers
             }
         }
         public string InitializationMenuLeft()
-        {            
-            StringBuilder txt = new StringBuilder();            
+        {
+            StringBuilder txt = new StringBuilder();
             txt.AppendLine(@"<li class='nav-item has-treeview'>");
             txt.AppendLine(@"<a class='nav-link' href='#'>");
             txt.AppendLine(@"<i class='nav-icon fas fa-file-signature'></i>");
@@ -154,6 +154,14 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"</p>");
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"<ul class='nav nav-treeview'>");
+            txt.AppendLine(@"<li class='nav-item'>");
+            txt.AppendLine(@"<a class='nav-link' href='/Product/Index'>");
+            txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
+            txt.AppendLine(@"<p>");
+            txt.AppendLine(@"Tất cả");
+            txt.AppendLine(@"</p>");
+            txt.AppendLine(@"</a>");
+            txt.AppendLine(@"</li>");
             List<Config> listProductCategory = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ProductCategory);
             foreach (Config item in listProductCategory)
             {
