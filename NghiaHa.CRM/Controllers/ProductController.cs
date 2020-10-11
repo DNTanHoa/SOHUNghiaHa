@@ -33,6 +33,11 @@ namespace NghiaHa.CRM.Web.Controllers
             var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "images/Product/Barcode");
             Ean13.CreateEAN13Image_Product(model, physicalPath);
         }
+        private void InitializationBarcode001(Product model)
+        {
+            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "images/Product/Barcode");
+            Ean13.CreateEAN13Image_Product001(model, physicalPath);
+        }
         private void Initialization(Product model)
         {
             if (!string.IsNullOrEmpty(model.Title))
@@ -149,7 +154,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 {
                     model.MetaTitle = "";
                     model.MetaDescription = "";
-                    InitializationBarcode(model);
+                    InitializationBarcode001(model);
                     model.Initialization(InitType.Update, RequestUserID);
                     _productRepository.Update(model.ID, model);
                 }

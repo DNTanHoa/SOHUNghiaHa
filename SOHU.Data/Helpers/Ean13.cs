@@ -206,7 +206,36 @@ namespace SOHU.Data.Helpers
             bool equals = false;
             if (string.IsNullOrEmpty(model.MetaTitle))
             {
-                model.MetaTitle = DateTime.Now.ToString("yMMddHHmmss");
+                Random random = new Random();
+                double number = double.Parse(DateTime.Now.ToString("yyMMddHHmmss")) + DateTime.Now.Second + random.Next(1000000000);
+                model.MetaTitle = number.ToString();
+                equals = true;
+            }
+            Ean13 ean13 = new Ean13();
+            ean13.CountryCode = model.MetaTitle.Substring(0, 2);
+            ean13.ManufacturerCode = model.MetaTitle.Substring(2, 6);
+            ean13.ProductCode = model.MetaTitle.Substring(6, 4);
+            ean13.Scale = 8;
+            System.Drawing.Bitmap bmp = ean13.CreateBitmap();
+            model.MetaDescription = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+            string fileName = model.MetaDescription + ".png";
+            path = path + "/" + fileName;
+            bmp.Save(path, ImageFormat.Png);
+            if (equals == true)
+            {
+                model.MetaTitle = model.MetaDescription;
+            }
+            model.ImageThumbnail = fileName;
+            return fileName;
+        }
+        public static string CreateEAN13Image_Product001(Product model, string path)
+        {
+            bool equals = false;
+            if (string.IsNullOrEmpty(model.MetaTitle))
+            {
+                Random random = new Random();
+                double number = double.Parse(DateTime.Now.ToString("yyMMddHHmmss")) + DateTime.Now.Second + random.Next(1000000000);
+                model.MetaTitle = number.ToString();
                 equals = true;
             }
             Ean13 ean13 = new Ean13();
