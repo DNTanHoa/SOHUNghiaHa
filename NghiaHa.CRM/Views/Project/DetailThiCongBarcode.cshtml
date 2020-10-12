@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = @Model.InvoiceName + " - Barcode"; ViewData["InvoiceID"] = @Model.ID; }
+﻿@{ ViewData["Title"] = @Model.InvoiceName + " - Xuất kho"; ViewData["InvoiceID"] = @Model.ID; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><b>@Model.InvoiceName</b> - Barcode</h1>
+                <h1><b>@Model.InvoiceName</b> - Xuất kho</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -26,25 +26,20 @@
                         @Html.HiddenFor(Model => Model.ID)
                         <div class="row">
                             <div class='col-md-1'>
-                                <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>
                             <div class='col-md-1'>
-                                <button style="width:100%;" type="submit" onclick="onSave" title="Save" class="btn btn-primary">
+                                <button style="width:100%;" type="submit" onclick="onSave()" title="Save" class="btn btn-primary">
                                     <span class="fas fa-save"></span>
                                 </button>
                             </div>
                             <div class='col-md-1'>
-                                <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewPhieuXuatKho?ID=@Model.ID');" title="In phiếu xuất kho" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">
                                     <span class="fas fa-print"></span>
                                 </a>
-                            </div>
-                            <div class='col-md-2'>
-                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                    Dự án
-                                </a>
-                            </div>
+                            </div>                            
                             <div class='col-md-2'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     Dự toán
@@ -67,16 +62,22 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-1">
                                 <div class='form-group'>
-                                    <label for='Total'>Số lượng</label>
-                                    @(Html.TextBoxFor(Model => Model.Total, new { placeholder = "Số lượng", @class = "form-control" }))
+                                    <label for='TotalDiscount'>Số lượng</label>
+                                    @(Html.TextBoxFor(Model => Model.TotalDiscount, new { placeholder = "Số lượng", @class = "form-control" }))
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class='form-group'>
                                     <label for='ManageCode'>Mã sản xuất</label>
                                     @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Mã sản xuất", @class = "form-control", @autofocus = "autofocus" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='InvoiceName'>Dự án</label>
+                                    @(Html.TextBoxFor(Model => Model.InvoiceName, new { placeholder = "Dự án", @class = "form-control", @readonly = "readonly" }))
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -91,13 +92,39 @@
                                     )
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            @*<div class="col-md-1">
                                 <div class='form-group'>
-                                    <label for='InvoiceName'>Dự án</label>
-                                    @(Html.TextBoxFor(Model => Model.InvoiceName, new { placeholder = "Dự án", @class = "form-control", @readonly = "readonly" }))
+                                    <label for='EmployeeID'>Cập nhật</label>
+                                    <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
+                                        <span class="fas fa-arrow-down"></span>
+                                    </button>
+                                </div>
+                            </div>*@
+                        </div>    
+                        <div class="row">
+                            <div class="col-md-1">
+                                <div class='form-group'>                                  
                                 </div>
                             </div>
-                        </div>                        
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='TotalNoTax'>Trước thuế (Thi công)</label>
+                                    @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế (Thi công)", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='TotalTax'>Tiền thuế VAT</label>
+                                    @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='Total'>Sau thuế</label>
+                                    @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                        </div>
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
                 .Name("ProjectThiCong")
                 .Columns(columns =>
@@ -109,14 +136,13 @@
                     }).Width(150);
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(300);
-                    columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(300);
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -158,8 +184,6 @@
                     model.Field(t => t.DateTrack).DefaultValue(DateTime.Now);
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
-
-
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCong"); })
                 .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
@@ -186,25 +210,45 @@
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
             $("#ProjectThiCong").data("kendoGrid").dataSource.read();
-            setInvoice();
         }
+        setInvoice();
     }
     function filterProjectThiCong(e) {
         var invoiceIDValue = $("#ID").val();
         return { invoiceID: invoiceIDValue };
     }
     $("#ManageCode").change(function () {
-        createByInvoiceIDAndProductMetaTitle();
+        onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID();
     });
     function onSave() {
-        createByInvoiceIDAndProductMetaTitle();
+        onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID();
     }
-    function createByInvoiceIDAndProductMetaTitle() {
+    function onUpdateByInvoiceIDAndEmployeeID() {
+        var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();       
+        var ID = $("#ID").val();
+        BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("UpdateByInvoiceIDAndEmployeeID", "InvoiceDetail")',
+                data: {
+                    invoiceID: ID,                  
+                    employeeID: employeeIDValue
+                },
+                success: function (result) {
+                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();                
+                    EndRequestHandler();
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+    function onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID() {
         var manufacturingCodeValue = $("#ManageCode").val();
-        var quantityValue = $("#Total").val();
+        var quantityValue = $("#TotalDiscount").val();
         var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();
         $("#ManageCode").val("");
-        var ID = $("#ID").val();       
+        var ID = $("#ID").val();
         BeginRequestHandler();
         $.ajax(
             {
@@ -217,11 +261,32 @@
                     quantity: quantityValue,
                     employeeID: employeeIDValue
                 },
-                success: function (result) {    
+                success: function (result) {
                     $("#ProjectThiCong").data("kendoGrid").dataSource.read();
                     $("#ManageCode").focus();
-                    $("#Total").val("1");
+                    $("#TotalDiscount").val("1");
                     EndRequestHandler();
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+     function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#ID").val() },
+                success: function (result) {
+                    var TotalNoTax = Math.round(result["TotalNoTax"]);
+                    var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalTax = Math.round(result["TotalTax"]);
+                    var TotalTaxString = TotalTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#TotalNoTax").val(TotalNoTaxString);
+                    $("#TotalTax").val(TotalTaxString);
+                    $("#Total").val(TotalString);
                 },
                 error: function (jqXHR, exception) { }
             });

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = Model.InvoiceCode + " - Barcode";
+    ViewData["Title"] = Model.InvoiceCode + " - Nhập kho";
 }
 
 @using Kendo.Mvc.UI
@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>@Model.InvoiceCode - Barcode</h1>
+                <h1>@Model.InvoiceCode - Nhập kho</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -74,6 +74,30 @@
                                 <div class='form-group'>
                                     <label for='InvoiceCode'>Số hóa đơn</label>
                                     @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control", @readonly = "readonly" }))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='TotalNoTax'>Trước thuế (Thi công)</label>
+                                    @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế (Thi công)", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='TotalTax'>Tiền thuế VAT</label>
+                                    @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class='form-group'>
+                                    <label for='Total'>Sau thuế</label>
+                                    @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
                                 </div>
                             </div>
                         </div>
@@ -165,8 +189,8 @@
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
             $("#InvoiceDetail").data("kendoGrid").dataSource.read();
-
         }
+        setInvoice();
     }
 
     function filterInvoiceDetail(e) {
@@ -206,6 +230,27 @@
                     $("#ManageCode").focus();
                     $("#Total").val("1");
                     EndRequestHandler();
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+    function setInvoice() {
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("GetByID", "Invoice")',
+                data: { ID: $("#ID").val() },
+                success: function (result) {
+                    var TotalNoTax = Math.round(result["TotalNoTax"]);
+                    var TotalNoTaxString = TotalNoTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var TotalTax = Math.round(result["TotalTax"]);
+                    var TotalTaxString = TotalTax.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    var Total = Math.round(result["Total"]);
+                    var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#TotalNoTax").val(TotalNoTaxString);
+                    $("#TotalTax").val(TotalTaxString);
+                    $("#Total").val(TotalString);
                 },
                 error: function (jqXHR, exception) { }
             });

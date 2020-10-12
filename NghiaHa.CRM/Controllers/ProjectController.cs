@@ -145,12 +145,13 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult DetailThiCongBarcode(int ID)
         {
-            Invoice model = new Invoice();          
+            Invoice model = new Invoice();
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
             }
-            model.InvoiceCode = "";
+            model.ManageCode = "";
+            model.TotalDiscount = 1;
             return View(model);
         }
         public IActionResult Detail(int ID)
@@ -220,7 +221,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         hopDong = hopDong.Replace(@"[BuyPhone]", buyer.Phone);
                     }
                     Membership seller = _membershipRepository.GetByID(model.SellID.Value);
-                    if (buyer != null)
+                    if (seller != null)
                     {
                         hopDong = hopDong.Replace(@"[SellName]", seller.FullName);
                         hopDong = hopDong.Replace(@"[SellAddress]", seller.Address);
@@ -274,7 +275,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         chaoGia = chaoGia.Replace(@"[BuyAddress]", buyer.Address);
                     }
                     Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
-                    if (buyer != null)
+                    if (seller != null)
                     {
                         chaoGia = chaoGia.Replace(@"[SellName]", seller.FullName);
                         chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
@@ -352,6 +353,81 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
+        public IActionResult PrintPreviewPhieuXuatKho(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.DateBegin = DateTime.Now;
+            model.DateEnd = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+
+                string chaoGia = "";
+                var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "PhieuXuatKho.html");
+                using (var stream = new FileStream(physicalPath, FileMode.Open))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        chaoGia = reader.ReadToEnd();
+                    }
+                }
+                DateTime now = DateTime.Now;
+                chaoGia = chaoGia.Replace(@"[DatePrint]", now.ToString("dd/MM/yyyy HH:mm:ss"));
+                chaoGia = chaoGia.Replace(@"[ProjectName]", model.InvoiceName);
+                Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
+                if (seller != null)
+                {
+                    chaoGia = chaoGia.Replace(@"[SellFullName]", seller.FullName);
+                    chaoGia = chaoGia.Replace(@"[SellName]", seller.FullName);
+                    chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
+                    chaoGia = chaoGia.Replace(@"[SellEmail]", seller.Email);
+                    chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
+                    chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
+                }
+
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID);
+                if (list.Count > 0)
+                {
+                    int no = 0;                  
+                    StringBuilder txt = new StringBuilder();
+                    txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
+                    txt.AppendLine(@"<thead>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");                    
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");                                       
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
+                    txt.AppendLine(@"</thead>");
+                    txt.AppendLine(@"<tbody>");
+                    foreach (InvoiceDetailDataTransfer item in list)
+                    {                       
+                        no = no + 1;
+                        txt.AppendLine(@"<tr>");
+                        txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
+                        txt.AppendLine(@"<td style='text-align:left;'>");                        
+                        txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
+                        txt.AppendLine(@"</td>");                        
+                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");                        
+                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.ManufacturingCode + "</b></td>");
+                        txt.AppendLine(@"</tr>");
+                    }                
+                    txt.AppendLine(@"</tbody>");
+                    txt.AppendLine(@"</table>");
+                    chaoGia = chaoGia.Replace(@"[Detail]", txt.ToString());
+                }
+                model.Note = chaoGia;
+            }
+            model.CategoryID = AppGlobal.DuAnID;
+            return View(model);
+        }
         public IActionResult DetailNghiemThu(int ID)
         {
             Invoice model = new Invoice();
@@ -399,7 +475,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         nghiemThu = nghiemThu.Replace(@"[BuyPhone]", buyer.Phone);
                     }
                     Membership seller = _membershipRepository.GetByID(model.SellID.Value);
-                    if (buyer != null)
+                    if (seller != null)
                     {
                         nghiemThu = nghiemThu.Replace(@"[SellName]", seller.FullName);
                         nghiemThu = nghiemThu.Replace(@"[SellAddress]", seller.Address);
@@ -457,7 +533,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"</tbody>");
                         txt.AppendLine(@"</table>");
                         nghiemThu = nghiemThu.Replace(@"[ThiCong]", txt.ToString());
-                    }                    
+                    }
                     model.NghiemThu = nghiemThu;
                 }
             }

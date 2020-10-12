@@ -238,6 +238,13 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return Json(_invoiceRepository.GetByID(invoiceID));
         }
+
+        public IActionResult UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID)
+        {
+            string note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
+            _invoiceDetailRepository.UpdateItemsByInvoiceIDAndEmployeeID(invoiceID, employeeID);
+            return Json(note);
+        }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;

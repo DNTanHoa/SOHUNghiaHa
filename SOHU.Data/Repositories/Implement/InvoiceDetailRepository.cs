@@ -221,5 +221,14 @@ namespace SOHU.Data.Repositories
         {
             SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailDeleteByProductIsNull");
         }
+        public string UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID)
+        {
+            SqlParameter[] parameters =
+                    {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@EmployeeID",employeeID),
+                };            
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeID", parameters);
+        }
     }
 }

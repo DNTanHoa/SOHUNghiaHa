@@ -20,5 +20,6 @@ namespace SOHU.Data.Repositories
         public List<InvoiceDetailDataTransfer> GetProjectDuToanByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public List<InvoiceDetailDataTransfer> GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
+        public string UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID);
     }
 }
