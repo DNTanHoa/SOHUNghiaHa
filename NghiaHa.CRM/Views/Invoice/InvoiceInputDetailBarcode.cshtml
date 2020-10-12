@@ -54,6 +54,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class='form-group'>
+                                    <label for='Total'>Số lượng</label>
+                                    @(Html.TextBoxFor(Model => Model.Total, new { placeholder = "Số lượng", @class = "form-control", @autofocus = "autofocus" }))
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
                                     <label for='ManageCode'>Mã vạch</label>
                                     @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Mã vạch", @class = "form-control", @autofocus = "autofocus" }))
                                 </div>

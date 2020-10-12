@@ -73,6 +73,8 @@ namespace NghiaHa.CRM.Web.Controllers
                 model = _invoiceRepository.GetByID(ID);
             }
             model.ManageCode = "";
+            model.MakeCode = "";
+            model.Total = 1;
             return View(model);
         }
         public IActionResult InvoiceInputDetailWindow(int ID)

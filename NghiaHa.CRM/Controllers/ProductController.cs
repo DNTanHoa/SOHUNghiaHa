@@ -89,7 +89,7 @@ namespace NghiaHa.CRM.Web.Controllers
                             {
                                 txt.AppendLine(@"<div style='width: 220px; height:100px; padding:10px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
-                            txt.AppendLine(@"<a title='In' href='javascript:window.print();'></a><img src='http://crm.nghiaha.vn/images/Product/Barcode/" + product.ImageThumbnail + "' width='100%' height='100%' />");
+                            txt.AppendLine(@"<a title='In' href='javascript:window.print();'><img src='http://crm.nghiaha.vn/images/Product/Barcode/" + product.ImageThumbnail + "' width='100%' height='100%' /></a>");
                             txt.AppendLine(@"</div>");
                             txt.AppendLine(@"</td>");
                         }
