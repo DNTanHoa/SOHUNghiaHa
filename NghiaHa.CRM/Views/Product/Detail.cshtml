@@ -30,10 +30,10 @@
                                 <div class='col-md-6'>
                                     @(Html.Kendo().DropDownListFor(Model => Model.ParentID)
                                    .DataValueField("ID")
-                                   .DataTextField("Title")
+                                   .DataTextField("FullName")
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
-                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetAllOrderByTitleToList", "Product")))
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetDataTransferAllOrderByTitleToList", "Product")))
                                     )
                                 </div>
                                 <div class='col-md-1'>

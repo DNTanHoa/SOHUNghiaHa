@@ -131,21 +131,24 @@ namespace NghiaHa.CRM.Controllers
             }
             else
             {
-                bool check = false;
-                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
-                {
-                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
-                }
-                if (model.ParentID == AppGlobal.EmployeeParentID)
-                {
-                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-                }
-                if (check == true)
-                {
-                    Initialization(model);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
+                //bool check = false;
+                //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+                //{
+                //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                //}
+                //if (model.ParentID == AppGlobal.EmployeeParentID)
+                //{
+                //    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                //}
+                //if (check == true)
+                //{
+                //    Initialization(model);
+                //    model.Initialization(InitType.Insert, RequestUserID);
+                //    _membershipRepository.Create(model);
+                //}
             }
             return RedirectToAction("CustomerDetail", new { ID = model.ID });
         }

@@ -52,25 +52,25 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class='form-group'>
                                     <label for='Total'>Số lượng</label>
-                                    @(Html.TextBoxFor(Model => Model.Total, new { placeholder = "Số lượng", @class = "form-control", @autofocus = "autofocus" }))
+                                    @(Html.TextBoxFor(Model => Model.Total, new { placeholder = "Số lượng", @class = "form-control" }))
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class='form-group'>
                                     <label for='ManageCode'>Mã vạch</label>
                                     @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Mã vạch", @class = "form-control", @autofocus = "autofocus" }))
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class='form-group'>
                                     <label for='MakeCode'>Mã sản xuất</label>
                                     @(Html.TextBoxFor(Model => Model.MakeCode, new { placeholder = "Mã sản xuất", @class = "form-control", @autofocus = "autofocus" }))
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class='form-group'>
                                     <label for='InvoiceCode'>Số hóa đơn</label>
                                     @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control", @readonly = "readonly" }))
@@ -185,6 +185,7 @@
     function createByInvoiceIDAndProductCodeAndManufacturingCode() {
         var productCodeValue = $("#ManageCode").val();
         var manufacturingCodeValue = $("#MakeCode").val();
+        var quantityValue = $("#Total").val();
         $("#ManageCode").val("");
         $("#MakeCode").val("");
         var ID = $("#ID").val();
@@ -193,15 +194,17 @@
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("CreateByInvoiceIDAndProductCodeAndManufacturingCode", "InvoiceDetail")',
+                url: '@Url.Action("CreateByInvoiceIDAndProductCodeAndManufacturingCodeAndQuantity", "InvoiceDetail")',
                 data: {
                     invoiceID: ID,
                     productCode: productCodeValue,
-                    manufacturingCode: manufacturingCodeValue
+                    manufacturingCode: manufacturingCodeValue,
+                    quantity: quantityValue
                 },
                 success: function (result) {
                     $("#InvoiceDetail").data("kendoGrid").dataSource.read();
                     $("#ManageCode").focus();
+                    $("#Total").val("1");
                     EndRequestHandler();
                 },
                 error: function (jqXHR, exception) { }

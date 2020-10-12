@@ -16,7 +16,7 @@ namespace SOHU.Data.DataTransferObject
                 return AppGlobal.DomainWebsite + MetaTitle + "-" + ID + ".html";
             }
         }
-
+        public string FullName { get; set; }
         public string PriceUnit { get; set; }
     }
 }
