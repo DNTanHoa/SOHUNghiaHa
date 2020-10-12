@@ -83,13 +83,13 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td>");
                             if (i % 2 == 0)
                             {
-                                txt.AppendLine(@"<div style='width: 180px; height: 100px; padding: 10px; border-right-color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                                txt.AppendLine(@"<div style='width: 200px; height: 100px; padding: 10px; border-right-color:#000000; border-right-style:dotted; border-right-width:1px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
                             else
                             {
-                                txt.AppendLine(@"<div style='width:180px; height:100px; padding:10px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
+                                txt.AppendLine(@"<div style='width: 200px; height:100px; padding:10px; border-bottom-color:#000000; border-bottom-style:dotted; border-bottom-width:1px;'>");
                             }
-                            txt.AppendLine(@"<img src='http://crm.nghiaha.vn/images/Product/Barcode/" + product.ImageThumbnail + "' width='100%' height='100%' />");
+                            txt.AppendLine(@"<a title='In' href='javascript:window.print();'></a><img src='http://crm.nghiaha.vn/images/Product/Barcode/" + product.ImageThumbnail + "' width='100%' height='100%' />");
                             txt.AppendLine(@"</div>");
                             txt.AppendLine(@"</td>");
                         }
