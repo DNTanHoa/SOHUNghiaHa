@@ -67,14 +67,14 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult InvoiceInputDetailBarcode(int ID)
         {
-            Invoice model = new Invoice();            
+            Invoice model = new Invoice();
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
             }
             model.ManageCode = "";
             model.MakeCode = "";
-            model.Total = 1;
+            model.TotalDiscount = 1;
             return View(model);
         }
         public IActionResult InvoiceInputDetailWindow(int ID)
@@ -174,6 +174,15 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
             }
             return RedirectToAction("InvoiceInputWindow", new { ID = model.ID });
+        }
+        public IActionResult DongBoHoaDon()
+        {
+            foreach (Invoice model in _invoiceRepository.GetAllToList())
+            {
+                _invoiceRepository.InitializationByID(model.ID);
+            }
+            string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+            return Json(note);
         }
     }
 }

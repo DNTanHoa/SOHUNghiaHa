@@ -18,6 +18,10 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
+        public bool IsValidByManufacturingCode(string manufacturingCode)
+        {
+            return _context.Set<InvoiceDetail>().FirstOrDefault(item => item.ManufacturingCode.Equals(manufacturingCode)) == null ? true : false;
+        }
         public InvoiceDetail GetByInvoiceIDAndProductID(int invoiceID, int productID)
         {
             return _context.InvoiceDetail.FirstOrDefault(item => item.InvoiceID == invoiceID && item.ProductID == productID);
@@ -227,8 +231,12 @@ namespace SOHU.Data.Repositories
                     {
                 new SqlParameter("@InvoiceID",invoiceID),
                 new SqlParameter("@EmployeeID",employeeID),
-                };            
+                };
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeID", parameters);
+        }
+        public string InitializationUnitPrice()
+        {
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailInitializationUnitPrice");
         }
     }
 }

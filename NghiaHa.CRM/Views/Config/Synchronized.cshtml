@@ -18,8 +18,17 @@
             <div class="card w-100">
                 <div class="card-header">
                     <div class="row">
-                        <div class='col-sm-2'>
+                        <div class='col-sm-3'>
                             <a onclick="onTaoMaVach()" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">Tạo mã vạch</a>
+                        </div>
+                        <div class='col-sm-3'>
+                            <a onclick="onDongBoTonKho()" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">Đồng bộ tồn kho</a>
+                        </div>
+                        <div class='col-sm-3'>
+                            <a onclick="onDongBoGia()" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">Đồng bộ giá</a>
+                        </div>
+                        <div class='col-sm-3'>
+                            <a onclick="onDongBoHoaDon()" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">Đồng bộ hóa đơn</a>
                         </div>
                     </div>
                 </div>
@@ -41,6 +50,66 @@
                 type: "POST",
                 datatype: "JSON",
                 url: '@Url.Action("TaoMaVach", "Product")',
+                data: {
+
+                },
+                success: function (result) {
+                    EndRequestHandler();
+                    var messageType = response.split('-')[0];
+                    var note = response.split('-')[1];
+                    var notification = $("#Notification").data("kendoNotification");
+                    notification.show(note, messageType);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+    function onDongBoTonKho() {
+         BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("DongBoTonKho", "Product")',
+                data: {
+
+                },
+                success: function (result) {
+                    EndRequestHandler();
+                    var messageType = response.split('-')[0];
+                    var note = response.split('-')[1];
+                    var notification = $("#Notification").data("kendoNotification");
+                    notification.show(note, messageType);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+    function onDongBoGia() {
+         BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("InitializationUnitPrice", "InvoiceDetail")',
+                data: {
+
+                },
+                success: function (result) {
+                    EndRequestHandler();
+                    var messageType = response.split('-')[0];
+                    var note = response.split('-')[1];
+                    var notification = $("#Notification").data("kendoNotification");
+                    notification.show(note, messageType);
+                },
+                error: function (jqXHR, exception) { }
+            });
+    }
+    function onDongBoHoaDon() {
+         BeginRequestHandler();
+        $.ajax(
+            {
+                type: "POST",
+                datatype: "JSON",
+                url: '@Url.Action("DongBoHoaDon", "Invoice")',
                 data: {
 
                 },

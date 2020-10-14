@@ -21,5 +21,7 @@ namespace SOHU.Data.Repositories
         public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public List<InvoiceDetailDataTransfer> GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public string UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID);
+        public bool IsValidByManufacturingCode(string manufacturingCode);
+        public string InitializationUnitPrice();
     }
 }

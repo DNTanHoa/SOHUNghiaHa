@@ -39,7 +39,7 @@
                                 <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewPhieuXuatKho?ID=@Model.ID');" title="In phiếu xuất kho" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">
                                     <span class="fas fa-print"></span>
                                 </a>
-                            </div>                            
+                            </div>
                             <div class='col-md-2'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     Dự toán
@@ -93,17 +93,17 @@
                                 </div>
                             </div>
                             @*<div class="col-md-1">
-                                <div class='form-group'>
-                                    <label for='EmployeeID'>Cập nhật</label>
-                                    <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
-                                        <span class="fas fa-arrow-down"></span>
-                                    </button>
-                                </div>
-                            </div>*@
-                        </div>    
+                                    <div class='form-group'>
+                                        <label for='EmployeeID'>Cập nhật</label>
+                                        <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
+                                            <span class="fas fa-arrow-down"></span>
+                                        </button>
+                                    </div>
+                                </div>*@
+                        </div>
                         <div class="row">
                             <div class="col-md-1">
-                                <div class='form-group'>                                  
+                                <div class='form-group'>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -167,8 +167,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
-                .Search(search=> {
-                })
+                .Search(search=> { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .PageSize(1000)
@@ -191,7 +190,7 @@
                 .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
                 .Update(t => t.Action("UpdateProjectThiCong", "Project"))))
                     </div>
-                </div>               
+                </div>
             </div>
         </div>
     </div>
@@ -224,7 +223,7 @@
         onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID();
     }
     function onUpdateByInvoiceIDAndEmployeeID() {
-        var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();       
+        var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();
         var ID = $("#ID").val();
         BeginRequestHandler();
         $.ajax(
@@ -233,11 +232,11 @@
                 datatype: "JSON",
                 url: '@Url.Action("UpdateByInvoiceIDAndEmployeeID", "InvoiceDetail")',
                 data: {
-                    invoiceID: ID,                  
+                    invoiceID: ID,
                     employeeID: employeeIDValue
                 },
                 success: function (result) {
-                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();                
+                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();
                     EndRequestHandler();
                 },
                 error: function (jqXHR, exception) { }
