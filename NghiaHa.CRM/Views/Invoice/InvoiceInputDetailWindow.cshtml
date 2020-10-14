@@ -4,15 +4,7 @@
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Thông tin chi tiết hóa đơn nhập</h1>
-            </div>            
-        </div>
-    </div>
-</section>
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -103,67 +95,7 @@
                 </div>
                 <div class="card card-primary">
                     <div class="card-body">
-                        @*@(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
-        .Name("InvoiceDetailDataTransfer")
-        .Columns(columns =>
-        {
-            columns.Command(command =>
-            {
-                command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
-                command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-            }).Width(150);
-            columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
-            columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-            columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-            columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-            columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-            columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
-            columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-            columns.Bound(t => t.Id).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-        })
-        .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
-        .ToolBar(toolBar => toolBar.Search())
-        .Editable(editable => editable.Mode(GridEditMode.InLine))
-        .Sortable()
-        .Scrollable()
-        .Reorderable(r => r.Columns(true))
-        .Resizable(r => r.Columns(true))
-        .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(true)
-        .ButtonCount(10))
-        .Excel(excel => excel
-        .FileName("CauHinh.xlsx")
-        .Filterable(true)
-        .ProxyURL(Url.Action("ExportExcel", "Config")))
-        .Pdf(pdf => pdf
-        .AllPages()
-        .AvoidLinks()
-        .PaperSize("A4")
-        .Margin("2cm", "1cm", "1cm", "1cm")
-        .Landscape()
-        .RepeatHeaders()
-        .FileName("Config.pdf"))
-        .Search(search=> {
-        })
-        .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(1000)
-        .Model(model =>
-        {
-            model.Id(t => t.Id);
-            model.Field(t => t.Total).Editable(false);
-            model.Field(t => t.Id).Editable(false);
-            model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-            model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-            model.Field(t => t.Quantity).DefaultValue(1);
-            model.Field(t => t.UnitPrice).DefaultValue(1000);
-        })
-                .Events(t => { t.RequestEnd("onGridRequestEndDataTransfer"); })
-                .Read(t => t.Action("GetDataTransferByInvoiceIDToList", "InvoiceDetail").Data("filterDataTransfer"))
-                .Destroy(t => t.Action("Delete", "InvoiceDetail"))
-                .Create(t => t.Action("CreateDataTransferss", "InvoiceDetail").Data("filterDataTransferCreate"))
-                .Update(t => t.Action("Update", "InvoiceDetail"))))*@
+                        
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
                 .Name("InvoiceDetail")
                 .Columns(columns =>
@@ -173,15 +105,15 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity01).Title("Số lượng hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200);
-                    columns.Bound(t => t.Total).Title("Thành tiền thực tế").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total01).Title("Thành tiền hóa đơn").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ProductCode).Title("Model").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Số seri").Width(200);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500);
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng thực tế").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity01).Title("Số lượng hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100);
+                    columns.Bound(t => t.Total).Title("Thành tiền thực tế").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total01).Title("Thành tiền hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
 
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))

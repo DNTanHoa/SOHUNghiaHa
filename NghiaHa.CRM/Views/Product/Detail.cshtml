@@ -174,7 +174,7 @@
                 .Columns(columns =>
                 {
 
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=ID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
                     columns.Bound(t => t.Total).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -228,7 +228,7 @@
                 .Columns(columns =>
                 {
 
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=ID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
                     columns.Bound(t => t.Total).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align: right;" });
