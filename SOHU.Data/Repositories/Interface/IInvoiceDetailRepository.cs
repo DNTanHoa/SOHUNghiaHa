@@ -23,5 +23,7 @@ namespace SOHU.Data.Repositories
         public string UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID);
         public bool IsValidByManufacturingCode(string manufacturingCode);
         public string InitializationUnitPrice();
+        public List<InvoiceDetailDataTransfer> GetInputByProductIDToList(int productID);
+        public List<InvoiceDetailDataTransfer> GetOutputByProductIDToList(int productID);
     }
 }

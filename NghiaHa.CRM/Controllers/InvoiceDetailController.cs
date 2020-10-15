@@ -43,6 +43,14 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
         }
+        public IActionResult GetInputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceDetailRepository.GetInputByProductIDToList(productID).ToDataSourceResult(request));
+        }
+        public IActionResult GetOutputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceDetailRepository.GetOutputByProductIDToList(productID).ToDataSourceResult(request));
+        }
         public IActionResult CreateByInvoiceIDAndProductMetaTitle(int invoiceID, string productMetaTitle)
         {
             string note = AppGlobal.InitString;

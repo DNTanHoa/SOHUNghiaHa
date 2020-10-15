@@ -8,6 +8,9 @@ namespace SOHU.Data.DataTransferObject
 {
     public class InvoiceDetailDataTransfer : InvoiceDetail
     {
+        public DateTime? InvoiceCreated { get; set; }
+        public string InvoiceCode { get; set; }
+        public string InvoiceName { get; set; }
         public bool IsChaoGia { get; set; }
         public bool IsThiCong { get; set; }
         public string ProductTitle { get; set; }
