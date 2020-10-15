@@ -225,7 +225,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     model.CategoryID = AppGlobal.ThiCongID;
                     model.InvoiceID = invoiceID;
                     model.ProductID = product.ID;
-                    model.UnitPrice = product.Price;
+                    model.UnitPrice = product.PriceInput;
                     model.ProductCode = productCode;
                     model.ManufacturingCode = manufacturingCode;
                     model.Quantity = quantity;

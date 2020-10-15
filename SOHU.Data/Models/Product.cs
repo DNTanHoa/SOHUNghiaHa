@@ -19,6 +19,7 @@ namespace SOHU.Data.Models
         public string Description { get; set; }
         public string ContentMain { get; set; }
         public decimal? Price { get; set; }
+        public decimal? PriceInput { get; set; }
         public int? PriceUnitID { get; set; }
         public int? Discount { get; set; }
         [DataType(DataType.Currency)]
