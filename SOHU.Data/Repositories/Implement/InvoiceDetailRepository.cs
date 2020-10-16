@@ -239,6 +239,7 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+
         public InvoiceDetail GetByCategoryIDAndManufacturingCode(int categoryID, string manufacturingCode)
         {
             SqlParameter[] parameters =
