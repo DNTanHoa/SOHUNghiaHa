@@ -5,10 +5,10 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Thông tin chi tiết</h1>
+            <div class="col-sm-8">
+                <b>@Model.Title</b>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Vật tư - thiết bị</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Product">Danh sách</a></li>
@@ -84,7 +84,11 @@
                                         @(Html.TextBoxFor(Model => Model.QuantityInStockRoot, "{0:N0}", new { placeholder = "Tồn đầu kỳ", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='Price'>Giá bán (Catalogue)</label>
+                                        <label for='Price'>Giá xuất (Catalogue)</label>
+                                        @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Giá bán (Catalogue)", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Price'>Giá nhập</label>
                                         @(Html.TextBoxFor(Model => Model.Price, "{0:N0}", new { placeholder = "Giá bán (Catalogue)", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
@@ -92,7 +96,7 @@
                                         @(Html.TextBoxFor(Model => Model.Discount, "{0:N0}", new { placeholder = "Chiết khấu", @class = "form-control" }))
                                     </div>
                                 </div>
-                                <div class="col-md-6">                                  
+                                <div class="col-md-6">
                                     <div class='form-group'>
                                         <label for='CategoryId'>Nhóm</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.CategoryID)
@@ -101,6 +105,16 @@
                                    .HtmlAttributes(new {@class = "form-control" })
                                     .Filter(FilterType.Contains)
                                    .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCRMAndProductCategoryToTree", "Config")))
+                                    )
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='CategoryId'>Đơn vị tính</label>
+                                        @(Html.Kendo().DropDownListFor(Model => Model.PriceUnitID)
+                                   .DataValueField("ID")
+                                   .DataTextField("CodeName")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetUnitToList", "Config")))
                                     )
                                     </div>
                                     <div class='form-group'>
@@ -155,6 +169,119 @@
                     <div class="card-header">
                         <div class="row">
                             <div class='col-sm-12'>
+                                <h3>Nhập kho</h3>
+                            </div>
+                        </div>
+                    </div>
+                    @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("InvoiceDetailDataTransferInput")
+                .Columns(columns =>
+                {
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=InvoiceID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Format("{0: MM/dd/yyyy}").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(100);
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.InvoiceCode); search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                })
+                .Read(t => t.Action("GetInputByProductIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                ))
+                </div>
+                <div class="card w-100">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class='col-sm-12'>
+                                <h3>Xuất kho</h3>
+                            </div>
+                        </div>
+                    </div>
+                    @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("InvoiceDetailDataTransferOutput")
+                .Columns(columns =>
+                {
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=InvoiceID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Format("{0: MM/dd/yyyy}").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Mã dự án").Width(100);
+                    columns.Bound(t => t.InvoiceName).Title("Dự án").Width(100);
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .Search(search=> {
+                    search.Field(f => f.InvoiceCode); search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode);
+                })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ID);
+                })
+                .Read(t => t.Action("GetOutputByProductIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                ))
+                </div>
+                <div class="card w-100">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class='col-sm-12'>
                                 <h3>Hóa đơn nhập hàng</h3>
                             </div>
                         </div>
@@ -164,7 +291,7 @@
                 .Columns(columns =>
                 {
 
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=ID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
                     columns.Bound(t => t.Total).Title("Số lượng nhập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -218,7 +345,7 @@
                 .Columns(columns =>
                 {
 
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow/#=Id#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=ID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200);
                     columns.Bound(t => t.Total).Title("Số lượng xuất").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -270,6 +397,10 @@
         return { productID: productIDValue };
     }
     function filterInvoiceOutput(e) {
+        var productIDValue = $("#ID").val();
+        return { productID: productIDValue };
+    }
+    function filterInvoiceDetail(e) {
         var productIDValue = $("#ID").val();
         return { productID: productIDValue };
     }

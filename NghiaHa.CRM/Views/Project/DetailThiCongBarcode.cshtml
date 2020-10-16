@@ -39,7 +39,7 @@
                                 <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewPhieuXuatKho?ID=@Model.ID');" title="In phiếu xuất kho" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">
                                     <span class="fas fa-print"></span>
                                 </a>
-                            </div>                            
+                            </div>
                             <div class='col-md-2'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     Dự toán
@@ -92,18 +92,18 @@
                                     )
                                 </div>
                             </div>
-                            <div class="col-md-1">
-                                <div class='form-group'>
-                                    <label for='EmployeeID'>Cập nhật</label>
-                                    <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
-                                        <span class="fas fa-arrow-down"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>    
+                            @*<div class="col-md-1">
+                                    <div class='form-group'>
+                                        <label for='EmployeeID'>Cập nhật</label>
+                                        <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
+                                            <span class="fas fa-arrow-down"></span>
+                                        </button>
+                                    </div>
+                                </div>*@
+                        </div>
                         <div class="row">
                             <div class="col-md-1">
-                                <div class='form-group'>                                  
+                                <div class='form-group'>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -136,13 +136,13 @@
                     }).Width(150);
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300);
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Thành tiền").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(200);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.DateTrack).Title("Ngày thi công").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(300);
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -167,8 +167,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
-                .Search(search=> {
-                })
+                .Search(search=> { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .PageSize(1000)
@@ -191,7 +190,7 @@
                 .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
                 .Update(t => t.Action("UpdateProjectThiCong", "Project"))))
                     </div>
-                </div>               
+                </div>
             </div>
         </div>
     </div>
@@ -224,20 +223,20 @@
         onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID();
     }
     function onUpdateByInvoiceIDAndEmployeeID() {
-        var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();       
+        var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();
         var ID = $("#ID").val();
         BeginRequestHandler();
         $.ajax(
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("UpdateItemsByInvoiceIDAndEmployeeID", "InvoiceDetail")',
+                url: '@Url.Action("UpdateByInvoiceIDAndEmployeeID", "InvoiceDetail")',
                 data: {
-                    invoiceID: ID,                  
+                    invoiceID: ID,
                     employeeID: employeeIDValue
                 },
                 success: function (result) {
-                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();                
+                    $("#ProjectThiCong").data("kendoGrid").dataSource.read();
                     EndRequestHandler();
                 },
                 error: function (jqXHR, exception) { }

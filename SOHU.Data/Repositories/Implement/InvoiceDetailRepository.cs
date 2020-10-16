@@ -18,6 +18,10 @@ namespace SOHU.Data.Repositories
         {
             _context = context;
         }
+        public bool IsValidByManufacturingCode(string manufacturingCode)
+        {
+            return _context.Set<InvoiceDetail>().FirstOrDefault(item => item.ManufacturingCode.Equals(manufacturingCode)) == null ? true : false;
+        }
         public InvoiceDetail GetByInvoiceIDAndProductID(int invoiceID, int productID)
         {
             return _context.InvoiceDetail.FirstOrDefault(item => item.InvoiceID == invoiceID && item.ProductID == productID);
@@ -207,6 +211,34 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<InvoiceDetailDataTransfer> GetInputByProductIDToList(int productID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),                
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailInputSelectByProductID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetOutputByProductIDToList(int productID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailOutputSelectByProductID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+            }
+            return list;
+        }
         public InvoiceDetail GetByCategoryIDAndManufacturingCode(int categoryID, string manufacturingCode)
         {
             SqlParameter[] parameters =
@@ -227,8 +259,12 @@ namespace SOHU.Data.Repositories
                     {
                 new SqlParameter("@InvoiceID",invoiceID),
                 new SqlParameter("@EmployeeID",employeeID),
-                };            
+                };
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeID", parameters);
+        }
+        public string InitializationUnitPrice()
+        {
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailInitializationUnitPrice");
         }
     }
 }

@@ -106,7 +106,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
                 txt.AppendLine(@"</table>");
                 model.Content = txt.ToString();
-            }            
+            }
             return View(model);
         }
         public IActionResult Index()
@@ -167,6 +167,15 @@ namespace NghiaHa.CRM.Web.Controllers
             string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
             return Json(note);
         }
+        public IActionResult DongBoTonKho()
+        {
+            foreach (Product model in _productRepository.GetAllToList())
+            {
+                _productRepository.InitializationByID(model.ID);
+            }
+            string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+            return Json(note);
+        }
         public IActionResult Save(Product model)
         {
             if (Request.Form.Files.Count > 0)
@@ -186,7 +195,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     }
                 }
             }
-           
+
             if (string.IsNullOrEmpty(model.ImageThumbnail))
             {
                 model.MetaTitle = "";

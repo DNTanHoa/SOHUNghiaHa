@@ -21,13 +21,13 @@ namespace NghiaHa.CRM.Web.Controllers
 {
     public class ProjectController : BaseController
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IMembershipRepository _membershipRepository;
         private readonly IInvoicePropertyRepository _invoicePropertyRepository;
         private readonly IInvoiceDetailRepository _invoiceDetailRepository;
         private readonly IProductRepository _productRepository;
-        public ProjectController(IHostingEnvironment hostingEnvironment, IProductRepository productRepository, IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
+        public ProjectController(IWebHostEnvironment hostingEnvironment, IProductRepository productRepository, IInvoiceRepository invoiceRepository, IInvoiceDetailRepository invoiceDetailRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
         {
             _hostingEnvironment = hostingEnvironment;
             _invoiceRepository = invoiceRepository;
@@ -395,32 +395,32 @@ namespace NghiaHa.CRM.Web.Controllers
                 List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID);
                 if (list.Count > 0)
                 {
-                    int no = 0;                  
+                    int no = 0;
                     StringBuilder txt = new StringBuilder();
                     txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
                     txt.AppendLine(@"<thead>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");                    
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");                                       
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
                     txt.AppendLine(@"<th style='text-align:center; width:200px;'><a style='cursor:pointer;'>Ghi chú</a></th>");
                     txt.AppendLine(@"</thead>");
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
-                    {                       
+                    {
                         no = no + 1;
                         txt.AppendLine(@"<tr>");
                         txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
-                        txt.AppendLine(@"<td style='text-align:left;'>");                        
+                        txt.AppendLine(@"<td style='text-align:left;'>");
                         txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
-                        txt.AppendLine(@"</td>");                        
+                        txt.AppendLine(@"</td>");
                         txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");                        
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + item.ManufacturingCode + "</b></td>");
                         txt.AppendLine(@"<td style='text-align:left;'></td>");
                         txt.AppendLine(@"</tr>");
-                    }                
+                    }
                     txt.AppendLine(@"</tbody>");
                     txt.AppendLine(@"</table>");
                     chaoGia = chaoGia.Replace(@"[Detail]", txt.ToString());

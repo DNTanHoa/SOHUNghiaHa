@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-primary">                   
+                <div class="card card-primary">
                     <div class="card-body">
                         <div class="row">
                             <div class='col-md-1'>
@@ -98,8 +98,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
-                .Search(search=> {
-                })
+                .Search(search => { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .PageSize(1000)
@@ -168,8 +167,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
-                .Search(search=> {
-                })
+                .Search(search => { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .PageSize(1000)

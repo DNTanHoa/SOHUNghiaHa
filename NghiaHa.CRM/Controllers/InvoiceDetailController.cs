@@ -43,6 +43,14 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceDetailRepository.GetByInvoiceIDToList(invoiceID).ToDataSourceResult(request));
         }
+        public IActionResult GetInputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceDetailRepository.GetInputByProductIDToList(productID).ToDataSourceResult(request));
+        }
+        public IActionResult GetOutputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
+        {
+            return Json(_invoiceDetailRepository.GetOutputByProductIDToList(productID).ToDataSourceResult(request));
+        }
         public IActionResult CreateByInvoiceIDAndProductMetaTitle(int invoiceID, string productMetaTitle)
         {
             string note = AppGlobal.InitString;
@@ -122,39 +130,43 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult CreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID(int invoiceID, string manufacturingCode, int quantity, int employeeID)
         {
+            int result = 0;
             string note = AppGlobal.InitString;
             if (!string.IsNullOrEmpty(manufacturingCode))
             {
                 InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByCategoryIDAndManufacturingCode(AppGlobal.InvoiceInputID, manufacturingCode);
                 if (invoiceDetail != null)
                 {
-                    int result = 0;
-                    InvoiceDetail model = new InvoiceDetail();
-                    model.DateTrack = DateTime.Now;
-                    model.CategoryID = AppGlobal.ThiCongID;
-                    model.InvoiceID = invoiceID;
-                    model.ProductID = invoiceDetail.ProductID;
-                    model.UnitPrice = _productRepository.GetByID(invoiceDetail.ProductID.Value).Price;
-                    model.ProductCode = invoiceDetail.ProductCode;
-                    model.ManufacturingCode = manufacturingCode;
-                    model.Quantity = quantity;
-                    model.UnitID = AppGlobal.UnitID;
-                    model.Total = model.UnitPrice * model.Quantity;
-                    model.EmployeeID = employeeID;
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                    Product product = _productRepository.GetByID(invoiceDetail.ProductID.Value);
+                    if (product != null)
                     {
-                        result = _invoiceDetailRepository.Create(model);
-                    }
-                    if (result > 0)
-                    {
-                        note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                        _invoiceRepository.InitializationByID(model.InvoiceID.Value);
-                        _productRepository.InitializationByID(model.ProductID.Value);
-                    }
-                    else
-                    {
-                        note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                        InvoiceDetail model = new InvoiceDetail();
+                        model.DateTrack = DateTime.Now;
+                        model.CategoryID = AppGlobal.ThiCongID;
+                        model.InvoiceID = invoiceID;
+                        model.ProductID = product.ID;
+                        model.UnitPrice = product.Price;
+                        model.ProductCode = invoiceDetail.ProductCode;
+                        model.ManufacturingCode = manufacturingCode;
+                        model.Quantity = quantity;
+                        model.UnitID = product.PriceUnitID;
+                        model.Total = model.UnitPrice * model.Quantity;
+                        model.EmployeeID = employeeID;
+                        model.Initialization(InitType.Insert, RequestUserID);
+                        if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                        {
+                            result = _invoiceDetailRepository.Create(model);
+                        }
+                        if (result > 0)
+                        {
+                            note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                            _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                            _productRepository.InitializationByID(model.ProductID.Value);
+                        }
+                        else
+                        {
+                            note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                        }
                     }
                 }
             }
@@ -213,16 +225,28 @@ namespace NghiaHa.CRM.Web.Controllers
                     model.CategoryID = AppGlobal.ThiCongID;
                     model.InvoiceID = invoiceID;
                     model.ProductID = product.ID;
-                    model.UnitPrice = product.Price;
+                    model.UnitPrice = product.PriceInput;
                     model.ProductCode = productCode;
                     model.ManufacturingCode = manufacturingCode;
                     model.Quantity = quantity;
-                    model.UnitID = AppGlobal.UnitID;
+                    model.UnitID = product.PriceUnitID;
                     model.Total = model.UnitPrice * model.Quantity;
                     model.Initialization(InitType.Insert, RequestUserID);
                     if ((model.ProductID > 0) && (model.InvoiceID > 0))
                     {
-                        result = _invoiceDetailRepository.Create(model);
+                        bool checkManufacturingCode = true;
+                        try
+                        {
+                            decimal number = decimal.Parse(manufacturingCode);
+                        }
+                        catch
+                        {
+                            checkManufacturingCode = _invoiceDetailRepository.IsValidByManufacturingCode(manufacturingCode);
+                        }
+                        if (checkManufacturingCode == true)
+                        {
+                            result = _invoiceDetailRepository.Create(model);
+                        }
                     }
                     if (result > 0)
                     {
@@ -311,6 +335,12 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
             }
+            return Json(note);
+        }
+        public IActionResult InitializationUnitPrice()
+        {
+            _invoiceDetailRepository.InitializationUnitPrice();
+            string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
             return Json(note);
         }
     }
