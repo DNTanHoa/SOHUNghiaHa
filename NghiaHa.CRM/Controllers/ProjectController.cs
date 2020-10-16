@@ -404,6 +404,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");                                       
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center; width:200px;'><a style='cursor:pointer;'>Ghi chú</a></th>");
                     txt.AppendLine(@"</thead>");
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
@@ -417,6 +418,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");                        
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + item.ManufacturingCode + "</b></td>");
+                        txt.AppendLine(@"<td style='text-align:left;'></td>");
                         txt.AppendLine(@"</tr>");
                     }                
                     txt.AppendLine(@"</tbody>");

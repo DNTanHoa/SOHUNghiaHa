@@ -49,6 +49,7 @@
                         <div class='col-sm-6'>
 
                         </div>
+                        
                         <div class='col-sm-1'>
                             <a asp-route-ID="0" asp-action="WarehouseDetail" asp-controller="Invoice" class="btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
@@ -63,6 +64,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
                     columns.Template(@"<a href='/Invoice/WarehouseDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a href='/Invoice/WarehouseDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Date").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(200);
                     columns.Bound(t => t.BuyName).Title("Supplier").Width(200);
@@ -106,7 +108,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByShoppingCartAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetByShoppingCartAndYearAndMonthAndActiveToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>

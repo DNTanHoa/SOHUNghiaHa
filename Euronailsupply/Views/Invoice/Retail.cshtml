@@ -62,14 +62,12 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70);
-                    columns.Template(@"<a href='/Invoice/RetailDetail/#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.InvoiceCreated).Title("Date").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(200);
-                    columns.Bound(t => t.SellName).Title("Customer").Width(200);
-                    columns.Bound(t => t.Total).Title("Total").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPaid).Title("Pay").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Debt").Width(200).HtmlAttributes(new { style = "text-align: right;" });          
-
+                    columns.Template(@"<a href='/Invoice/RetailDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a href='/Invoice/RetailStore?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL600(""/Invoice/RetailStorePreview?ID=#=ID#"");' class='btn btn-success' style='color:white;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Date").Width(100).HtmlAttributes(new { style = "text-align: right;" });                  
+                    columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(100);                    
+                    columns.Bound(t => t.Total).Title("Total").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Search())
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -106,7 +104,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByShoppingCartAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetByInvoiceExportIDAndYearAndMonthAndActiveToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>

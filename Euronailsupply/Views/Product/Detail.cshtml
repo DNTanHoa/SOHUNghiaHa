@@ -26,7 +26,19 @@
                         <form asp-action="Save" asp-controller="Product">
                             @Html.HiddenFor(Model => Model.ID)
                             <div class="row">
-                                <div class='col-md-8'>
+                                <div class='col-md-7'>
+                                    @(Html.Kendo().DropDownListFor(Model => Model.ParentID)
+                                   .DataValueField("ID")
+                                   .DataTextField("Title")
+                                   .HtmlAttributes(new {@class = "form-control" })
+                                    .Filter(FilterType.Contains)
+                                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetAllToList", "Product")))
+                                    )
+                                </div>
+                                <div class='col-md-1'>
+                                    <a style="width:100%; color:white;" onclick="onSearch()" title="Search" class="btn btn-success">
+                                        <span class="fas fa-search"></span>
+                                    </a>
                                 </div>
                                 <div class='col-md-1'>
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
@@ -264,4 +276,9 @@
     $(function () {
         $("#MetaTitle").first().focus();
     });
+    function onSearch() {
+        var productIDValue = $("#ParentID").data("kendoDropDownList").value();
+        var url = "/Product/Detail?ID=" + productIDValue;
+        window.location.replace(url);
+    }
 </script>

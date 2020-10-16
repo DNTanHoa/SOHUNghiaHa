@@ -1,10 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Retail barcode";
+    ViewData["Title"] = "Warehouse barcode";
 }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
-
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Warehouse barcode</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Invoice</a></li>
+                        <li class="breadcrumb-item active"><a class="text-primary" asp-action="Warehouse" asp-controller="Invoice">Retail</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -13,21 +27,16 @@
                     <div class="card-body">
                         @Html.HiddenFor(Model => Model.ID)
                         <div class="row">
-                            <div class='col-md-9'>
+                            <div class='col-md-10'>
                             </div>
                             <div class='col-md-1'>
                                 <button style="width:100%;" title="Save" onclick="onSave()" class="btn btn-primary">
                                     <span class="fas fa-save"></span>
                                 </button>
-                            </div>
+                            </div>                           
                             <div class='col-md-1'>
-                                <a onclick='javascript:OpenWindowByURL600("/Invoice/RetailStorePreview?ID=@Model.ID");' title="Print" style="width:100%; cursor:pointer; color:#ffffff;" class="btn btn-success">
-                                    <span class="fas fa-print"></span>
-                                </a>
-                            </div>
-                            <div class='col-md-1'>
-                                <a asp-route-ID="0" asp-action="RetailStore" asp-controller="Invoice" title="New" style="width:100%;" class="btn btn-success">
-                                    <span class="fas fa-plus"></span>
+                                <a asp-route-ID="@Model.ID" asp-action="WarehouseDetail" asp-controller="Invoice" title="New" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>
                         </div>

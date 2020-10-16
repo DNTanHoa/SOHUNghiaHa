@@ -63,6 +63,7 @@ namespace Euronailsupply.Controllers
             {
                 model = _productRepository.GetByID(ID);
             }
+            model.ParentID = ID;
             return View(model);
         }
         public IActionResult Files(int ID)

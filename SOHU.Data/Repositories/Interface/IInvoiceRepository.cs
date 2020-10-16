@@ -9,6 +9,7 @@ namespace SOHU.Data.Repositories
     {
         public bool IsValidByInvoiceCode(string invoiceCode);
         public List<Invoice> GetByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month);
+        public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active);
         public List<Invoice> GetInvoiceInputByProductIDToList(int productID);
         public List<Invoice> GetInvoiceOutputByProductIDToList(int productID);
         public void InitializationByID(int ID);

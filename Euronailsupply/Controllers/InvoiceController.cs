@@ -35,24 +35,47 @@ namespace Euronailsupply.Controllers
                 model.InvoiceCode = model.InvoiceCode.Trim();
             }
         }
-        public IActionResult RetailStore()
+        public IActionResult RetailStore(int ID)
         {
             Invoice model = new Invoice();
-            model.InvoiceCode = AppGlobal.DateTimeCode;
-            model.InvoiceCreated = DateTime.Now;
-            model.Tax = 0;
-            model.TotalNoTax = 0;
-            model.TotalTax = 0;
-            model.Total = 0;
-            model.TotalPaid = 0;
-            model.TotalDebt = 0;
-            model.CategoryID = AppGlobal.InvoiceExportID;
-            model.ParentID = AppGlobal.InvoiceExportID;
-            model.BuyID = AppGlobal.GuestID;
-            model.SellID = AppGlobal.SellID;
-            model.Active = false;
-            model.Initialization(InitType.Insert, RequestUserID);
-            _invoiceRepository.Create(model);
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            else
+            {
+                model.InvoiceCode = AppGlobal.DateTimeCode;
+                model.InvoiceCreated = DateTime.Now;
+                model.Tax = 0;
+                model.TotalNoTax = 0;
+                model.TotalTax = 0;
+                model.Total = 0;
+                model.TotalPaid = 0;
+                model.TotalDebt = 0;
+                model.CategoryID = AppGlobal.InvoiceExportID;
+                model.ParentID = AppGlobal.InvoiceExportID;
+                model.BuyID = AppGlobal.GuestID;
+                model.SellID = AppGlobal.SellID;
+                model.Active = false;
+                model.TotalDiscount = 1;
+                model.Initialization(InitType.Insert, RequestUserID);
+                _invoiceRepository.Create(model);
+            }
+            model.TotalDiscount = 1;
+            return View(model);
+        }
+        public IActionResult WarehouseDetailBarcode(int ID)
+        {
+            Invoice model = new Invoice();
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            else
+            {
+               
+            }
+            model.TotalDiscount = 1;
             return View(model);
         }
         public IActionResult RetailStorePreview(int ID)
@@ -194,9 +217,17 @@ namespace Euronailsupply.Controllers
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.ShoppingCartID, year, month).ToDataSourceResult(request));
         }
+        public IActionResult GetByShoppingCartAndYearAndMonthAndActiveToList([DataSourceRequest] DataSourceRequest request, int year, int month)
+        {
+            return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndActiveToList(AppGlobal.ShoppingCartID, year, month, true).ToDataSourceResult(request));
+        }
         public IActionResult GetByInvoiceExportAndYearAndMonthToList([DataSourceRequest] DataSourceRequest request, int year, int month)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.InvoiceExportID, year, month).ToDataSourceResult(request));
+        }
+        public IActionResult GetByInvoiceExportIDAndYearAndMonthAndActiveToList([DataSourceRequest] DataSourceRequest request, int year, int month)
+        {
+            return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndActiveToList(AppGlobal.InvoiceExportID, year, month, true).ToDataSourceResult(request));
         }
         public IActionResult GetByInvoiceImportAndYearAndMonthToList([DataSourceRequest] DataSourceRequest request, int year, int month)
         {
@@ -232,7 +263,7 @@ namespace Euronailsupply.Controllers
                     _invoiceRepository.Create(model);
                 }
             }
-            return RedirectToAction("InvoiceInputDetail", new { ID = model.ID });
+            return RedirectToAction("WarehouseDetail", new { ID = model.ID });
         }
         [AcceptVerbs("Post")]
         public IActionResult SaveRetail(Invoice model)

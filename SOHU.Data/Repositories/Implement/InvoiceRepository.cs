@@ -26,6 +26,10 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && item.Active == active).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
         public void InitializationByID(int ID)
         {
             if (ID > 0)
