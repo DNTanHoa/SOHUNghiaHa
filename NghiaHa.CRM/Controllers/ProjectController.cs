@@ -277,7 +277,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
                     if (seller != null)
                     {
-                        chaoGia = chaoGia.Replace(@"[SellName]", seller.FullName);
+                        chaoGia = chaoGia.Replace(@"[SellFullName]", seller.FullName);
                         chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
                         chaoGia = chaoGia.Replace(@"[SellEmail]", seller.Email);
                         chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
@@ -321,7 +321,26 @@ namespace NghiaHa.CRM.Web.Controllers
                             {
                                 totalNoTax = totalNoTax + item.TotalNoTax.Value;
                             }
-
+                            decimal totalNoTaxItem = 0;
+                            decimal discountItem = 0;
+                            decimal totalDiscountItem = 0;
+                            decimal totalItem = 0;
+                            if (item.TotalNoTax != null)
+                            {
+                                totalNoTaxItem = item.TotalNoTax.Value;
+                            }
+                            if (item.Discount != null)
+                            {
+                                discountItem = item.Discount.Value;
+                            }
+                            if (item.TotalDiscount != null)
+                            {
+                                totalDiscountItem = item.TotalDiscount.Value;
+                            }
+                            if (item.Total != null)
+                            {
+                                totalItem = item.Total.Value;
+                            }
                             no = no + 1;
                             txt.AppendLine(@"<tr>");
                             txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
@@ -334,10 +353,10 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Discount.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.TotalDiscount.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            txt.AppendLine(@"<td style='text-align:right;'><b>" + totalNoTaxItem.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            txt.AppendLine(@"<td style='text-align:right;'><b>" + discountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            txt.AppendLine(@"<td style='text-align:right;'><b>" + totalItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"</tr>");
                         }
                         txt.AppendLine(@"<tr>");
