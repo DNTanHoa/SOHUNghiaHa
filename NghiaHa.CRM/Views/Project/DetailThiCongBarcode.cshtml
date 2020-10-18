@@ -124,6 +124,7 @@
                                     @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
                                 </div>
                             </div>
+
                         </div>
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
                 .Name("ProjectThiCong")

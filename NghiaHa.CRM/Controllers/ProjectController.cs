@@ -309,9 +309,19 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<tbody>");
                         foreach (InvoiceDetailDataTransfer item in list)
                         {
-                            totalDiscount = totalDiscount + item.TotalDiscount.Value;
-                            total = total + item.Total.Value;
-                            totalNoTax = totalNoTax + item.TotalNoTax.Value;
+                            if (item.TotalDiscount != null)
+                            {
+                                totalDiscount = totalDiscount + item.TotalDiscount.Value;
+                            }
+                            if (item.Total != null)
+                            {
+                                total = total + item.Total.Value;
+                            }
+                            if (item.TotalNoTax != null)
+                            {
+                                totalNoTax = totalNoTax + item.TotalNoTax.Value;
+                            }
+
                             no = no + 1;
                             txt.AppendLine(@"<tr>");
                             txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
@@ -812,6 +822,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
+                _invoiceRepository.InitializationByIDAndCategoryID(model.ID, model.CategoryID.Value);
             }
             else
             {

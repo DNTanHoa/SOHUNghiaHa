@@ -197,7 +197,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
 
             if (string.IsNullOrEmpty(model.ImageThumbnail))
-            {               
+            {
                 InitializationBarcode(model);
             }
             if (model.ID > 0)
@@ -212,9 +212,17 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             else
             {
-                Initialization(model);
-                model.Initialization(InitType.Insert, RequestUserID);
-                _productRepository.Create(model);
+                Product product = _productRepository.GetByMetaTitle(model.MetaTitle);
+                if (product != null)
+                {
+                    model = product;
+                }
+                else
+                {
+                    Initialization(model);
+                    model.Initialization(InitType.Insert, RequestUserID);
+                    _productRepository.Create(model);
+                }
             }
             return RedirectToAction("Detail", new { ID = model.ID });
         }
