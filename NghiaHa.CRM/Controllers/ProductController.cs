@@ -197,9 +197,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
 
             if (string.IsNullOrEmpty(model.ImageThumbnail))
-            {
-                model.MetaTitle = "";
-                model.MetaDescription = "";
+            {               
                 InitializationBarcode(model);
             }
             if (model.ID > 0)
