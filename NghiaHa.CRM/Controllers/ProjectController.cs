@@ -867,6 +867,10 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.HopDong = model.HopDong;
+                if (string.IsNullOrEmpty(invoice.HopDong))
+                {
+                    invoice.HopDong = "" + invoice.ID + "-" + DateTime.Now.Year + "/HĐKT";
+                }
                 invoice.InvoiceCode = model.InvoiceCode;
                 invoice.HangMuc = model.HangMuc;
                 invoice.HopDongTitle = model.HopDongTitle;
