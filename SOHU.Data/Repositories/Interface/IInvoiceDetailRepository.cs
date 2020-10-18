@@ -25,5 +25,6 @@ namespace SOHU.Data.Repositories
         public string InitializationUnitPrice();
         public List<InvoiceDetailDataTransfer> GetInputByProductIDToList(int productID);
         public List<InvoiceDetailDataTransfer> GetOutputByProductIDToList(int productID);
+        public List<InvoiceDetailDataTransfer> GetByProductIDAndCategoryIDToList(int productID, int categoryID);
     }
 }

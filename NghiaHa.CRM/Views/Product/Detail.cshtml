@@ -218,7 +218,7 @@
                 {
                     model.Id(t => t.ID);
                 })
-                .Read(t => t.Action("GetInputByProductIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                .Read(t => t.Action("GetInputByProductIDAndCategoryIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
                 ))
                 </div>
                 <div class="card w-100">
@@ -275,7 +275,7 @@
                 {
                     model.Id(t => t.ID);
                 })
-                .Read(t => t.Action("GetOutputByProductIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
+                .Read(t => t.Action("GetOutputByProductIDAndCategoryIDToList", "InvoiceDetail").Data("filterInvoiceDetail"))
                 ))
                 </div>
                 <div class="card w-100">

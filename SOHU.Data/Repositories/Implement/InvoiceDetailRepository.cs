@@ -225,6 +225,21 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<InvoiceDetailDataTransfer> GetByProductIDAndCategoryIDToList(int productID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),
+                new SqlParameter("@CategoryID",categoryID),
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailSelectByProductIDAndCategoryID", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+            }
+            return list;
+        }
         public List<InvoiceDetailDataTransfer> GetOutputByProductIDToList(int productID)
         {
             List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();

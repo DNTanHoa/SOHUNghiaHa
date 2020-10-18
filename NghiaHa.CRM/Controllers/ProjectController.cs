@@ -301,9 +301,9 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn giá</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
+                        //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu (%)</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu</a></th>");
+                        //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu</a></th>");
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thành tiền</a></th>");
                         txt.AppendLine(@"</thead>");
                         txt.AppendLine(@"<tbody>");
@@ -353,9 +353,9 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + totalNoTaxItem.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            //txt.AppendLine(@"<td style='text-align:right;'><b>" + totalNoTaxItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"<td style='text-align:right;'><b>" + discountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            //txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"<td style='text-align:right;'><b>" + totalItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"</tr>");
                         }
@@ -368,8 +368,8 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:right;'></td>");
                         txt.AppendLine(@"<td style='text-align:right;'></td>");
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + totalNoTax.ToString("N0").Replace(@",", @".") + "</b></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscount.ToString("N0").Replace(@",", @".") + "</b></td>");
+                        //txt.AppendLine(@"<td style='text-align:right;'></td>");
+                        //txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscount.ToString("N0").Replace(@",", @".") + "</b></td>");
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + total.ToString("N0").Replace(@",", @".") + "</b></td>");
                         txt.AppendLine(@"</tr>");
                         txt.AppendLine(@"</tbody>");
