@@ -162,21 +162,24 @@ namespace NghiaHa.CRM.Controllers
             }
             else
             {
-                bool check = false;
-                if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
-                {
-                    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
-                }
-                if (model.ParentID == AppGlobal.EmployeeParentID)
-                {
-                    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
-                }
-                if (check == true)
-                {
-                    Initialization(model);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
+                //bool check = false;
+                //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+                //{
+                //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                //}
+                //if (model.ParentID == AppGlobal.EmployeeParentID)
+                //{
+                //    check = _membershipRepository.IsValidByCitizenIdentification(model.CitizenIdentification);
+                //}
+                //if (check == true)
+                //{
+                //    Initialization(model);
+                //    model.Initialization(InitType.Insert, RequestUserID);
+                //    _membershipRepository.Create(model);
+                //}
             }
             return RedirectToAction("SupplierDetail", new { ID = model.ID });
         }
@@ -196,30 +199,42 @@ namespace NghiaHa.CRM.Controllers
         }
         public IActionResult SaveEmployee(Membership model)
         {
-            bool check = false;
-            if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            if (model.ID > 0)
             {
-                check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _membershipRepository.Update(model.ID, model);
             }
-            if (model.ParentID == AppGlobal.EmployeeParentID)
+            else
             {
-                check = _membershipRepository.IsValidByPhone(model.Phone);
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _membershipRepository.Create(model);
             }
-            if (check == true)
-            {
-                if (model.ID > 0)
-                {
-                    Initialization(model);
-                    model.Initialization(InitType.Update, RequestUserID);
-                    _membershipRepository.Update(model.ID, model);
-                }
-                else
-                {
-                    Initialization(model);
-                    model.Initialization(InitType.Insert, RequestUserID);
-                    _membershipRepository.Create(model);
-                }
-            }
+            //bool check = false;
+            //if ((model.ParentID == AppGlobal.CustomerParentID) || (model.ParentID == AppGlobal.SupplierParentID))
+            //{
+            //    check = _membershipRepository.IsValidByTaxCode(model.TaxCode);
+            //}
+            //if (model.ParentID == AppGlobal.EmployeeParentID)
+            //{
+            //    check = _membershipRepository.IsValidByPhone(model.Phone);
+            //}
+            //if (check == true)
+            //{
+            //    if (model.ID > 0)
+            //    {
+            //        Initialization(model);
+            //        model.Initialization(InitType.Update, RequestUserID);
+            //        _membershipRepository.Update(model.ID, model);
+            //    }
+            //    else
+            //    {
+            //        Initialization(model);
+            //        model.Initialization(InitType.Insert, RequestUserID);
+            //        _membershipRepository.Create(model);
+            //    }
+            //}
             return RedirectToAction("EmployeeDetail", new { ID = model.ID });
         }
     }
