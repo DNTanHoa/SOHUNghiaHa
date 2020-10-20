@@ -26,6 +26,8 @@ namespace SOHU.Data.DataTransferObject
             }
         }
         public string ContentMain { get; set; }
+        public decimal? PriceInput { get; set; }
+        public decimal? TotalInput { get; set; }
         public ModelTemplate Employee { get; set; }
         public ModelTemplate Product { get; set; }
         public ModelTemplate Parent { get; set; }

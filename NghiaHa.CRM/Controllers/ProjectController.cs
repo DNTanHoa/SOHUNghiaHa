@@ -77,7 +77,9 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.UnitID = model.Unit.ID;
             }
-            model.Total = model.UnitPrice * model.Quantity;
+            model.TotalNoTax = model.UnitPrice * model.Quantity;
+            model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
+            model.Total = model.TotalNoTax - model.TotalDiscount;
         }
         public IActionResult Index()
         {

@@ -230,7 +230,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     int result = 0;
                     InvoiceDetail model = new InvoiceDetail();
                     model.DateTrack = DateTime.Now;
-                    model.CategoryID = AppGlobal.ThiCongID;
+                    model.CategoryID = AppGlobal.InvoiceInputID;
                     model.InvoiceID = invoiceID;
                     model.ProductID = product.ID;
                     model.UnitPrice = product.PriceInput;
@@ -280,6 +280,7 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)
         {
             model.InvoiceID = invoiceID;
+            model.CategoryID = AppGlobal.InvoiceInputID;
             InitializationDataTransfer(model);
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
@@ -305,6 +306,7 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult Update(InvoiceDetailDataTransfer model)
         {
             InitializationDataTransfer(model);
+            model.CategoryID = AppGlobal.InvoiceInputID;
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Update, RequestUserID);
             int result = _invoiceDetailRepository.Update(model.ID, model);
