@@ -19,12 +19,15 @@ namespace SOHU.Data.Repositories
         public List<InvoiceDetailDataTransfer> GetProjectNhanSuByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public List<InvoiceDetailDataTransfer> GetProjectDuToanByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
+        public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(int invoiceID, int categoryID, DateTime dateTrack);
         public List<InvoiceDetailDataTransfer> GetProjectDuToanFullNameByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID);
         public string UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID);
+        public string UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack(int invoiceID, int employeeID, int categoryID, DateTime dateTrack);
         public bool IsValidByManufacturingCode(string manufacturingCode);
         public string InitializationUnitPrice();
         public List<InvoiceDetailDataTransfer> GetInputByProductIDToList(int productID);
         public List<InvoiceDetailDataTransfer> GetOutputByProductIDToList(int productID);
         public List<InvoiceDetailDataTransfer> GetByProductIDAndCategoryIDToList(int productID, int categoryID);
+
     }
 }

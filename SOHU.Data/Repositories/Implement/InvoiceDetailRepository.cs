@@ -196,6 +196,37 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(int invoiceID, int categoryID, DateTime dateTrack)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@DateTrack",dateTrack),
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryIDAndDateTrack", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Parent = new ModelTemplate();
+                    list[i].Parent.ID = list[i].ID;
+                    list[i].Parent.TextName = list[i].ParentName;
+                    list[i].Employee = new ModelTemplate();
+                    list[i].Employee.ID = list[i].EmployeeID;
+                    list[i].Employee.TextName = list[i].FullName;
+                    list[i].Product = new ModelTemplate();
+                    list[i].Product.ID = list[i].ProductID;
+                    list[i].Product.TextName = list[i].ProductTitle;
+                    list[i].Unit = new ModelTemplate();
+                    list[i].Unit.ID = list[i].UnitID;
+                    list[i].Unit.TextName = list[i].UnitName;
+                }
+            }
+            return list;
+        }
         public List<InvoiceDetailDataTransfer> GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(int invoiceID, int categoryID)
         {
             List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
@@ -218,7 +249,7 @@ namespace SOHU.Data.Repositories
             {
                 SqlParameter[] parameters =
                        {
-                new SqlParameter("@ProductID",productID),                
+                new SqlParameter("@ProductID",productID),
                 };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceDetailInputSelectByProductID", parameters);
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
@@ -277,6 +308,17 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@EmployeeID",employeeID),
                 };
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeID", parameters);
+        }
+        public string UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack(int invoiceID, int employeeID, int categoryID, DateTime dateTrack)
+        {
+            SqlParameter[] parameters =
+                    {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@EmployeeID",employeeID),
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@DateTrack",dateTrack),
+                };
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack", parameters);
         }
         public string InitializationUnitPrice()
         {

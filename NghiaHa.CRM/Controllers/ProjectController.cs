@@ -421,7 +421,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
                 }
 
-                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID);
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(model.ID, AppGlobal.ThiCongID, DateTime.Now);
                 if (list.Count > 0)
                 {
                     int no = 0;
@@ -775,6 +775,11 @@ namespace NghiaHa.CRM.Web.Controllers
         public ActionResult GetProjectThiCongByInvoiceIDAndThiCongToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
             var data = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(invoiceID, AppGlobal.ThiCongID);
+            return Json(data.ToDataSourceResult(request));
+        }
+        public ActionResult GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
+        {
+            var data = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(invoiceID, AppGlobal.ThiCongID, DateTime.Now);
             return Json(data.ToDataSourceResult(request));
         }
         public IActionResult DeleteInvoiceProperty(int ID)

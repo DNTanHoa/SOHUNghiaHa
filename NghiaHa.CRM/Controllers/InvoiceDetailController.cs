@@ -271,10 +271,10 @@ namespace NghiaHa.CRM.Web.Controllers
             return Json(_invoiceRepository.GetByID(invoiceID));
         }
 
-        public IActionResult UpdateItemsByInvoiceIDAndEmployeeID(int invoiceID, int employeeID)
+        public IActionResult UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack(int invoiceID, int employeeID)
         {
             string note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-            _invoiceDetailRepository.UpdateItemsByInvoiceIDAndEmployeeID(invoiceID, employeeID);
+            _invoiceDetailRepository.UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack(invoiceID, employeeID, AppGlobal.ThiCongID, DateTime.Now);
             return Json(note);
         }
         public IActionResult Create(InvoiceDetailDataTransfer model, int invoiceID)

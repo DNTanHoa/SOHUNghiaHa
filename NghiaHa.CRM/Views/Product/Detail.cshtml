@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = "Thông tin chi tiết"; }
+﻿@{ ViewData["Title"] = Model.Title + " - Vật tư thiết bị"; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Product
@@ -37,7 +37,7 @@
                                     )
                                 </div>
                                 <div class='col-md-1'>
-                                    <a style="width:100%; color:white;" onclick="onSearch()" title="Search" class="btn btn-success">
+                                    <a style="width:100%; color:white; cursor:pointer;" onclick="onSearch()" title="Search" class="btn btn-success">
                                         <span class="fas fa-search"></span>
                                     </a>
                                 </div>

@@ -95,7 +95,7 @@
                             <div class="col-md-1">
                                 <div class='form-group'>
                                     <label for='EmployeeID'>Cập nhật</label>
-                                    <button style="width:100%;" type="submit" onclick="onUpdateByInvoiceIDAndEmployeeID()" title="Save" class="btn btn-primary">
+                                    <button style="width:100%;" type="submit" onclick="onUpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack()" title="Save" class="btn btn-primary">
                                         <span class="fas fa-arrow-down"></span>
                                     </button>
                                 </div>
@@ -186,7 +186,7 @@
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCong"); })
-                .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndThiCongToList", "Project").Data("filterProjectThiCong"))
+                .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList", "Project").Data("filterProjectThiCong"))
                 .Destroy(t => t.Action("DeleteProjectThiCong", "Project"))
                 .Create(t => t.Action("CreateProjectThiCong", "Project").Data("filterProjectThiCong"))
                 .Update(t => t.Action("UpdateProjectThiCong", "Project"))))
@@ -223,7 +223,7 @@
     function onSave() {
         onCreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID();
     }
-    function onUpdateByInvoiceIDAndEmployeeID() {
+    function onUpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack() {
         var employeeIDValue = $("#ParentID").data("kendoDropDownList").value();
         var ID = $("#ID").val();
         BeginRequestHandler();
@@ -231,7 +231,7 @@
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("UpdateItemsByInvoiceIDAndEmployeeID", "InvoiceDetail")',
+                url: '@Url.Action("UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack", "InvoiceDetail")',
                 data: {
                     invoiceID: ID,
                     employeeID: employeeIDValue
