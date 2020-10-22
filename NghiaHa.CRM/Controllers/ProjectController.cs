@@ -69,6 +69,10 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
+            if (model.Discount == null)
+            {
+                model.Discount = 0;
+            }
             if (model.Product != null)
             {
                 model.ProductID = model.Product.ID;
