@@ -47,6 +47,7 @@
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
+                .ToolBar(toolBar => toolBar.Excel().Text("&nbsp;").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
                 .Sortable()
                 .Scrollable()
@@ -57,7 +58,7 @@
                 .PageSizes(true)
                 .ButtonCount(10))
                 .Excel(excel => excel
-                .FileName("CauHinh.xlsx")
+                .FileName("Product.xlsx")
                 .Filterable(true)
                 .ProxyURL(Url.Action("ExportExcel", "Config")))
                 .Pdf(pdf => pdf
