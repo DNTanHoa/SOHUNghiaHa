@@ -298,19 +298,18 @@ namespace NghiaHa.CRM.Web.Controllers
                         decimal total = 0;
                         decimal totalNoTax = 0;
                         StringBuilder txt = new StringBuilder();
-                        txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
+                        txt.AppendLine(@"<table class='border' style='width: 100%; font-size:18px; line-height:24px;'>");
 
-                        txt.AppendLine(@"<thead>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
+                        txt.AppendLine(@"<thead>");                        
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
                         txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thông số kỹ thuật</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn giá</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Đơn vị</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Số lượng</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Đơn giá</a></th>");
                         //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu (%)</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Giảm (%)</a></th>");
                         //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thành tiền</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Thành tiền</a></th>");
                         txt.AppendLine(@"</thead>");
                         txt.AppendLine(@"<tbody>");
                         foreach (InvoiceDetailDataTransfer item in list)
@@ -348,8 +347,7 @@ namespace NghiaHa.CRM.Web.Controllers
                                 totalItem = item.Total.Value;
                             }
                             no = no + 1;
-                            txt.AppendLine(@"<tr>");
-                            txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
+                            txt.AppendLine(@"<tr>");                            
                             txt.AppendLine(@"<td style='text-align:center;'>");
                             if (!string.IsNullOrEmpty(item.Image))
                             {
@@ -370,8 +368,7 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td style='text-align:right;'><b>" + totalItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"</tr>");
                         }
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td style='text-align:center;'></td>");
+                        txt.AppendLine(@"<tr>");                        
                         txt.AppendLine(@"<td style='text-align:center;'>");
                         txt.AppendLine(@"</td>");
                         txt.AppendLine(@"<td style='text-align:left;'>Tổng cộng</td>");
