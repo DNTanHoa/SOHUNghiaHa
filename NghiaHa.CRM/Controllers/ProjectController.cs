@@ -351,9 +351,14 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<tr>");
                             txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
                             txt.AppendLine(@"<td style='text-align:center;'>");
-                            txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='200px' height='200px' />");
+                            if (!string.IsNullOrEmpty(item.Image))
+                            {
+                                txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='200px' height='200px' />");
+                            }
                             txt.AppendLine(@"<br/>");
                             txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
+                            txt.AppendLine(@"<br/>");
+                            txt.AppendLine(@"<b>[" + item.MetaTitle + "]</b>");
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"<td style='text-align:left;'>" + item.ContentMain + "</td>");
                             txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
