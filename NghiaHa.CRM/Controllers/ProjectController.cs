@@ -379,10 +379,10 @@ namespace NghiaHa.CRM.Web.Controllers
                             //txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"<td style='text-align:right;'>");
                             txt.AppendLine(@"<b>" + totalItem.ToString("N0").Replace(@",", @".") + "</b>");
-                            if (totalDiscountItem > 0)
+                            if (discountItem > 0)
                             {
                                 txt.AppendLine(@"<br/>");
-                                txt.AppendLine(@"<b>Giảm (" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "%)</b>");
+                                txt.AppendLine(@"<b>Giảm " + discountItem.ToString("N0").Replace(@",", @".") + "%</b>");
                             }
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"</tr>");
