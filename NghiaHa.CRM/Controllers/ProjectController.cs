@@ -82,6 +82,11 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.UnitID = model.Unit.ID;
             }
+            model.Tax = 0;
+            if (invoice != null)
+            {
+                model.Tax = invoice.Tax;
+            }
             model.TotalNoTax = model.UnitPrice * model.Quantity;
             model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
             model.TotalTax = (model.TotalNoTax - model.TotalDiscount) * model.Tax / 100;
