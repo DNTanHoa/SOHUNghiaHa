@@ -6,10 +6,10 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-8">
                 <h1><b>@Model.InvoiceName</b> - Dự toán - Chào giá</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Dự án - công trình</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
@@ -67,7 +67,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
                     columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("ProductFullName").Width(500);
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
@@ -112,6 +112,7 @@
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
+                        model.Field(t => t.Discount).DefaultValue(0);
                     model.Field(t => t.IsChaoGia).DefaultValue(true);
 
                 })
@@ -137,10 +138,11 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("ProductFullName").Width(500);
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị tính").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                        columns.Bound(t => t.Discount).Title("Giảm (%)").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã sản phẩm").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
@@ -181,7 +183,7 @@
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
-
+                        model.Field(t => t.Discount).DefaultValue(0);
 
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEndProjectChaoGia"); })
