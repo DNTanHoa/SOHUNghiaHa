@@ -1,0 +1,8 @@
+@using Kendo.Mvc.UI
+@(Html.Kendo().DropDownListFor(t => t)
+                   .DataValueField("ID")
+                   .DataTextField("Title")
+                   .HtmlAttributes(new { data_bind = "value: Product", @class = "form-control" })
+                    .Filter(FilterType.Contains)
+                   .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetAllOrderByTitleToList", "Product")))
+)
