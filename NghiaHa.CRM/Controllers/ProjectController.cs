@@ -305,6 +305,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         decimal total = 0;
                         decimal totalNoTax = 0;
                         decimal totalTax = 0;
+                        decimal totalNoTaxAndDiscount = 0;
                         StringBuilder txt = new StringBuilder();
                         txt.AppendLine(@"<table class='border' style='width: 100%; font-size:18px; line-height:24px;'>");
 
@@ -317,7 +318,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
                         //txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Giảm (%)</a></th>");
                         //txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Chiết khấu</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Thành tiền</a></th>");
+                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
                         txt.AppendLine(@"</thead>");
                         txt.AppendLine(@"<tbody>");
                         foreach (InvoiceDetailDataTransfer item in list)
@@ -325,15 +326,7 @@ namespace NghiaHa.CRM.Web.Controllers
                             if (item.TotalDiscount != null)
                             {
                                 totalDiscount = totalDiscount + item.TotalDiscount.Value;
-                            }
-                            if (item.TotalTax != null)
-                            {
-                                totalTax = totalTax + item.TotalTax.Value;
-                            }
-                            if (item.Total != null)
-                            {
-                                total = total + item.Total.Value;
-                            }
+                            }                            
                             if (item.TotalNoTax != null)
                             {
                                 totalNoTax = totalNoTax + item.TotalNoTax.Value;
@@ -378,15 +371,18 @@ namespace NghiaHa.CRM.Web.Controllers
                             //txt.AppendLine(@"<td style='text-align:right;'><b>" + discountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             //txt.AppendLine(@"<td style='text-align:right;'><b>" + totalDiscountItem.ToString("N0").Replace(@",", @".") + "</b></td>");
                             txt.AppendLine(@"<td style='text-align:right;'>");
-                            txt.AppendLine(@"<b>" + totalItem.ToString("N0").Replace(@",", @".") + "</b>");
-                            if (discountItem > 0)
+                            txt.AppendLine(@"<b>" + item.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "</b>");
+                            if (item.Discount.Value > 0)
                             {
                                 txt.AppendLine(@"<br/>");
-                                txt.AppendLine(@"<b>Giảm " + discountItem.ToString("N0").Replace(@",", @".") + "%</b>");
+                                txt.AppendLine(@"<b>Giảm " + item.Discount.Value.ToString("N0").Replace(@",", @".") + "%</b>");
                             }
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"</tr>");
                         }
+                        totalNoTaxAndDiscount = totalNoTax - totalDiscount;
+                        totalTax = totalNoTaxAndDiscount * model.Tax.Value / 100;
+                        total = totalNoTaxAndDiscount + totalTax;
                         txt.AppendLine(@"<tr>");
                         txt.AppendLine(@"<td style='text-align:center;'>");
                         txt.AppendLine(@"</td>");
