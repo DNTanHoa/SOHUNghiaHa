@@ -68,7 +68,7 @@
                                    .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByCustomerParentIDToList", "Membership")))
                                     )
                                     </div>
-                                    <div class='form-group'>
+                                    @*<div class='form-group'>
                                         <label for='MakeSideID'>Employee</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.MakeSideID)
                                    .DataValueField("ID")
@@ -77,7 +77,7 @@
                                     .Filter(FilterType.Contains)
                                    .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByEmployeeParentIDToList", "Membership")))
                                     )
-                                    </div>
+                                    </div>*@
                                 </div>
                                 <div class="col-md-6">
                                     <div class='form-group'>
@@ -108,12 +108,12 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.Product.TextName).Title("Product").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Product.TextName).Title("Product").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" });
                     columns.Bound(t => t.Unit.TextName).Title("Unit").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Quantity).Title("Quantity").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.UnitPrice).Title("Price").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Total").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ManufacturingCode).Title("Barcode").Width(200);
+                    columns.Bound(t => t.Quantity).Title("Quantity").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Price").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Total").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.ProductCode).Title("Barcode").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())

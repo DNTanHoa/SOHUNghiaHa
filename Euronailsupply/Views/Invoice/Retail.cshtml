@@ -64,9 +64,9 @@
                     }).Width(70);
                     columns.Template(@"<a href='/Invoice/RetailDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Invoice/RetailStore?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL600(""/Invoice/RetailStorePreview?ID=#=ID#"");' class='btn btn-success' style='color:white;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.InvoiceCreated).Title("Date").Width(100).HtmlAttributes(new { style = "text-align: right;" });                  
-                    columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(100);                    
+                    columns.Template(@"<a onclick='javascript:OpenWindowByURL600(""/Invoice/RetailStorePreview?ID=#=ID#"");' class='btn btn-success' style='color:white; cursor: pointer;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Date").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Invoice code").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.Total).Title("Total").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Search())
