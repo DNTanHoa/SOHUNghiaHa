@@ -95,7 +95,7 @@
                 .FileName("Config.pdf"))
                 .Search(search=> {
                     search.Field(f => f.InvoiceCode);
-                    search.Field(f => f.SellName);
+                    search.Field(f => f.BuyPhone);
                 })
                 .DataSource(dataSource => dataSource
                 .Ajax()
