@@ -82,6 +82,10 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.Discount = 0;
             }
+            if (model.Quantity01 == null)
+            {
+                model.Quantity01 = model.Quantity;
+            }
             if (model.Product != null)
             {
                 model.ProductID = model.Product.ID;
@@ -103,6 +107,10 @@ namespace NghiaHa.CRM.Web.Controllers
             model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
             model.TotalTax = (model.TotalNoTax - model.TotalDiscount) * model.Tax / 100;
             model.Total = model.TotalNoTax - model.TotalDiscount + model.TotalTax;
+            if (model.Total01 == null)
+            {
+                model.Total01 = model.Total;
+            }
         }
         public IActionResult Index()
         {
