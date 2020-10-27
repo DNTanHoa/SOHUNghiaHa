@@ -70,6 +70,14 @@ namespace NghiaHa.CRM.Web.Controllers
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
             Invoice invoice = _invoiceRepository.GetByID(model.InvoiceID.Value);
+            if (model.UnitPrice == null)
+            {
+                model.UnitPrice = 0;
+            }
+            if (model.Quantity == null)
+            {
+                model.Quantity = 0;
+            }
             if (model.Discount == null)
             {
                 model.Discount = 0;
