@@ -77,6 +77,10 @@ namespace NghiaHa.CRM.Web.Controllers
             if (model.Product != null)
             {
                 model.ProductID = model.Product.ID;
+                if (string.IsNullOrEmpty(model.ProductCode))
+                {
+                    model.ProductCode = _productRepository.GetByID(model.ProductID.Value).MetaTitle;
+                }
             }
             if (model.Unit != null)
             {
@@ -326,7 +330,7 @@ namespace NghiaHa.CRM.Web.Controllers
                             if (item.TotalDiscount != null)
                             {
                                 totalDiscount = totalDiscount + item.TotalDiscount.Value;
-                            }                            
+                            }
                             if (item.TotalNoTax != null)
                             {
                                 totalNoTax = totalNoTax + item.TotalNoTax.Value;
