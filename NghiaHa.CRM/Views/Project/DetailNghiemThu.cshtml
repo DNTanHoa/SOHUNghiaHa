@@ -43,7 +43,7 @@
                                     </button>
                                 </div>
                                 <div class='col-md-1'>
-                                    <a onclick="javascript:OpenWindowByURL('/Project/PrintPreviewNghiemThu?ID=@Model.ID');" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
+                                    <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewNghiemThu" asp-controller="Project" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
                                         <span class="fas fa-print"></span>
                                     </a>
                                 </div>
