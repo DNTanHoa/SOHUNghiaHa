@@ -221,51 +221,54 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
-                if (string.IsNullOrEmpty(model.HopDong))
+                if (model != null)
                 {
-                    string hopDong = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "HopDong.html");
-                    using (var stream = new FileStream(physicalPath, FileMode.Open))
+                    if (string.IsNullOrEmpty(model.HopDong))
                     {
-                        using (StreamReader reader = new StreamReader(stream))
+                        string hopDong = "";
+                        var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "HopDong.html");
+                        using (var stream = new FileStream(physicalPath, FileMode.Open))
                         {
-                            hopDong = reader.ReadToEnd();
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                hopDong = reader.ReadToEnd();
+                            }
                         }
+                        DateTime now = DateTime.Now;
+                        hopDong = hopDong.Replace(@"[Day]", now.Day.ToString());
+                        hopDong = hopDong.Replace(@"[Month]", now.Month.ToString());
+                        hopDong = hopDong.Replace(@"[Year]", now.Year.ToString());
+                        hopDong = hopDong.Replace(@"[InvoiceName]", model.InvoiceName);
+                        hopDong = hopDong.Replace(@"[HopDongTitle]", model.HopDongTitle);
+                        hopDong = hopDong.Replace(@"[HopDongTitleSub]", model.HopDongTitleSub);
+                        hopDong = hopDong.Replace(@"[InvoiceCode]", model.InvoiceCode);
+                        hopDong = hopDong.Replace(@"[HangMuc]", model.HangMuc);
+                        Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
+                        if (buyer != null)
+                        {
+                            hopDong = hopDong.Replace(@"[BuyName]", buyer.FullName);
+                            hopDong = hopDong.Replace(@"[BuyAddress]", buyer.Address);
+                            hopDong = hopDong.Replace(@"[BuyFullName]", buyer.ContactFullName);
+                            hopDong = hopDong.Replace(@"[BuyPosition]", buyer.ContactPosition);
+                            hopDong = hopDong.Replace(@"[BuyBankAccount]", buyer.BankAccount);
+                            hopDong = hopDong.Replace(@"[BuyBankName]", buyer.BankName);
+                            hopDong = hopDong.Replace(@"[BuyTaxCode]", buyer.TaxCode);
+                            hopDong = hopDong.Replace(@"[BuyPhone]", buyer.Phone);
+                        }
+                        Membership seller = _membershipRepository.GetByID(model.SellID.Value);
+                        if (seller != null)
+                        {
+                            hopDong = hopDong.Replace(@"[SellName]", seller.FullName);
+                            hopDong = hopDong.Replace(@"[SellAddress]", seller.Address);
+                            hopDong = hopDong.Replace(@"[SellFullName]", seller.ContactFullName);
+                            hopDong = hopDong.Replace(@"[SellPosition]", seller.ContactPosition);
+                            hopDong = hopDong.Replace(@"[SellBankAccount]", seller.BankAccount);
+                            hopDong = hopDong.Replace(@"[SellBankName]", seller.BankName);
+                            hopDong = hopDong.Replace(@"[SellTaxCode]", seller.TaxCode);
+                            hopDong = hopDong.Replace(@"[SellPhone]", seller.Phone);
+                        }
+                        model.HopDong = hopDong;
                     }
-                    DateTime now = DateTime.Now;
-                    hopDong = hopDong.Replace(@"[Day]", now.Day.ToString());
-                    hopDong = hopDong.Replace(@"[Month]", now.Month.ToString());
-                    hopDong = hopDong.Replace(@"[Year]", now.Year.ToString());
-                    hopDong = hopDong.Replace(@"[InvoiceName]", model.InvoiceName);
-                    hopDong = hopDong.Replace(@"[HopDongTitle]", model.HopDongTitle);
-                    hopDong = hopDong.Replace(@"[HopDongTitleSub]", model.HopDongTitleSub);
-                    hopDong = hopDong.Replace(@"[InvoiceCode]", model.InvoiceCode);
-                    hopDong = hopDong.Replace(@"[HangMuc]", model.HangMuc);
-                    Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
-                    if (buyer != null)
-                    {
-                        hopDong = hopDong.Replace(@"[BuyName]", buyer.FullName);
-                        hopDong = hopDong.Replace(@"[BuyAddress]", buyer.Address);
-                        hopDong = hopDong.Replace(@"[BuyFullName]", buyer.ContactFullName);
-                        hopDong = hopDong.Replace(@"[BuyPosition]", buyer.ContactPosition);
-                        hopDong = hopDong.Replace(@"[BuyBankAccount]", buyer.BankAccount);
-                        hopDong = hopDong.Replace(@"[BuyBankName]", buyer.BankName);
-                        hopDong = hopDong.Replace(@"[BuyTaxCode]", buyer.TaxCode);
-                        hopDong = hopDong.Replace(@"[BuyPhone]", buyer.Phone);
-                    }
-                    Membership seller = _membershipRepository.GetByID(model.SellID.Value);
-                    if (seller != null)
-                    {
-                        hopDong = hopDong.Replace(@"[SellName]", seller.FullName);
-                        hopDong = hopDong.Replace(@"[SellAddress]", seller.Address);
-                        hopDong = hopDong.Replace(@"[SellFullName]", seller.ContactFullName);
-                        hopDong = hopDong.Replace(@"[SellPosition]", seller.ContactPosition);
-                        hopDong = hopDong.Replace(@"[SellBankAccount]", seller.BankAccount);
-                        hopDong = hopDong.Replace(@"[SellBankName]", seller.BankName);
-                        hopDong = hopDong.Replace(@"[SellTaxCode]", seller.TaxCode);
-                        hopDong = hopDong.Replace(@"[SellPhone]", seller.Phone);
-                    }
-                    model.HopDong = hopDong;
                 }
             }
             model.CategoryID = AppGlobal.DuAnID;
@@ -924,14 +927,21 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             model.SellID = AppGlobal.NghiaHaID;
             Membership membership = _membershipRepository.GetByID(model.BuyID.Value);
-            model.BuyName = membership.FullName;
-            if (string.IsNullOrEmpty(model.BuyPhone))
+            if (membership != null)
             {
-                model.BuyPhone = membership.Phone;
-            }
-            if (string.IsNullOrEmpty(model.BuyAddress))
-            {
-                model.BuyAddress = membership.Address;
+                model.BuyName = membership.FullName;
+                if (string.IsNullOrEmpty(model.BuyPhone))
+                {
+                    model.BuyPhone = membership.Phone;
+                }
+                if (string.IsNullOrEmpty(model.BuyAddress))
+                {
+                    model.BuyAddress = membership.Address;
+                }
+                if (string.IsNullOrEmpty(model.ManageCode))
+                {
+                    model.ManageCode = membership.ContactFullName;
+                }
             }
             if (model.ID > 0)
             {
@@ -955,11 +965,11 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.HopDong = model.HopDong;
-                if (string.IsNullOrEmpty(invoice.HopDong))
-                {
-                    invoice.HopDong = "" + invoice.ID + "-" + DateTime.Now.Year + "/HĐKT";
-                }
                 invoice.InvoiceCode = model.InvoiceCode;
+                if (string.IsNullOrEmpty(invoice.InvoiceCode))
+                {
+                    invoice.InvoiceCode = "" + invoice.ID + "-" + DateTime.Now.Year + "/HĐKT";
+                }
                 invoice.HangMuc = model.HangMuc;
                 invoice.HopDongTitle = model.HopDongTitle;
                 invoice.HopDongTitleSub = model.HopDongTitleSub;

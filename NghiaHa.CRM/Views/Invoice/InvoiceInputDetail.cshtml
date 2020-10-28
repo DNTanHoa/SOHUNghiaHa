@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class='form-group'>
                                         <label for='InvoiceCode'>Số hóa đơn</label>
                                         @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control" }))
@@ -68,7 +68,8 @@
                                         <label for='InvoiceCreated'>Ngày lập</label>
                                         @(Html.TextBoxFor(Model => Model.InvoiceCreated, "{0:MM/dd/yyyy}", new { placeholder = "Ngày lập", @class = "form-control", style = "text-align:right;" }))
                                     </div>
-
+                                </div>
+                                <div class="col-md-4">
                                     <div class='form-group'>
                                         <label for='SellID'>Nhà cung cấp</label>
                                         @(Html.Kendo().DropDownListFor(Model => Model.SellID)
@@ -89,31 +90,33 @@
                                    .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetByEmployeeParentIDToList", "Membership")))
                                     )
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class='form-group'>
-                                        <label for='TotalNoTax'>Trước thuế</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
-                                    </div>
                                     <div class='form-group'>
                                         <label for='Tax'>Thuế VAT (%)</label>
                                         @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='TotalTax'>Tiền thuế VAT</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                        @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class='form-group'>
+                                        <label for='TotalNoTax'>Trước thuế</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
+                                    </div>
+
+
                                     <div class='form-group'>
                                         <label for='Total'>Sau thuế</label>
-                                        @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                        @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:blue; font-weight: bold;" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='TotalPaid'>Thanh toán</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalPaid, "{0:N0}", new { placeholder = "Thanh toán", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                        @(Html.TextBoxFor(Model => Model.TotalPaid, "{0:N0}", new { placeholder = "Thanh toán", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:green; font-weight: bold;" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='TotalDebt'>Dư nợ</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalDebt, "{0:N0}", new { placeholder = "Dư nợ", @class = "form-control", @readonly = "readonly", style = "text-align:right;" }))
+                                        @(Html.TextBoxFor(Model => Model.TotalDebt, "{0:N0}", new { placeholder = "Dư nợ", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:red; font-weight: bold;" }))
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +202,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200);
-                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
+                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())

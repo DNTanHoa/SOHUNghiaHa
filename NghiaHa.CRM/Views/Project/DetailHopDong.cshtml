@@ -72,25 +72,27 @@
                                         <span class="fas fa-paperclip"></span>
                                     </a>
                                 </div>
-                            </div>
-                            <br />
-                            <br />
+                            </div>                                                 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class='form-group'>
                                         <label for='InvoiceCode'>Số hợp đồng</label>
                                         @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hợp đồng", @class = "form-control" }))
                                     </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class='form-group'>
                                         <label for='HangMuc'>Hạng mục</label>
                                         @(Html.TextBoxFor(Model => Model.HangMuc, new { placeholder = "Hạng mục", @class = "form-control" }))
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class='form-group'>
                                         <label for='HopDongTitle'>Hợp đồng</label>
                                         @(Html.TextBoxFor(Model => Model.HopDongTitle, new { placeholder = "Hợp đồng", @class = "form-control" }))
-                                    </div>
+                                    </div>                                   
+                                </div>
+                                <div class="col-md-3">                                    
                                     <div class='form-group'>
                                         <label for='HopDongTitleSub'>Về việc</label>
                                         @(Html.TextBoxFor(Model => Model.HopDongTitleSub, new { placeholder = "Về việc", @class = "form-control" }))
