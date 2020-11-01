@@ -63,9 +63,9 @@
                     }).Width(70);
                     columns.Template(@"<a href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.Total).Title("Sau thuế").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200).HtmlAttributes(new { style = "font-weight: bold;" });
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(500);
