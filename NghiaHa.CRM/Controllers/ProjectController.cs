@@ -973,7 +973,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 invoice.HangMuc = model.HangMuc;
                 invoice.HopDongTitle = model.HopDongTitle;
                 invoice.HopDongTitleSub = model.HopDongTitleSub;
-                if (!string.IsNullOrEmpty(invoice.HopDongTitleSub))
+                if (string.IsNullOrEmpty(invoice.HopDongTitleSub))
                 {
                     invoice.HopDongTitleSub = model.HopDongTitle;
                 }

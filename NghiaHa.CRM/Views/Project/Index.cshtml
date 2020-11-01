@@ -63,13 +63,14 @@
                     }).Width(70);
                     columns.Template(@"<a href='/Project/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Project/DetailThiCongBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
-                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(200);
-                    columns.Bound(t => t.InvoiceName).Title("Dự án").Width(300);                    
-                    columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(200);                                        
+                    columns.Bound(t => t.Total).Title("Sau thuế").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ManageCode).Title("Liên hệ").Width(300);
+                    columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(120).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceName).Title("Dự án").Width(1000);
                 })
                 .ToolBar(toolBar => toolBar.Search())
                 .Editable(editable => editable.Mode(GridEditMode.InLine))

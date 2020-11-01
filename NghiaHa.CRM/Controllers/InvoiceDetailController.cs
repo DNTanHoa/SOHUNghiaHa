@@ -32,6 +32,14 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             model.ProductID = model.Product.ID;
             model.UnitID = model.Unit.ID;
+            Product product = _productRepository.GetByID(model.ProductID.Value);
+            if (product != null)
+            {
+                if(model.UnitID==null)
+                {
+                    model.UnitID = product.PriceUnitID;
+                }                
+            }
             model.Total = model.UnitPrice * model.Quantity;
             model.Total01 = model.UnitPrice * model.Quantity01;
         }

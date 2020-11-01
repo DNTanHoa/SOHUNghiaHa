@@ -38,10 +38,16 @@ namespace SOHU.Data.Models
         public decimal? TotalNoTax { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? TotalNoTax01 { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Tax { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalTax { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? TotalTax01 { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalShipCost { get; set; }
@@ -51,6 +57,9 @@ namespace SOHU.Data.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Total { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        public decimal? Total01 { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? TotalPaid { get; set; }

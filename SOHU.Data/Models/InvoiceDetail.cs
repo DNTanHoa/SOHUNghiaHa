@@ -23,9 +23,11 @@ namespace SOHU.Data.Models
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? UnitPrice { get; set; }
         public decimal? TotalNoTax { get; set; }
+        public decimal? TotalNoTax01 { get; set; }
         public decimal? TotalDiscount { get; set; }
         public decimal? Tax { get; set; }
         public decimal? TotalTax { get; set; }
+        public decimal? TotalTax01 { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal? Total { get; set; }
