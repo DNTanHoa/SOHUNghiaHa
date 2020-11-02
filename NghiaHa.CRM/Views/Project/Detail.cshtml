@@ -47,6 +47,11 @@
                                         <span class="fas fa-qrcode"></span>
                                     </a>
                                 </div>
+                                <div class='col-md-1'>
+                                    <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCong" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-print"></span>
+                                    </a>
+                                </div>
                                 <div class='col-md-2'>
                                     <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         Dự toán
