@@ -383,7 +383,7 @@ namespace NghiaHa.CRM.Web.Controllers
                                 txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='150px' height='100px' />");
                             }
                             txt.AppendLine(@"<br/>");
-                            txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>" + item.ProductTitle + "</div>");                            
+                            txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>" + item.ProductTitle + "</div>");
                             txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>[" + item.MetaTitle + "]</div>");
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"<td style='text-align:left;'>" + item.ContentMain + "</td>");
@@ -511,7 +511,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
                     chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
                 }
-                
+
 
                 List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(model.ID, AppGlobal.ThiCongID, DateTime.Now);
                 if (list.Count > 0)
@@ -596,7 +596,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
 
 
-                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID);
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID).OrderByDescending(item => item.DateTrack).ToList();
                 if (list.Count > 0)
                 {
                     int no = 0;
@@ -606,9 +606,10 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");                    
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center; width:200px;'><a style='cursor:pointer;'>Mã vạch</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Ngày xuất</a></th>");
                     txt.AppendLine(@"</thead>");
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
@@ -621,8 +622,9 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"</td>");
                         txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.ManufacturingCode + "</b></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.MetaTitle + "</b></td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.MetaTitle + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
                         txt.AppendLine(@"</tr>");
                     }
                     txt.AppendLine(@"</tbody>");
