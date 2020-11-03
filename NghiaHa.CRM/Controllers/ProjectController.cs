@@ -206,6 +206,26 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
+        public IActionResult DetailPrint(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.DateBegin = DateTime.Now;
+            model.DateEnd = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.CategoryID = AppGlobal.DuAnID;
+            model.DateBegin = DateTime.Now;
+            return View(model);
+        }
         public IActionResult DetailHopDong(int ID)
         {
             Invoice model = new Invoice();
@@ -468,8 +488,19 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
-        public IActionResult PrintPreviewPhieuXuatKho(int ID)
+        public IActionResult PrintPreviewPhieuXuatKho(int ID, string dateTrackString)
         {
+            DateTime dateTrack = DateTime.Now;
+            if (!string.IsNullOrEmpty(dateTrackString))
+            {
+                try
+                {
+                    dateTrack = new DateTime(int.Parse(dateTrackString.Split('_')[0]), int.Parse(dateTrackString.Split('_')[1]), int.Parse(dateTrackString.Split('_')[2]));
+                }
+                catch
+                {
+                }
+            }
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
             model.DateBegin = DateTime.Now;
@@ -500,7 +531,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 chaoGia = chaoGia.Replace(@"[ManageCode]", model.ManageCode);
                 chaoGia = chaoGia.Replace(@"[BuyPhone]", model.BuyPhone);
                 chaoGia = chaoGia.Replace(@"[BuyAddress]", model.BuyAddress);
-                chaoGia = chaoGia.Replace(@"[DateExport]", now.ToString("dd/MM/yyyy"));
+                chaoGia = chaoGia.Replace(@"[DateExport]", dateTrack.ToString("dd/MM/yyyy"));
                 Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
                 if (seller != null)
                 {
@@ -511,9 +542,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
                     chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
                 }
-
-
-                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(model.ID, AppGlobal.ThiCongID, DateTime.Now);
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(model.ID, AppGlobal.ThiCongID, dateTrack);
                 if (list.Count > 0)
                 {
                     int no = 0;
