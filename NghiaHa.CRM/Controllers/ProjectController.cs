@@ -1371,7 +1371,7 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             catch (Exception e)
             {
-
+                string mes = e.Message;
             }
             return RedirectToAction("DetailFiles", "Project", new { ID = model.InvoiceID });
         }
