@@ -10,6 +10,7 @@ namespace SOHU.Data.Repositories
     {
         public Product GetByMetaTitle(string metaTitle);
         public List<Product> GetAllOrderByTitleToList();
+        public List<Product> GetAllOrderByTitle001ToList();
         public List<ProductDataTransfer> GetDataTransferAllOrderByTitleToList();
         public void InitializationByIDAndCategoryID(int ID, int categoryID);
         public void InitializationByIDAndParentID(int ID, int parentID);

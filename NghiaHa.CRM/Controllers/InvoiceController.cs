@@ -66,6 +66,13 @@ namespace NghiaHa.CRM.Web.Controllers
             viewModel.MonthFinance = DateTime.Now.Month;
             return View(viewModel);
         }
+        public IActionResult InvoiceOutput()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
+        }
         public IActionResult InvoiceInputDetail(int ID)
         {
             Invoice model = new Invoice();
@@ -81,6 +88,23 @@ namespace NghiaHa.CRM.Web.Controllers
                 model = _invoiceRepository.GetByID(ID);
             }
             model.CategoryID = AppGlobal.InvoiceInputID;
+            return View(model);
+        }
+        public IActionResult InvoiceOutputDetail(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.CategoryID = AppGlobal.InvoiceOutputID;
             return View(model);
         }
         public IActionResult InvoiceInputDetailBarcode(int ID)
@@ -134,6 +158,7 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceRepository.GetAllToList().ToDataSourceResult(request));
         }
+        
         public IActionResult GetByDuAnAndYearAndMonthToList([DataSourceRequest] DataSourceRequest request, int year, int month)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, year, month).ToDataSourceResult(request));
@@ -153,6 +178,10 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM(int year, int month, int sellID, string searchString)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceInputID, year, month, sellID, searchString));
+        }
+        public IActionResult GetByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToSUM(int year, int month, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceOutputID, year, month, sellID, searchString));
         }
         public IActionResult GetInvoiceInputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
         {
@@ -183,6 +212,28 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
             }
             return RedirectToAction("InvoiceInputDetail", new { ID = model.ID });
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveInvoiceOutput(Invoice model)
+        {
+            model.BuyName = _membershipRepository.GetByID(model.BuyID.Value).FullName;
+            model.SellID = AppGlobal.NghiaHaID;
+            if (model.ID > 0)
+            {
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _invoiceRepository.Update(model.ID, model);
+            }
+            else
+            {
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                if (_invoiceRepository.IsValidBySoHoaDon(model.SoHoaDon) == true)
+                {
+                    _invoiceRepository.Create(model);
+                }
+            }
+            return RedirectToAction("InvoiceOutputDetail", new { ID = model.ID });
         }
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInputWindow(Invoice model)

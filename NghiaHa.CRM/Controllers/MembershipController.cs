@@ -121,6 +121,11 @@ namespace NghiaHa.CRM.Controllers
             var data = _membershipRepository.GetMembershipDataTransfer001ByParentIDToList(AppGlobal.SupplierParentID);
             return Json(data.ToDataSourceResult(request));
         }
+        public ActionResult GetMembershipDataTransfer001ByCustomerParentIDToList([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _membershipRepository.GetMembershipDataTransfer001ByParentIDToList(AppGlobal.CustomerParentID);
+            return Json(data.ToDataSourceResult(request));
+        }
         public ActionResult GetByEmployeeParentIDToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.EmployeeParentID);

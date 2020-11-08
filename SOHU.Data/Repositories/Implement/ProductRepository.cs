@@ -89,5 +89,10 @@ namespace SOHU.Data.Repositories
             DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductSelectAllItems");
             return SQLHelper.ToList<ProductDataTransfer>(table);
         }
+        public List<Product> GetAllOrderByTitle001ToList()
+        {
+            DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductSelectAllItems001");
+            return SQLHelper.ToList<Product>(table);
+        }
     }
 }

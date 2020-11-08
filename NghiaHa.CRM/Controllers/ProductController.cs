@@ -141,6 +141,11 @@ namespace NghiaHa.CRM.Web.Controllers
             var data = _productRepository.GetAllOrderByTitleToList();
             return Json(data.ToDataSourceResult(request));
         }
+        public ActionResult GetAllOrderByTitle001ToList([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _productRepository.GetAllOrderByTitle001ToList();
+            return Json(data.ToDataSourceResult(request));
+        }
         public ActionResult GetDataTransferAllOrderByTitleToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _productRepository.GetDataTransferAllOrderByTitleToList();

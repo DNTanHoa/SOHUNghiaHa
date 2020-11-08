@@ -25,19 +25,46 @@
                 <div class="card-header">
                     <div class="row">
                         <div class='col-sm-2'>
-                            @(Html.Kendo().DropDownListFor(Model => Model.YearFinance)
-                     .DataValueField("Display")
-                     .DataTextField("Display")
-                     .HtmlAttributes(new { @class = "form-control" })
-                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetYearFinanceToList", "AppGlobal")))
-                            )
+                            @(Html.Kendo().DatePickerFor(Model => Model.DatePublishBegin)
+                                     .Format("dd/MM/yyyy")
+                                     .HtmlAttributes(new { @class = "form-control", title = "Begin" })
+                                     .DateInput()
+                                )
                         </div>
                         <div class='col-sm-2'>
-                            @(Html.Kendo().DropDownListFor(Model => Model.MonthFinance)
-                     .DataValueField("Display")
-                     .DataTextField("Display")
+                            @(Html.Kendo().DatePickerFor(Model => Model.DatePublishEnd)
+                                     .Format("dd/MM/yyyy")
+                                     .HtmlAttributes(new { @class = "form-control", title = "End" })
+                                     .DateInput()
+                                )
+                        </div>
+                        <div class='col-sm-2' style="display:flex; justify-content:start; align-items:center;">
+                            <input id="IsChaoGia" type="checkbox" checked="checked" />
+                            <p style="display:inline-block; font-size:14px; font-weight:bold; margin:0; padding-left:10px;">Chào giá</p>
+                        </div>
+                        <div class='col-sm-2' style="display:flex; justify-content:start; align-items:center;">
+                            <input id="IsThiCong" type="checkbox" checked="checked" />
+                            <p style="display:inline-block; font-size:14px; font-weight:bold; margin:0; padding-left:10px;">Thi công</p>
+                        </div>
+                        <div class='col-sm-2' style="display:flex; justify-content:start; align-items:center;">
+                            <input id="IsHoanThanh" type="checkbox" checked="checked" />
+                            <p style="display:inline-block; font-size:14px; font-weight:bold; margin:0; padding-left:10px;">Hoàn thành</p>
+                        </div>
+                        <div class='col-sm-2' style="display:flex; justify-content:start; align-items:center;">
+                            <input id="IsXuatHoaDon" type="checkbox" checked="checked" />
+                            <p style="display:inline-block; font-size:14px; font-weight:bold; margin:0; padding-left:10px;">Xuất hóa đơn</p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class='col-sm-10'>
+                            @(Html.Kendo().DropDownList()
+                        .Name("Membership")
+                     .DataValueField("ID")
+                     .DataTextField("FullName")
+                     .Filter(FilterType.Contains)
                      .HtmlAttributes(new { @class = "form-control" })
-                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMonthFinanceToList", "AppGlobal")))
+                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMembershipDataTransfer001ByCustomerParentIDToList", "Membership")))
                             )
                         </div>
                         <div class='col-sm-1'>
@@ -45,16 +72,13 @@
                                 <span class="fas fa-search"></span>
                             </button>
                         </div>
-                        <div class='col-sm-6'>
-
-                        </div>
                         <div class='col-sm-1'>
-                            <a asp-route-ID="0" asp-action="Detail" asp-controller="Project" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                            <a style="width:100%;" asp-route-ID="0" asp-action="Detail" asp-controller="Project" class="btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
                 @(Html.Kendo().Grid<SOHU.Data.Models.Invoice>()
-                .Name("Invoice")
+                .Name("Project")
                 .Columns(columns =>
                 {
                     columns.Command(command =>
@@ -64,13 +88,13 @@
                     columns.Template(@"<a href='/Project/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Project/DetailThiCongBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Project/DetailPrint?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.ManageCode).Title("Liên hệ").Width(300);
+                    columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(120).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Sau thuế").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
-                    columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(150).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(150).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ManageCode).Title("Liên hệ").Width(300);
-                    columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(120).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceName).Title("Dự án").Width(1000);
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -108,7 +132,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByDuAnAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetByDuAnIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList", "Project").Data("filterProject"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>
@@ -130,16 +154,21 @@
             var note = response.split('-')[1];
             var notification = $("#Notification").data("kendoNotification");
             notification.show(note, messageType);
-            $("#Invoice").data("kendoGrid").dataSource.read();
+            $("#Project").data("kendoGrid").dataSource.read();
         }
     }
     function onSearch() {
-        $("#Invoice").data("kendoGrid").dataSource.read();
+        $("#Project").data("kendoGrid").dataSource.read();
     }
-    function filterInvoice(e) {
-        var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-        var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
-        return { year: yearValue, month: monthValue };
+    function filterProject(e) {
+        var membershipIDValue = $("#Membership").data("kendoDropDownList").value();
+        var datePublishBeginValue = toDate02($("#DatePublishBegin").val());
+        var datePublishEndValue = toDate02($("#DatePublishEnd").val());
+        var isChaoGiaValue = document.getElementById("IsChaoGia").checked;
+        var isThiCongValue = document.getElementById("IsThiCong").checked;
+        var isHoanThanhValue = document.getElementById("IsHoanThanh").checked;
+        var isXuatHoaDonValue = document.getElementById("IsXuatHoaDon").checked;
+        return { datePublishBegin: datePublishBeginValue, datePublishEnd: datePublishEndValue, isChaoGia: isChaoGiaValue, isThiCong: isThiCongValue, isHoanThanh: isHoanThanhValue, isXuatHoaDon: isXuatHoaDonValue, membershipID: membershipIDValue };
 
     }
 </script>

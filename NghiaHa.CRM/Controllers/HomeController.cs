@@ -108,6 +108,14 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"</p>");
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"</li>");
+            txt.AppendLine(@"<li class='nav-item'>");
+            txt.AppendLine(@"<a class='nav-link' href='/Invoice/InvoiceOutput'>");
+            txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
+            txt.AppendLine(@"<p>");
+            txt.AppendLine(@"Hóa đơn xuất");
+            txt.AppendLine(@"</p>");
+            txt.AppendLine(@"</a>");
+            txt.AppendLine(@"</li>");
             txt.AppendLine(@"</ul>");
             txt.AppendLine(@"</li>");
             txt.AppendLine(@"<li class='nav-item has-treeview'>");

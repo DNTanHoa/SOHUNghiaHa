@@ -114,9 +114,10 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult Index()
         {
+            DateTime now = DateTime.Now;
             BaseViewModel viewModel = new BaseViewModel();
-            viewModel.YearFinance = DateTime.Now.Year;
-            viewModel.MonthFinance = DateTime.Now.Month;
+            viewModel.DatePublishBegin = new DateTime(now.Year, now.Month, 1);
+            viewModel.DatePublishEnd = now;
             return View(viewModel);
         }
         public IActionResult DetailChamCong(int ID)
@@ -946,6 +947,10 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
+        }
+        public IActionResult GetByDuAnIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList([DataSourceRequest] DataSourceRequest request, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon, int membershipID)
+        {
+            return Json(_invoiceRepository.GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList(AppGlobal.DuAnID, datePublishBegin, datePublishEnd, isChaoGia, isThiCong, isHoanThanh, isXuatHoaDon, membershipID).ToDataSourceResult(request));
         }
         public ActionResult GetProjectDuToanFullNameByInvoiceIDAndDuToanToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {

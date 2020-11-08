@@ -42,7 +42,7 @@
                         </div>
                         <div class='col-sm-4'>
                             @(Html.Kendo().DropDownList()
-                        .Name("Supplier")
+                        .Name("Membership")
                      .DataValueField("ID")
                      .DataTextField("FullName")
                      .Filter(FilterType.Contains)
@@ -96,9 +96,9 @@
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(300);
                     columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Width(100).HtmlAttributes(new { style = "text-align: right; color: blue;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(100).HtmlAttributes(new { style = "text-align: right; color: green;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
+                    columns.Bound(t => t.Total).Title("Sau thuế").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; color: green;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -167,7 +167,7 @@
     function filterInvoice(e) {
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
         var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
-        var sellIDValue = $("#Supplier").data("kendoDropDownList").value();
+        var sellIDValue = $("#Membership").data("kendoDropDownList").value();
         var searchStringValue = $("#SearchString").val(); 
         onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM();
         return { year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue };
