@@ -40,7 +40,7 @@
                                     </a>
                                 </div>
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Invoice" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
                                     </a>
                                 </div>
@@ -59,15 +59,15 @@
                                 <div class="col-md-4">
                                     <div class='form-group'>
                                         <label for='InvoiceCode'>Số hóa đơn</label>
-                                        @(Html.TextBoxFor(Model => Model.InvoiceCode, new { placeholder = "Số hóa đơn", @class = "form-control" }))
+                                        @(Html.TextBoxFor(Model => Model.SoHoaDon, new { placeholder = "Số hóa đơn", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='MakeCode'>Mẫu số</label>
-                                        @(Html.TextBoxFor(Model => Model.MakeCode, new { placeholder = "Mẫu số", @class = "form-control" }))
+                                        @(Html.TextBoxFor(Model => Model.MauSo, new { placeholder = "Mẫu số", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='ManageCode'>Ký hiệu</label>
-                                        @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Ký hiệu", @class = "form-control" }))
+                                        @(Html.TextBoxFor(Model => Model.KyHieu, new { placeholder = "Ký hiệu", @class = "form-control" }))
                                     </div>
                                     <div class='form-group'>
                                         <label for='InvoiceCreated'>Ngày lập</label>
@@ -156,8 +156,8 @@
                     columns.Bound(t => t.Quantity).Title("Thực tế").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity01).Title("Hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Thực tế").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
-                    columns.Bound(t => t.Total01).Title("Hóa đơn").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.TotalNoTax).Title("Thực tế").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.TotalNoTax01).Title("Hóa đơn").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -260,6 +260,10 @@
                 .Destroy(t => t.Action("Delete", "InvoicePayment"))
                 .Create(t => t.Action("Create", "InvoicePayment").Data("filterInvoicePaymentCreate"))
                 .Update(t => t.Action("Update", "InvoicePayment"))))
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-body">
                     </div>
                 </div>
             </div>

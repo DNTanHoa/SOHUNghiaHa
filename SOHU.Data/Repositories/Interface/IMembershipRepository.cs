@@ -1,4 +1,5 @@
-﻿using SOHU.Data.Enum;
+﻿using SOHU.Data.DataTransferObject;
+using SOHU.Data.Enum;
 using SOHU.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace SOHU.Data.Repositories
         public Membership GetByAccount(string Username);
 
         public void InitBeforeSave(Membership model, InitType initType);
+        public List<MembershipDataTransfer001> GetMembershipDataTransfer001ByParentIDToList(int parentID);
     }
 }

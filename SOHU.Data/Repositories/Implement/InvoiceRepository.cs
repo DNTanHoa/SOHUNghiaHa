@@ -26,6 +26,73 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetByCategoryIDAndYearAndMonthAndSellIDToList(int categoryID, int year, int month, int sellID)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && item.SellID.Value == sellID).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
+        public List<Invoice> GetByCategoryIDAndSearchStringToList(int categoryID, string searchString)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.SoHoaDon.Contains(searchString)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
+        public List<Invoice> GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = GetByCategoryIDAndSearchStringToList(categoryID, searchString);
+            }
+            else
+            {
+                if (sellID > 0)
+                {
+                    list = GetByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                }
+                else
+                {
+                    list = GetByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                }
+            }
+            return list;
+        }
+        public Invoice GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(int categoryID, int year, int month, int sellID, string searchString)
+        {
+            Invoice invoice = new Invoice();
+            List<Invoice> list = new List<Invoice>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = GetByCategoryIDAndSearchStringToList(categoryID, searchString);
+            }
+            else
+            {
+                if (sellID > 0)
+                {
+                    list = GetByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                }
+                else
+                {
+                    list = GetByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                }
+            }
+            invoice.Total = 0;
+            invoice.TotalPaid = 0;
+            invoice.TotalDebt = 0;
+            foreach (Invoice item in list)
+            {
+                if (item.Total != null)
+                {
+                    invoice.Total = invoice.Total + item.Total;
+                }
+                if (item.TotalPaid != null)
+                {
+                    invoice.TotalPaid = invoice.TotalPaid + item.TotalPaid;
+                }
+                if (item.TotalDebt != null)
+                {
+                    invoice.TotalDebt = invoice.TotalDebt + item.TotalDebt;
+                }
+            }
+            return invoice;
+        }
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active)
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && item.Active == active).OrderByDescending(item => item.InvoiceCreated).ToList();

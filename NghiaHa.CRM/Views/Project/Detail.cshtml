@@ -90,6 +90,18 @@
                                         <label for='Tax'>Thuế VAT (%)</label>
                                         @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
                                     </div>
+                                    <div class='form-group'>
+                                        <label for='InvoiceCode'>Số hóa đơn</label>
+                                        @(Html.TextBoxFor(Model => Model.SoHoaDon, new { placeholder = "Số hóa đơn", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='MakeCode'>Mẫu số</label>
+                                        @(Html.TextBoxFor(Model => Model.MauSo, new { placeholder = "Mẫu số", @class = "form-control" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='ManageCode'>Ký hiệu</label>
+                                        @(Html.TextBoxFor(Model => Model.KyHieu, new { placeholder = "Ký hiệu", @class = "form-control" }))
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class='form-group'>
@@ -124,14 +136,27 @@
                                         <label for='DateEnd'>Ngày kết thúc</label>
                                         @(Html.TextBoxFor(Model => Model.DateEnd, "{0:MM/dd/yyyy}", new { placeholder = "Ngày kết thúc", @class = "form-control", style = "text-align:right;" }))
                                     </div>
+                                    <div class='form-group'>
+                                        <label for='NgayXuatHoaDon'>Ngày xuất hóa đơn</label>
+                                        @(Html.TextBoxFor(Model => Model.NgayXuatHoaDon, "{0:MM/dd/yyyy}", new { placeholder = "Ngày kết thúc", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='IsXuatHoaDon'>Xuất hóa đơn</label>
+                                        <br />
+                                        @(Html.CheckBoxFor(Model => Model.IsXuatHoaDon.Value))
+                                    </div>
+                                   
+                                    <div class='form-group'>
+                                        <label for='IsHoanThanh'>Hoàn thành</label>
+                                        <br />
+                                        @(Html.CheckBoxFor(Model => Model.IsHoanThanh.Value))
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
-                                   
                                     <div class='form-group'>
                                         <label for='TotalNoTax'>Trước thuế (Thi công)</label>
                                         @(Html.TextBoxFor(Model => Model.TotalNoTax, "{0:N0}", new { placeholder = "Trước thuế (Thi công)", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
                                     </div>
-
                                     <div class='form-group'>
                                         <label for='TotalTax'>Tiền thuế VAT</label>
                                         @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
@@ -148,12 +173,26 @@
                                         <label for='TotalDebt'>Dư nợ</label>
                                         @(Html.TextBoxFor(Model => Model.TotalDebt, "{0:N0}", new { placeholder = "Dư nợ", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold; color:red;" }))
                                     </div>
+                                    <div class='form-group'>
+                                        <label for='IsChaoGia'>Chào giá</label>
+                                        <br />
+                                        @(Html.CheckBoxFor(Model => Model.IsChaoGia.Value))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='IsHopDong'>Hợp đồng</label>
+                                        <br />
+                                        @(Html.CheckBoxFor(Model => Model.IsHopDong.Value))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='IsThiCong'>Thi công</label>
+                                        <br />
+                                        @(Html.CheckBoxFor(Model => Model.IsThiCong.Value))
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Thi công</h3>
@@ -168,18 +207,19 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
-                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200);
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
-                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(200);
-                    columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(500).HtmlAttributes(new { style = "font-weight: bold;" });
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Template(@"<a target='_blank' href='/Product/Detail?ID=#=ProductID#' class='btn btn-success' style='color:white;'><i class='fas fa-box-open'></i></a>").Title("&nbsp;").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" });
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.PriceInput).Title("Giá nhập").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Discount).Title("Chiết khấu (%)").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
+                    columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(200);
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())

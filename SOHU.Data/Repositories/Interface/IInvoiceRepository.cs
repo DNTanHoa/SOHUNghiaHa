@@ -15,5 +15,8 @@ namespace SOHU.Data.Repositories
         public void InitializationByID(int ID);
         public void InitializationByIDAndParentID(int ID, int parentID);
         public void InitializationByIDAndCategoryID(int ID, int categoryID);
+        public List<Invoice> GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString);
+        public Invoice GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(int categoryID, int year, int month, int sellID, string searchString);
+
     }
 }

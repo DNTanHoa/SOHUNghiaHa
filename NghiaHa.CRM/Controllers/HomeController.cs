@@ -194,7 +194,7 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"</li>");
             txt.AppendLine(@"<li class='nav-item'>");
-            txt.AppendLine(@"<a class='nav-link' asp-action='CustomerCategory' asp-controller='Config'>");
+            txt.AppendLine(@"<a class='nav-link' href='/Config/CustomerCategory'>");
             txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
             txt.AppendLine(@"<p>");
             txt.AppendLine(@"Danh mục thành viên");

@@ -40,16 +40,46 @@
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMonthFinanceToList", "AppGlobal")))
                             )
                         </div>
+                        <div class='col-sm-4'>
+                            @(Html.Kendo().DropDownList()
+                        .Name("Supplier")
+                     .DataValueField("ID")
+                     .DataTextField("FullName")
+                     .Filter(FilterType.Contains)
+                     .HtmlAttributes(new { @class = "form-control" })
+                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMembershipDataTransfer001BySupplierParentIDToList", "Membership")))
+                            )
+                        </div>
+                        <div class='col-sm-2'>
+                            <input id="SearchString" type="text" class="form-control" placeholder="Tìm kiếm" />
+                        </div>
                         <div class='col-sm-1'>
                             <button style="width:100%;" title="Tìm kiếm" class="btn btn-success" onclick="onSearch()">
                                 <span class="fas fa-search"></span>
                             </button>
                         </div>
-                        <div class='col-sm-6'>
-
-                        </div>
                         <div class='col-sm-1'>
-                            <a asp-route-ID="0" asp-action="InvoiceInputDetail" asp-controller="Invoice" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                            <a asp-route-ID="0" asp-action="InvoiceInputDetail" asp-controller="Invoice" class="btn btn-success" style="width:100%;"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-sm-2'>
+                            Thành tiền:
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="Total" disabled style="border-width:0px; color:blue; font-weight:bold; text-align:right;"/>                           
+                        </div>
+                        <div class='col-sm-2'>
+                            Thanh toán
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="TotalPaid" disabled style="border-width:0px; color:green; font-weight:bold; text-align:right;"/>                            
+                        </div>
+                        <div class='col-sm-2'>
+                            Dư nợ
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="TotalDebt" disabled style="border-width:0px; color:red; font-weight:bold; text-align:right;"/>                            
                         </div>
                     </div>
                 </div>
@@ -63,12 +93,12 @@
                     }).Width(70);
                     columns.Template(@"<a href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Template(@"<a href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Width(150).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(150).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(150).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(300);
+                    columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(200).HtmlAttributes(new { style = "font-weight: bold;" });
-                    columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(500);
+                    columns.Bound(t => t.Total).Title("Sau thuế").Width(100).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Width(100).HtmlAttributes(new { style = "text-align: right; color: green;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
 
                 })
                 .ToolBar(toolBar => toolBar.Search())
@@ -99,14 +129,14 @@
                 })
                 .DataSource(dataSource => dataSource
                 .Ajax()
-                .PageSize(1000)
+                .PageSize(10000)
                 .Model(model =>
                 {
                     model.Id(t => t.ID);
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>
@@ -132,12 +162,42 @@
         }
     }
     function onSearch() {
-        $("#Invoice").data("kendoGrid").dataSource.read();
+        $("#Invoice").data("kendoGrid").dataSource.read();        
     }
     function filterInvoice(e) {
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
         var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
-        return { year: yearValue, month: monthValue };
-
+        var sellIDValue = $("#Supplier").data("kendoDropDownList").value();
+        var searchStringValue = $("#SearchString").val(); 
+        onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM();
+        return { year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue };
+    }
+    function onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM() {
+        
+        var yearValue = $("#YearFinance").data("kendoDropDownList").value();
+        var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
+        var sellIDValue = $("#Supplier").data("kendoDropDownList").value();
+        var searchStringValue = $("#SearchString").val();
+         $.ajax({
+            type: 'GET',
+            url: "@Url.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM", "Invoice")",
+            data: {
+                year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue
+            },
+             success: function (item) {                  
+                 let Total = Math.round(item.Total);
+                 var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                 let TotalPaid = Math.round(item.TotalPaid);
+                 var TotalPaidString = TotalPaid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"); 
+                 let TotalDebt = Math.round(item.TotalDebt);
+                 var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");                                 
+                 $("#Total").val(TotalString);
+                 $("#TotalPaid").val(TotalPaidString);
+                 $("#TotalDebt").val(TotalDebtString);                  
+            }
+         }).done(() => {
+            
+        });
+        
     }
 </script>

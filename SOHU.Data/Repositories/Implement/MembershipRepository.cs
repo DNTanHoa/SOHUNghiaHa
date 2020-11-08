@@ -1,8 +1,11 @@
-﻿using SOHU.Data.Enum;
+﻿using SOHU.Data.DataTransferObject;
+using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -60,6 +63,20 @@ namespace SOHU.Data.Repositories
                     break;
             }
 
+        }
+        public List<MembershipDataTransfer001> GetMembershipDataTransfer001ByParentIDToList(int parentID)
+        {
+            List<MembershipDataTransfer001> list = new List<MembershipDataTransfer001>();
+            if (parentID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ParentID",parentID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocMembershipSelectMembershipDataTransfer001ByParentID", parameters);
+                list = SQLHelper.ToList<MembershipDataTransfer001>(dt);
+            }
+            return list;
         }
     }
 }

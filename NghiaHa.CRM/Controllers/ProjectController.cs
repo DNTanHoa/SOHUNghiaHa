@@ -125,6 +125,7 @@ namespace NghiaHa.CRM.Web.Controllers
             model.InvoiceCreated = DateTime.Now;
             model.DateBegin = DateTime.Now;
             model.DateEnd = DateTime.Now;
+            model.NgayXuatHoaDon = DateTime.Now;
             model.Tax = AppGlobal.Tax;
             model.TotalNoTax = 0;
             model.TotalTax = 0;
@@ -739,7 +740,15 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult DetailFiles(int ID)
         {
             InvoiceProperty model = new InvoiceProperty();
-            model.InvoiceID = ID;
+            if (ID > 0)
+            {
+                Invoice invoice = _invoiceRepository.GetByID(ID);
+                if (invoice != null)
+                {
+                    model.Title = invoice.InvoiceName;
+                    model.InvoiceID = ID;
+                }
+            }
             return View(model);
         }
         public IActionResult PrintPreviewHopDong(int ID)
