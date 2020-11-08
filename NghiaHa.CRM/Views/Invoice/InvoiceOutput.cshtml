@@ -167,7 +167,7 @@
     function filterInvoice(e) {
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
         var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
-        var sellIDValue = $("#Supplier").data("kendoDropDownList").value();
+        var sellIDValue = $("#Membership").data("kendoDropDownList").value();
         var searchStringValue = $("#SearchString").val(); 
         onGetByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToSUM();
         return { year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue };
