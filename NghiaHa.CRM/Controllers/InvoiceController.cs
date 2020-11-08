@@ -30,6 +30,10 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.InvoiceCode = model.InvoiceCode.Trim();
             }
+            if (!string.IsNullOrEmpty(model.SoHoaDon))
+            {
+                model.SoHoaDon = model.SoHoaDon.Trim();
+            }
         }
         public IActionResult Index()
         {
@@ -142,6 +146,10 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceInputID, year, month, sellID, searchString).ToDataSourceResult(request));
         }
+        public IActionResult GetByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToList([DataSourceRequest] DataSourceRequest request, int year, int month, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, month, sellID, searchString).ToDataSourceResult(request));
+        }
         public IActionResult GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM(int year, int month, int sellID, string searchString)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceInputID, year, month, sellID, searchString));
@@ -169,7 +177,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Initialization(model);
                 model.Initialization(InitType.Insert, RequestUserID);
-                if (_invoiceRepository.IsValidByInvoiceCode(model.InvoiceCode) == true)
+                if (_invoiceRepository.IsValidBySoHoaDon(model.SoHoaDon) == true)
                 {
                     _invoiceRepository.Create(model);
                 }

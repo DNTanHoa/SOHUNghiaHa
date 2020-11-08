@@ -613,6 +613,14 @@ namespace SOHU.Data.Helpers
                 return builder.Build().GetSection("AppSettings").GetSection("CarouselCode").Value;
             }
         }
+        public static int InvoiceOutputID
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return int.Parse(builder.Build().GetSection("AppSettings").GetSection("InvoiceOutputID").Value);
+            }
+        }
         public static int InvoiceInputID
         {
             get

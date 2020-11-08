@@ -7,6 +7,7 @@ namespace SOHU.Data.Repositories
 {
     public interface IInvoiceRepository : IRepository<Invoice>
     {
+        public bool IsValidBySoHoaDon(string soHoaDon);
         public bool IsValidByInvoiceCode(string invoiceCode);
         public List<Invoice> GetByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month);
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active);

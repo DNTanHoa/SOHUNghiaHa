@@ -22,13 +22,18 @@ namespace SOHU.Data.Repositories
             Invoice item = _context.Set<Invoice>().FirstOrDefault(item => item.InvoiceCode.Equals(invoiceCode));
             return item == null ? true : false;
         }
+        public bool IsValidBySoHoaDon(string soHoaDon)
+        {
+            Invoice item = _context.Set<Invoice>().FirstOrDefault(item => item.SoHoaDon.Equals(soHoaDon));
+            return item == null ? true : false;
+        }
         public List<Invoice> GetByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month)
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndSellIDToList(int categoryID, int year, int month, int sellID)
         {
-            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && item.SellID.Value == sellID).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && (item.SellID.Value == sellID || item.BuyID.Value == sellID)).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
         public List<Invoice> GetByCategoryIDAndSearchStringToList(int categoryID, string searchString)
         {
