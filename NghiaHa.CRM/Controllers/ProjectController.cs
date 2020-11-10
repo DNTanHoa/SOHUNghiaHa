@@ -85,18 +85,23 @@ namespace NghiaHa.CRM.Web.Controllers
             if (model.Quantity01 == null)
             {
                 model.Quantity01 = model.Quantity;
+            }            
+            if (model.Unit != null)
+            {
+                model.UnitID = model.Unit.ID;
             }
             if (model.Product != null)
             {
                 model.ProductID = model.Product.ID;
+                Product product = _productRepository.GetByID(model.ProductID.Value);
                 if (string.IsNullOrEmpty(model.ProductCode))
                 {
-                    model.ProductCode = _productRepository.GetByID(model.ProductID.Value).MetaTitle;
+                    model.ProductCode = product.MetaTitle;
                 }
-            }
-            if (model.Unit != null)
-            {
-                model.UnitID = model.Unit.ID;
+                if (model.UnitID == null)
+                {
+                    model.UnitID = product.PriceUnitID;
+                }
             }
             model.Tax = 0;
             if (invoice != null)

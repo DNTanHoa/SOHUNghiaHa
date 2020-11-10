@@ -293,7 +293,6 @@ namespace NghiaHa.CRM.Web.Controllers
             string note = AppGlobal.InitString;
             model.Initialization(InitType.Insert, RequestUserID);
             int result = 0;
-
             if ((model.ProductID > 0) && (model.UnitID > 0))
             {
                 result = _invoiceDetailRepository.Create(model);
