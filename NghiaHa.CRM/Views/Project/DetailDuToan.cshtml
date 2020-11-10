@@ -65,14 +65,14 @@
                     {
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(150);
-                    columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("ProductFullName").Width(400);
+                    }).Width(150).Locked(true);
+                    columns.Bound(t => t.IsChaoGia).Title("Chào giá").Width(100).Locked(true);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("ProductFullName").Width(400).Locked(true).HtmlAttributes(new { style = "font-weight: bold;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Discount).Title("Giảm (%)").Width(100).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalNoTax).Title("Tổng cộng").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
+                    columns.Bound(t => t.TotalNoTax).Title("Tổng cộng").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200);
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200);
                 })
@@ -106,13 +106,13 @@
                 .Model(model =>
                 {
                     model.Id(t => t.ID);
-                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.TotalNoTax).Editable(false);
                     model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Quantity).DefaultValue(1);
                     model.Field(t => t.UnitPrice).DefaultValue(1000);
-                        model.Field(t => t.Discount).DefaultValue(0);
+                    model.Field(t => t.Discount).DefaultValue(0);
                     model.Field(t => t.IsChaoGia).DefaultValue(true);
 
                 })
@@ -177,7 +177,7 @@
                 .Model(model =>
                 {
                     model.Id(t => t.ID);
-                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.TotalNoTax).Editable(false);
                     model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());

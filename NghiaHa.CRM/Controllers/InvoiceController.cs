@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,11 +18,12 @@ namespace NghiaHa.CRM.Web.Controllers
     public class InvoiceController : BaseController
     {
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IInvoicePropertyRepository _invoicePropertyRepository;
         private readonly IMembershipRepository _membershipRepository;
-
-        public InvoiceController(IInvoiceRepository invoiceRepository, IMembershipRepository membershipRepository)
+        public InvoiceController(IInvoiceRepository invoiceRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
         {
             _invoiceRepository = invoiceRepository;
+            _invoicePropertyRepository = invoicePropertyRepository;
             _membershipRepository = membershipRepository;
         }
         private void Initialization(Invoice model)
@@ -46,6 +48,20 @@ namespace NghiaHa.CRM.Web.Controllers
             return View(model);
         }
         public IActionResult DetailFiles(int ID)
+        {
+            InvoiceProperty model = new InvoiceProperty();
+            if (ID > 0)
+            {
+                Invoice invoice = _invoiceRepository.GetByID(ID);
+                if (invoice != null)
+                {
+                    model.Title = invoice.SoHoaDon;
+                    model.InvoiceID = ID;
+                }
+            }
+            return View(model);
+        }
+        public IActionResult InvoiceOutputDetailFiles(int ID)
         {
             InvoiceProperty model = new InvoiceProperty();
             if (ID > 0)
@@ -86,6 +102,23 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
+                List<InvoiceProperty> listInvoiceProperty = _invoicePropertyRepository.GetByInvoiceIDToList(ID);
+                StringBuilder txt = new StringBuilder();
+                foreach (InvoiceProperty item in listInvoiceProperty)
+                {
+                    switch (item.Note)
+                    {
+                        case ".pdf":
+                            txt.AppendLine("<iframe src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' width='100%' height='1000px'></iframe>");
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".jpeg":
+                            txt.AppendLine("<img src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' class='img-thumbnail' />");
+                            break;
+                    }
+                }
+                model.Note = txt.ToString();
             }
             model.CategoryID = AppGlobal.InvoiceInputID;
             return View(model);
@@ -158,7 +191,7 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceRepository.GetAllToList().ToDataSourceResult(request));
         }
-        
+
         public IActionResult GetByDuAnAndYearAndMonthToList([DataSourceRequest] DataSourceRequest request, int year, int month)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthToList(AppGlobal.DuAnID, year, month).ToDataSourceResult(request));

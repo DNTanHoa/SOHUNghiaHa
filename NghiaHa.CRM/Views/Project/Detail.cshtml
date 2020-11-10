@@ -211,20 +211,20 @@
                     {
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(150);
+                    }).Width(150).Locked(true);
+                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(120).HtmlAttributes(new { style = "text-align: right;" }).Locked(true);
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Template(@"<a target='_blank' href='/Product/Detail?ID=#=ProductID#' class='btn btn-success' style='color:white;'><i class='fas fa-box-open'></i></a>").Title("&nbsp;").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" });
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.PriceInput).Title("Giá nhập").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Discount).Title("Chiết khấu (%)").Width(150).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Thành tiền").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
-                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(150).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(120).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });                    
                     columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
                     columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(200);
+                    columns.Template(@"<a target='_blank' href='/Product/Detail?ID=#=ProductID#' class='btn btn-success' style='color:white;'><i class='fas fa-box-open'></i></a>").Title("&nbsp;").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
