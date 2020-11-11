@@ -196,6 +196,21 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDSUMToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryIDSUM", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);                
+            }
+            return list;
+        }
         public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDAndDateTrackToList(int invoiceID, int categoryID, DateTime dateTrack)
         {
             List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();

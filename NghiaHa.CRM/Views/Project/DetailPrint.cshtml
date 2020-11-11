@@ -31,11 +31,6 @@
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>
-                            <div class='col-md-4'>
-                                <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCong" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
-                                    <span class="fas fa-print"></span> Bảng thống kê vật tư thi công
-                                </a>
-                            </div>
                             <div class='col-sm-2'>
                                 @(Html.Kendo().DatePickerFor(Model => Model.DateBegin)
                                      .Format("dd/MM/yyyy")
@@ -43,14 +38,25 @@
                                      .DateInput()
                                 )
                             </div>
-                            <div class='col-sm-4'>
+                            <div class='col-sm-3'>
                                 <button type="button" class="btn btn-success" title="Search" onclick="onPrint()" style="width:100%;">
                                     <span class="fas fa-print"></span> Phiếu xuất kho
                                 </button>
                             </div>
+                            <div class='col-md-3'>
+                                <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCong" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-print"></span> Bảng thống kê theo ngày
+                                </a>
+                            </div>
+                            <div class='col-md-3'>
+                                <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCongSUM" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-print"></span> Bảng thống kê SUM
+                                </a>
+                            </div>
                         </div>
                         <div class="row">
-                        </div>
+                            
+                        </div>                       
                     </div>
                 </div>
             </div>
@@ -62,15 +68,15 @@
     .Position(p => p.Pinned(true).Top(30).Right(30))
     .Width(400)
 )
-<script>  
-    function onPrint() {        
+<script>
+    function onPrint() {
         var IDValue = $("#ID").val();
-        var dateTrackStringValue = toDate02($("#DateBegin").val());   
+        var dateTrackStringValue = toDate02($("#DateBegin").val());
         dateTrackStringValue = dateTrackStringValue.replace("/", "_");
         dateTrackStringValue = dateTrackStringValue.replace("/", "_");
         dateTrackStringValue = dateTrackStringValue.replace("-", "_");
         dateTrackStringValue = dateTrackStringValue.replace("-", "_");
-        var url = '/Project/PrintPreviewPhieuXuatKho?ID=' + IDValue + '&dateTrackString=' + dateTrackStringValue;        
+        var url = '/Project/PrintPreviewPhieuXuatKho?ID=' + IDValue + '&dateTrackString=' + dateTrackStringValue;
         window.open(url, '_blank');
-    }   
+    }
 </script>

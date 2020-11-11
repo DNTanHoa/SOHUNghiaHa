@@ -85,7 +85,7 @@ namespace NghiaHa.CRM.Web.Controllers
             if (model.Quantity01 == null)
             {
                 model.Quantity01 = model.Quantity;
-            }            
+            }
             if (model.Unit != null)
             {
                 model.UnitID = model.Unit.ID;
@@ -641,8 +641,8 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<thead>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");                    
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Ngày xuất</a></th>");
@@ -656,11 +656,112 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:left;'>");
                         txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
                         txt.AppendLine(@"</td>");
-                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");                        
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.MetaTitle + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
+                        txt.AppendLine(@"</tr>");
+                    }
+                    txt.AppendLine(@"</tbody>");
+                    txt.AppendLine(@"</table>");
+                    chaoGia = chaoGia.Replace(@"[Detail]", txt.ToString());
+                }
+                model.Note = chaoGia;
+            }
+            model.CategoryID = AppGlobal.DuAnID;
+            return View(model);
+        }
+
+        public IActionResult PrintPreviewBangThongKeVatTuThiCongSUM(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.DateBegin = DateTime.Now;
+            model.DateEnd = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+
+                string chaoGia = "";
+                var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "BangThongKeVatTuThiCong.html");
+                using (var stream = new FileStream(physicalPath, FileMode.Open))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        chaoGia = reader.ReadToEnd();
+                    }
+                }
+                DateTime now = DateTime.Now;
+                chaoGia = chaoGia.Replace(@"[DatePrint]", now.ToString("dd/MM/yyyy HH:mm:ss"));
+                chaoGia = chaoGia.Replace(@"[ProjectName]", model.InvoiceName);
+                chaoGia = chaoGia.Replace(@"[BuyName]", model.BuyName);
+                chaoGia = chaoGia.Replace(@"[ManageCode]", model.ManageCode);
+                chaoGia = chaoGia.Replace(@"[BuyPhone]", model.BuyPhone);
+                chaoGia = chaoGia.Replace(@"[BuyAddress]", model.BuyAddress);
+                chaoGia = chaoGia.Replace(@"[DateExport]", now.ToString("dd/MM/yyyy"));
+                Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
+                if (seller != null)
+                {
+                    chaoGia = chaoGia.Replace(@"[SellFullName]", seller.FullName);
+                    chaoGia = chaoGia.Replace(@"[SellName]", seller.FullName);
+                    chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
+                    chaoGia = chaoGia.Replace(@"[SellEmail]", seller.Email);
+                    chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
+                    chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
+                }
+
+
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDSUMToList(model.ID, AppGlobal.ThiCongID);
+                if (list.Count > 0)
+                {
+                    int no = 0;
+                    StringBuilder txt = new StringBuilder();
+                    txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
+                    txt.AppendLine(@"<thead>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");                    
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Ngày xuất</a></th>");
+                    txt.AppendLine(@"</thead>");
+                    txt.AppendLine(@"<tbody>");
+                    foreach (InvoiceDetailDataTransfer item in list)
+                    {
+                        no = no + 1;
+                        if (item.DateTrack.Value.Year > 2019)
+                        {
+                            txt.AppendLine(@"<tr>");
+                        }
+                        else
+                        {
+                            txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
+                            
+                        }
+                        txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
+                        txt.AppendLine(@"<td style='text-align:left;'>");
+                        txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
+                        txt.AppendLine(@"</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");                        
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ProductCode + "</td>");
+                        if (item.DateTrack.Value.Year > 2019)
+                        {
+                            txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
+                        }
+                        else
+                        {
+                            txt.AppendLine(@"<td style='text-align:right;'></td>");
+                        }
                         txt.AppendLine(@"</tr>");
                     }
                     txt.AppendLine(@"</tbody>");

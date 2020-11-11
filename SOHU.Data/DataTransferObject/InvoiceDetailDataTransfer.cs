@@ -13,7 +13,7 @@ namespace SOHU.Data.DataTransferObject
         public string InvoiceName { get; set; }
         public bool IsChaoGia { get; set; }
         public bool IsThiCong { get; set; }
-        public string ProductTitle { get; set; }
+        public string ProductTitle { get; set; }        
         public string MetaTitle { get; set; }
         public string UnitName { get; set; }
         public string FullName { get; set; }
