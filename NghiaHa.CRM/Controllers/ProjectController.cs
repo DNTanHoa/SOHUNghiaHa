@@ -206,6 +206,14 @@ namespace NghiaHa.CRM.Web.Controllers
             model.Total = 0;
             model.TotalPaid = 0;
             model.TotalDebt = 0;
+            model.IsChaoGia = false;
+            model.IsHopDong = false;
+            model.IsThiCong = false;
+            model.IsNghiemThu = false;
+            model.IsThanhLy = false;
+            model.IsHoanThanh = false;
+            model.IsXuatHoaDon = false;
+            model.IsNhanHoaDon = false;
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
@@ -316,8 +324,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
-                if (string.IsNullOrEmpty(model.ChaoGia))
-                {
+                //if (string.IsNullOrEmpty(model.ChaoGia))
+                //{
                     string chaoGia = "";
                     var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "ChaoGia.html");
                     using (var stream = new FileStream(physicalPath, FileMode.Open))
@@ -490,7 +498,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         chaoGia = chaoGia.Replace(@"[ChaoGia]", txt.ToString());
                     }
                     model.ChaoGia = chaoGia;
-                }
+                //}
             }
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);

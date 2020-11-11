@@ -99,6 +99,8 @@ namespace NghiaHa.CRM.Web.Controllers
             model.Total = 0;
             model.TotalPaid = 0;
             model.TotalDebt = 0;
+            model.IsXuatHoaDon = false;
+            model.IsNhanHoaDon = false;
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
@@ -133,6 +135,8 @@ namespace NghiaHa.CRM.Web.Controllers
             model.Total = 0;
             model.TotalPaid = 0;
             model.TotalDebt = 0;
+            model.IsXuatHoaDon = false;
+            model.IsNhanHoaDon = false;
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
