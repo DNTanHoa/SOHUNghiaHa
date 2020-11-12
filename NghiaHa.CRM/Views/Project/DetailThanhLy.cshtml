@@ -15,6 +15,7 @@
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project">Hợp đồng</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project">Nghiệm thu</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project">Thanh lý</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project">Thống kê</a></li>
                 </ol>
             </div>
         </div>
@@ -60,7 +61,7 @@
                                     </a>
                                 </div>
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                    <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewThanhLy" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-print"></span>
                                     </a>
                                 </div>
