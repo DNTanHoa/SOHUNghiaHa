@@ -340,11 +340,16 @@ namespace NghiaHa.CRM.Web.Controllers
                 chaoGia = chaoGia.Replace(@"[Day]", now.Day.ToString());
                 chaoGia = chaoGia.Replace(@"[Month]", now.Month.ToString());
                 chaoGia = chaoGia.Replace(@"[Year]", now.Year.ToString());
+                chaoGia = chaoGia.Replace(@"[InvoiceName]", model.InvoiceName);
+                chaoGia = chaoGia.Replace(@"[BuyAddress]", model.BuyAddress);
                 Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
                 if (buyer != null)
                 {
                     chaoGia = chaoGia.Replace(@"[BuyName]", buyer.FullName);
-                    chaoGia = chaoGia.Replace(@"[BuyAddress]", buyer.Address);
+                    if (string.IsNullOrEmpty(model.BuyAddress))
+                    {
+                        chaoGia = chaoGia.Replace(@"[BuyAddress]", buyer.Address);
+                    }
                 }
                 Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
                 if (seller != null)
