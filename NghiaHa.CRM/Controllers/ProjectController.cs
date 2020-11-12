@@ -989,6 +989,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 Invoice invoice = _invoiceRepository.GetByID(ID);
                 if (invoice != null)
                 {
+                    model.ID = ID;
                     model.Title = invoice.InvoiceName;
                     model.InvoiceID = ID;
                 }

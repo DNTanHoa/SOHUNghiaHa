@@ -6,13 +6,15 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-8">
-                <h1><b>@Model.InvoiceName</b> - Dự toán - Chào giá</h1>
-            </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Dự án - công trình</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project">Thi công</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project">Dự toán</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project">Chấm công</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project">Chào giá</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project">Hợp đồng</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project">Nghiệm thu</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project">Thanh lý</a></li>
                 </ol>
             </div>
         </div>
@@ -25,8 +27,11 @@
                 <div class="card card-primary">
                     <div class="card-body">
                         <div class="row">
+                            <div class='col-md-7'>
+                                <h6><b>@Model.InvoiceName</b> - Dự toán</h6>
+                            </div>
                             <div class='col-md-1'>
-                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>
@@ -35,24 +40,19 @@
                                     <span class="fas fa-qrcode"></span>
                                 </a>
                             </div>
-                            <div class='col-md-2'>
-                                <a asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                    Dự toán
-                                </a>
-                            </div>
-                            <div class='col-md-2'>
-                                <a asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                    Chấm công
-                                </a>
-                            </div>
-                            <div class='col-md-2'>
-                                <a asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                    Hợp đồng
-                                </a>
-                            </div>
                             <div class='col-md-1'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-paperclip"></span>
+                                </a>
+                            </div>
+                            <div class='col-md-1'>
+                                <a asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-print"></span>
+                                </a>
+                            </div>
+                            <div class='col-md-1'>
+                                <a asp-route-ID="0" asp-action="Detail" asp-controller="Project" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                    <span class="fas fa-plus"></span>
                                 </a>
                             </div>
                         </div>

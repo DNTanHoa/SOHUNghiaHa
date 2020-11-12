@@ -5,13 +5,15 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-8">
-                <h1><b>@Model.InvoiceName</b> - Hợp đồng</h1>
-            </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Dự án - công trình</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project">Thi công</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailDuToan" asp-controller="Project">Dự toán</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChamCong" asp-controller="Project">Chấm công</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project">Chào giá</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project">Hợp đồng</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project">Nghiệm thu</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project">Thanh lý</a></li>
                 </ol>
             </div>
         </div>
@@ -32,8 +34,11 @@
                             @Html.HiddenFor(Model => Model.InvoiceCreated)
                             @Html.HiddenFor(Model => Model.DateUpdated)
                             <div class="row">
+                                <div class='col-md-6'>
+                                    <h6><b>@Model.InvoiceName</b> - Hợp đồng</h6>
+                                </div>
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Dự án" style="width:100%;" class="btn btn-info">
+                                    <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
                                         <span class="fas fa-arrow-left"></span>
                                     </a>
                                 </div>
@@ -42,34 +47,25 @@
                                         <span class="fas fa-save"></span>
                                     </button>
                                 </div>
-                                <div class='col-md-1'>
-                                    <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewHopDong" asp-controller="Project" title="In hợp đồng" style="width:100%; color:white; cursor:pointer;" class="btn btn-success">
-                                        <span class="fas fa-print"></span>
-                                    </a>
-                                </div>
+
                                 <div class='col-md-1'>
                                     <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-qrcode"></span>
-                                    </a>
-                                </div>                               
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Chào giá
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Nghiệm thu
-                                    </a>
-                                </div>
-                                <div class='col-md-2'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
-                                        Thanh lý
                                     </a>
                                 </div>
                                 <div class='col-md-1'>
                                     <a asp-route-ID="@Model.ID" asp-action="DetailFiles" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-print"></span>
+                                    </a>
+                                </div>
+                                <div class='col-md-1'>
+                                    <a asp-route-ID="0" asp-action="Detail" asp-controller="Project" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                        <span class="fas fa-plus"></span>
                                     </a>
                                 </div>
                             </div>                                                 
