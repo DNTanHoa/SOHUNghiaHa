@@ -4,7 +4,31 @@
 
 
 @model SOHU.Data.Models.Invoice
-<div style="width:1000px; height:auto; padding:40px; margin:auto; background-color:#ffffff; background-repeat:repeat-x; background-image:url('/images/LogoBackground_1000_1390.png');">
-    @Html.Raw(Model.NghiemThu)
-</div>
+    <style>
+        .border, .border td, .border th {
+            border-color: #000000;
+            border-style: solid;
+            border-width: 1px;
+            padding: 10px;
+        }
+
+        .border {
+            border-collapse: collapse;
+        }
+
+            .border th {
+                text-align: center;
+            }
+
+            .border td {
+                text-align: right;
+            }
+
+            .border .text {
+                text-align: left;
+            }
+    </style>
+    <div style="width:1000px; height:auto; padding:40px; margin:auto; background-color:#ffffff; background-repeat:repeat-x; background-image:url('/images/LogoBackground_1000_1390.png');">
+        @Html.Raw(Model.NghiemThu)
+    </div>
 

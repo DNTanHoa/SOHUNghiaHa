@@ -803,110 +803,144 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
-                if (string.IsNullOrEmpty(model.NghiemThu))
+                //if (string.IsNullOrEmpty(model.NghiemThu))
+                //{
+                string nghiemThu = "";
+                var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "NghiemThu.html");
+                using (var stream = new FileStream(physicalPath, FileMode.Open))
                 {
-                    string nghiemThu = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "NghiemThu.html");
-                    using (var stream = new FileStream(physicalPath, FileMode.Open))
+                    using (StreamReader reader = new StreamReader(stream))
                     {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            nghiemThu = reader.ReadToEnd();
-                        }
+                        nghiemThu = reader.ReadToEnd();
                     }
-                    DateTime now = DateTime.Now;
-                    nghiemThu = nghiemThu.Replace(@"[InvoiceCode]", model.InvoiceCode);
-                    nghiemThu = nghiemThu.Replace(@"[InvoiceDay]", model.InvoiceCreated.Value.Day.ToString());
-                    nghiemThu = nghiemThu.Replace(@"[InvoiceMonth]", model.InvoiceCreated.Value.Month.ToString());
-                    nghiemThu = nghiemThu.Replace(@"[InvoiceYear]", model.InvoiceCreated.Value.Year.ToString());
-                    nghiemThu = nghiemThu.Replace(@"[Day]", now.Day.ToString());
-                    nghiemThu = nghiemThu.Replace(@"[Month]", now.Month.ToString());
-                    nghiemThu = nghiemThu.Replace(@"[Year]", now.Year.ToString());
-                    Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
-                    if (buyer != null)
-                    {
-                        nghiemThu = nghiemThu.Replace(@"[BuyName]", buyer.FullName);
-                        nghiemThu = nghiemThu.Replace(@"[BuyAddress]", buyer.Address);
-                        nghiemThu = nghiemThu.Replace(@"[BuyFullName]", buyer.ContactFullName);
-                        nghiemThu = nghiemThu.Replace(@"[BuyPosition]", buyer.ContactPosition);
-                        nghiemThu = nghiemThu.Replace(@"[BuyBankAccount]", buyer.BankAccount);
-                        nghiemThu = nghiemThu.Replace(@"[BuyBankName]", buyer.BankName);
-                        nghiemThu = nghiemThu.Replace(@"[BuyTaxCode]", buyer.TaxCode);
-                        nghiemThu = nghiemThu.Replace(@"[BuyPhone]", buyer.Phone);
-                    }
-                    Membership seller = _membershipRepository.GetByID(model.SellID.Value);
-                    if (seller != null)
-                    {
-                        nghiemThu = nghiemThu.Replace(@"[SellName]", seller.FullName);
-                        nghiemThu = nghiemThu.Replace(@"[SellAddress]", seller.Address);
-                        nghiemThu = nghiemThu.Replace(@"[SellFullName]", seller.ContactFullName);
-                        nghiemThu = nghiemThu.Replace(@"[SellPosition]", seller.ContactPosition);
-                        nghiemThu = nghiemThu.Replace(@"[SellBankAccount]", seller.BankAccount);
-                        nghiemThu = nghiemThu.Replace(@"[SellBankName]", seller.BankName);
-                        nghiemThu = nghiemThu.Replace(@"[SellTaxCode]", seller.TaxCode);
-                        nghiemThu = nghiemThu.Replace(@"[SellPhone]", seller.Phone);
-                    }
-
-                    List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ThiCongID);
-                    if (list.Count > 0)
-                    {
-                        int no = 0;
-                        decimal totalDiscount = 0;
-                        decimal total = 0;
-                        decimal totalNoTax = 0;
-                        StringBuilder txt = new StringBuilder();
-                        txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
-                        txt.AppendLine(@"<thead>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn giá</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thành tiền</a></th>");
-                        txt.AppendLine(@"</thead>");
-                        txt.AppendLine(@"<tbody>");
-                        foreach (InvoiceDetailDataTransfer item in list)
-                        {
-                            if (item.TotalDiscount != null)
-                            {
-                                totalDiscount = totalDiscount + item.TotalDiscount.Value;
-                            }
-                            if (item.Total != null)
-                            {
-                                total = total + item.Total.Value;
-                            }
-                            if (item.TotalNoTax != null)
-                            {
-                                totalNoTax = totalNoTax + item.TotalNoTax.Value;
-                            }
-                            no = no + 1;
-                            txt.AppendLine(@"<tr>");
-                            txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
-                            txt.AppendLine(@"<td style='text-align:center;'>");
-                            txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
-                            txt.AppendLine(@"</td>");
-                            txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"</tr>");
-                        }
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td style='text-align:center;'></td>");
-                        txt.AppendLine(@"<td style='text-align:left;'>Tổng cộng</td>");
-                        txt.AppendLine(@"<td style='text-align:center;'></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'></td>");
-                        txt.AppendLine(@"<td style='text-align:right;'><b>" + total.ToString("N0").Replace(@",", @".") + "</b></td>");
-                        txt.AppendLine(@"</tr>");
-                        txt.AppendLine(@"</tbody>");
-                        txt.AppendLine(@"</table>");
-                        nghiemThu = nghiemThu.Replace(@"[ThiCong]", txt.ToString());
-                    }
-                    model.NghiemThu = nghiemThu;
-                    _invoiceRepository.Update(model.ID, model);
                 }
+                DateTime now = DateTime.Now;
+                nghiemThu = nghiemThu.Replace(@"[InvoiceCode]", model.InvoiceCode);
+                nghiemThu = nghiemThu.Replace(@"[InvoiceDay]", model.InvoiceCreated.Value.Day.ToString());
+                nghiemThu = nghiemThu.Replace(@"[InvoiceMonth]", model.InvoiceCreated.Value.Month.ToString());
+                nghiemThu = nghiemThu.Replace(@"[InvoiceYear]", model.InvoiceCreated.Value.Year.ToString());
+                nghiemThu = nghiemThu.Replace(@"[Day]", now.Day.ToString());
+                nghiemThu = nghiemThu.Replace(@"[Month]", now.Month.ToString());
+                nghiemThu = nghiemThu.Replace(@"[Year]", now.Year.ToString());
+                Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
+                if (buyer != null)
+                {
+                    nghiemThu = nghiemThu.Replace(@"[BuyName]", buyer.FullName);
+                    nghiemThu = nghiemThu.Replace(@"[BuyAddress]", buyer.Address);
+                    nghiemThu = nghiemThu.Replace(@"[BuyFullName]", buyer.ContactFullName);
+                    nghiemThu = nghiemThu.Replace(@"[BuyPosition]", buyer.ContactPosition);
+                    nghiemThu = nghiemThu.Replace(@"[BuyBankAccount]", buyer.BankAccount);
+                    nghiemThu = nghiemThu.Replace(@"[BuyBankName]", buyer.BankName);
+                    nghiemThu = nghiemThu.Replace(@"[BuyTaxCode]", buyer.TaxCode);
+                    nghiemThu = nghiemThu.Replace(@"[BuyPhone]", buyer.Phone);
+                }
+                Membership seller = _membershipRepository.GetByID(model.SellID.Value);
+                if (seller != null)
+                {
+                    nghiemThu = nghiemThu.Replace(@"[SellName]", seller.FullName);
+                    nghiemThu = nghiemThu.Replace(@"[SellAddress]", seller.Address);
+                    nghiemThu = nghiemThu.Replace(@"[SellFullName]", seller.ContactFullName);
+                    nghiemThu = nghiemThu.Replace(@"[SellPosition]", seller.ContactPosition);
+                    nghiemThu = nghiemThu.Replace(@"[SellBankAccount]", seller.BankAccount);
+                    nghiemThu = nghiemThu.Replace(@"[SellBankName]", seller.BankName);
+                    nghiemThu = nghiemThu.Replace(@"[SellTaxCode]", seller.TaxCode);
+                    nghiemThu = nghiemThu.Replace(@"[SellPhone]", seller.Phone);
+                }
+
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDSUMProductToList(model.ID, AppGlobal.ThiCongID);
+                if (list.Count > 0)
+                {
+                    int no = 0;
+                    decimal totalDiscount = 0;
+                    decimal total = 0;
+                    decimal totalNoTax = 0;
+                    StringBuilder txt = new StringBuilder();
+                    txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
+                    txt.AppendLine(@"<thead>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn giá</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thành tiền</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản suất</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
+                    txt.AppendLine(@"</thead>");
+                    txt.AppendLine(@"<tbody>");
+                    foreach (InvoiceDetailDataTransfer item in list)
+                    {                        
+                        no = no + 1;
+                        txt.AppendLine(@"<tr>");
+                        txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
+                        txt.AppendLine(@"<td style='text-align:left;'>");
+                        txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
+                        txt.AppendLine(@"</td>");                        
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ProductCode + "</td>");
+                        txt.AppendLine(@"</tr>");
+                    }
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:left;'><b>Tổng cộng (đồng)</b></td>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'><b>" + model.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:left;'><b>Thuế VAT (đồng) (" + model.Tax.Value.ToString("N0") + "%)</b></td>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'><b>" + model.TotalTax.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:left;'><b>Thành tiền (đồng)</b></td>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: blue;'>" + model.Total.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:left;'><b>Thanh toán (đồng)</b></td>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: green;'>" + model.TotalPaid.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:left;'><b>Dư nợ (đồng)</b></td>");
+                    txt.AppendLine(@"<td style='text-align:center;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: red;'>" + model.TotalDebt.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"</tbody>");
+                    txt.AppendLine(@"</table>");
+                    nghiemThu = nghiemThu.Replace(@"[ThiCong]", txt.ToString());
+                }
+                model.NghiemThu = nghiemThu;
+                _invoiceRepository.Update(model.ID, model);
             }
+            //}
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
