@@ -79,15 +79,15 @@ namespace SOHU.Data.Models
         public string MauSo { get; set; }
         public string KyHieu { get; set; }
         public string SoHoaDon { get; set; }
-        public bool? IsChaoGia { get; set; }
-        public bool? IsHopDong { get; set; }
-        public bool? IsThiCong { get; set; }
-        public bool? IsNghiemThu { get; set; }
-        public bool? IsThanhLy { get; set; }
-        public bool? IsBaoHanh { get; set; }        
-        public bool? IsHoanThanh { get; set; }
-        public bool? IsXuatHoaDon { get; set; }
-        public bool? IsNhanHoaDon { get; set; }
+        public bool IsChaoGia { get; set; }
+        public bool IsHopDong { get; set; }
+        public bool IsThiCong { get; set; }
+        public bool IsNghiemThu { get; set; }
+        public bool IsThanhLy { get; set; }
+        public bool IsBaoHanh { get; set; }        
+        public bool IsHoanThanh { get; set; }
+        public bool IsXuatHoaDon { get; set; }
+        public bool IsNhanHoaDon { get; set; }
         public DateTime? NgayXuatHoaDon { get; set; }
     }
 }

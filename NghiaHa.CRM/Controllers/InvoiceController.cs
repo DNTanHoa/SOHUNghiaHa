@@ -140,6 +140,23 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
+                List<InvoiceProperty> listInvoiceProperty = _invoicePropertyRepository.GetByInvoiceIDToList(ID);
+                StringBuilder txt = new StringBuilder();
+                foreach (InvoiceProperty item in listInvoiceProperty)
+                {
+                    switch (item.Note)
+                    {
+                        case ".pdf":
+                            txt.AppendLine("<iframe src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' width='100%' height='1000px'></iframe>");
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".jpeg":
+                            txt.AppendLine("<img src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' class='img-thumbnail' />");
+                            break;
+                    }
+                }
+                model.Note = txt.ToString();
             }
             model.CategoryID = AppGlobal.InvoiceOutputID;
             return View(model);
