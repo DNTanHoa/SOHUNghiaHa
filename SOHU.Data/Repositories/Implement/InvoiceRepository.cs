@@ -48,8 +48,8 @@ namespace SOHU.Data.Repositories
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon)
         {
-            List<Invoice> list = new List<Invoice>();            
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd && (item.IsChaoGia == isChaoGia || item.IsThiCong == isThiCong || item.IsHoanThanh == isHoanThanh || item.IsXuatHoaDon == isXuatHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();            
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd && (item.IsChaoGia == isChaoGia || item.IsThiCong == isThiCong || item.IsHoanThanh == isHoanThanh || item.IsXuatHoaDon == isXuatHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
             return list;
         }
 
@@ -188,6 +188,20 @@ namespace SOHU.Data.Repositories
                 {
                     list[i].ID = int.Parse(dt.Rows[i]["ID"].ToString());
                 }
+            }
+            return list;
+        }
+        public List<Invoice> GetProjectCongNoByCategoryIDToList(int categoryID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (categoryID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@CategoryID",categoryID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectCongNoByCategoryID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
             }
             return list;
         }

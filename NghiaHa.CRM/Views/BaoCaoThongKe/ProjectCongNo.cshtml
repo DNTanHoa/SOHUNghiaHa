@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Dự án - Công nợ";
+}
+@using Kendo.Mvc.UI
+@model NghiaHa.CRM.Web.Models.BaoCaoThongKeViewModel
+    <style>
+        .border, .border td, .border th {
+            border-color: #000000;
+            border-style: solid;
+            border-width: 1px;
+            padding: 2px;
+        }
+
+        .border {
+            border-collapse: collapse;
+        }
+
+            .border th {
+                text-align: center;
+            }
+
+            .border td {
+                text-align: right;
+            }
+
+            .border .text {
+                text-align: left;
+            }
+    </style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+                <h1>Dự án - Công nợ</h1>
+            </div>
+            <div class="col-sm-4">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Dự án - Công trình</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="Index" asp-controller="Project">Danh sách</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-header">
+                    @Html.Raw(Model.ProjectCongNo)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+</script>

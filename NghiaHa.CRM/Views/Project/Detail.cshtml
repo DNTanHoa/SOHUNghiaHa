@@ -13,6 +13,7 @@
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project">Chào giá</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project">Hợp đồng</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project">Nghiệm thu</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThuNotManufacturingCode" asp-controller="Project">Nghiệm thu (Tổng)</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project">Thanh lý</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project">Thống kê</a></li>
                 </ol>
@@ -205,7 +206,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150).Locked(true);
                     columns.Bound(t => t.DateTrack).Title("Ngày").Width(120).HtmlAttributes(new { style = "text-align: right;" }).Locked(true);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);                            
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.PriceInput).Title("Giá nhập").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
@@ -289,7 +290,7 @@
                     columns.Bound(t => t.UnitName).Title("Đơn vị").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
-                })                
+                })
                 .ToolBar(toolBar => toolBar.Search())
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
                 .Sortable()
@@ -321,7 +322,6 @@
                 {
                     model.Id(t => t.ProductID);
                     model.Field(t => t.ProductTitle).Editable(false);
-                    model.Field(t => t.Quantity).Editable(false);
                     model.Field(t => t.Total).Editable(false);
                     model.Field(t => t.UnitName).Editable(false);
                     model.Field(t => t.ManufacturingCode).Editable(false);
@@ -349,7 +349,7 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
+                    columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
