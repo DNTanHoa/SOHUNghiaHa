@@ -20,6 +20,10 @@ namespace SOHU.Data.Repositories
         public Invoice GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(int categoryID, int year, int month, int sellID, string searchString);
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon, int membershipID);
         public List<Invoice> GetProjectCongNoByCategoryIDToList(int categoryID);
+        public List<Invoice> GetInvoiceCongNoByCategoryIDToList(int categoryID);
+        public List<Invoice> GetInvoiceXuatHangCongNoByCategoryIDToList(int categoryID);
+        public List<Invoice> GetInvoiceNhapHangCongNoByCategoryIDToList(int categoryID);
+        public List<Invoice> GetInvoiceTonKhoSelectByProductIDToList(int productID);
 
     }
 }

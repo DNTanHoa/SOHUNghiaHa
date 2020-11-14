@@ -89,5 +89,7 @@ namespace SOHU.Data.Models
         public bool IsXuatHoaDon { get; set; }
         public bool IsNhanHoaDon { get; set; }
         public DateTime? NgayXuatHoaDon { get; set; }
+        public decimal? TotalPaid01 { get; set; }
+        public decimal? TotalDebt01 { get; set; }
     }
 }

@@ -103,6 +103,8 @@ namespace SOHU.Data.Repositories
             invoice.Total = 0;
             invoice.TotalPaid = 0;
             invoice.TotalDebt = 0;
+            invoice.Total01 = 0;
+
             foreach (Invoice item in list)
             {
                 if (item.Total != null)
@@ -117,7 +119,13 @@ namespace SOHU.Data.Repositories
                 {
                     invoice.TotalDebt = invoice.TotalDebt + item.TotalDebt;
                 }
+                if (item.Total01 != null)
+                {
+                    invoice.Total01 = invoice.Total01 + item.Total01;
+                }
             }
+            invoice.TotalPaid01 = invoice.TotalPaid;
+            invoice.TotalDebt01 = invoice.Total01 - invoice.TotalPaid01;
             return invoice;
         }
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active)
@@ -201,6 +209,62 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@CategoryID",categoryID),
             };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectCongNoByCategoryID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+            }
+            return list;
+        }
+        public List<Invoice> GetInvoiceCongNoByCategoryIDToList(int categoryID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (categoryID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@CategoryID",categoryID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceCongNoByCategoryID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+            }
+            return list;
+        }
+        public List<Invoice> GetInvoiceXuatHangCongNoByCategoryIDToList(int categoryID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (categoryID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@CategoryID",categoryID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceXuatHangCongNoByCategoryID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+            }
+            return list;
+        }
+        public List<Invoice> GetInvoiceNhapHangCongNoByCategoryIDToList(int categoryID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (categoryID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@CategoryID",categoryID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceNhapHangCongNoByCategoryID", parameters);
+                list = SQLHelper.ToList<Invoice>(dt);
+            }
+            return list;
+        }
+        public List<Invoice> GetInvoiceTonKhoSelectByProductIDToList(int productID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (productID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ProductID",productID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceTonKhoSelectByProductID", parameters);
                 list = SQLHelper.ToList<Invoice>(dt);
             }
             return list;

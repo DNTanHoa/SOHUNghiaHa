@@ -37,5 +37,11 @@ namespace SOHU.Data.Models
         public decimal? PriceWebsite { get; set; }
         public decimal? PriceWebsitePromotion { get; set; }
         public decimal? PricePromotion { get; set; }
+
+        public decimal? QuantityInput001 { get; set; }
+
+        public decimal? QuantityOutput001 { get; set; }
+
+        public decimal? QuantityInStock001 { get; set; }
     }
 }

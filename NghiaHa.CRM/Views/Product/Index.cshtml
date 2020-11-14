@@ -38,10 +38,13 @@
                     }).Width(70);
                     columns.Template(@"<a href='/Product/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.MetaTitle).Title("Barcode").Width(150).HtmlAttributes(new { style = "text-align:right; font-weight: bold;" });
-                    //columns.Bound(t => t.MetaKeyword).Title("Ngắn gọn").Width(300);
+                    columns.Bound(t => t.QuantityInStockRoot).Title("Tồn đầu kỳ").Width(150).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityInput).Title("Nhập").Width(80).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.QuantityOutput).Title("Xuất").Width(80).HtmlAttributes(new { style = "text-align:right;" });
-                    columns.Bound(t => t.QuantityInStock).Title("Tồn").Width(80).HtmlAttributes(new { style = "text-align:right;" });                   
+                    columns.Bound(t => t.QuantityInStock).Title("Tồn").Width(80).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityInput001).Title("Nhập (Hóa đơn)").Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityOutput001).Title("Xuất (Hóa đơn)").Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                    columns.Bound(t => t.QuantityInStock001).Title("Tồn (Hóa đơn)").Width(150).HtmlAttributes(new { style = "text-align:right;" });
                     columns.Bound(t => t.Title).Title("Vật tư - thiết bị").Width(1000);
 
                 })
