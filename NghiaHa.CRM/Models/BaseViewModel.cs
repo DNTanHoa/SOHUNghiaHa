@@ -12,7 +12,6 @@ namespace NghiaHa.CRM.Web.Models
         public int YearFinance { get; set; }
         public int MonthFinance { get; set; }
         public DateTime DatePublishBegin { get; set; }
-
         public DateTime DatePublishEnd { get; set; }
     }
 }
