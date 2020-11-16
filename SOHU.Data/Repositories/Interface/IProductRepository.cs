@@ -18,5 +18,6 @@ namespace SOHU.Data.Repositories
         public bool IsValidByTitle(string title);
         public ProductDataTransfer GetDataTransferByID(int ID);
         public List<Product> GetByCategoryIDToList(int categoryID);
+        public List<Product> GetProductTonKhoToList();
     }
 }

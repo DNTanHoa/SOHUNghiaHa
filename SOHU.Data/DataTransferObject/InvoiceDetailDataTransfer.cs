@@ -9,11 +9,12 @@ namespace SOHU.Data.DataTransferObject
     public class InvoiceDetailDataTransfer : InvoiceDetail
     {
         public DateTime? InvoiceCreated { get; set; }
+        public int? ProductCategoryID { get; set; }
         public string InvoiceCode { get; set; }
         public string InvoiceName { get; set; }
         public bool IsChaoGia { get; set; }
         public bool IsThiCong { get; set; }
-        public string ProductTitle { get; set; }        
+        public string ProductTitle { get; set; }
         public string MetaTitle { get; set; }
         public string UnitName { get; set; }
         public string FullName { get; set; }

@@ -207,7 +207,7 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@CategoryID",categoryID)
                 };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryIDSUM", parameters);
-                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);                
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
             }
             return list;
         }
@@ -222,6 +222,21 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@CategoryID",categoryID)
                 };
                 DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryIDSUMProduct", parameters);
+                list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
+            }
+            return list;
+        }
+        public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDSUMProductNotManufacturingCodeToList(int invoiceID, int categoryID)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            if ((invoiceID > 0) && (categoryID > 0))
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID)
+                };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProjectThiCongByInvoiceIDAndCategoryIDSUMProductNotManufacturingCode", parameters);
                 list = SQLHelper.ToList<InvoiceDetailDataTransfer>(dt);
             }
             return list;
@@ -338,6 +353,20 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@EmployeeID",employeeID),
                 };
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeID", parameters);
+        }
+        public string UpdateItemsByProductIDAndInvoiceIDAndCategoryIDAndQuantityAndTotalAndManufacturingCode(int productID, int invoiceID, int categoryID, decimal quantity, decimal unitPrice, decimal total, string manufacturingCode)
+        {
+            SqlParameter[] parameters =
+                    {
+                new SqlParameter("@ProductID",productID),
+                new SqlParameter("@InvoiceID",invoiceID),
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@Quantity",quantity),
+                new SqlParameter("@UnitPrice",unitPrice),
+                new SqlParameter("@Total",total),
+                new SqlParameter("@ManufacturingCode",manufacturingCode),
+                };
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByProductIDAndInvoiceIDAndCategoryIDAndQuantityAndTotalAndManufacturingCode", parameters);
         }
         public string UpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack(int invoiceID, int employeeID, int categoryID, DateTime dateTrack)
         {

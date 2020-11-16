@@ -13,6 +13,7 @@
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailChaoGia" asp-controller="Project">Chào giá</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailHopDong" asp-controller="Project">Hợp đồng</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThu" asp-controller="Project">Nghiệm thu</a></li>
+                    <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailNghiemThuNotManufacturingCode" asp-controller="Project">Nghiệm thu (Tổng)</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailThanhLy" asp-controller="Project">Thanh lý</a></li>
                     <li class="breadcrumb-item"><a class="text-primary" asp-route-ID="@Model.ID" asp-action="DetailPrint" asp-controller="Project">Thống kê</a></li>
                 </ol>
@@ -30,7 +31,7 @@
                             @Html.HiddenFor(Model => Model.ID)
                             @Html.HiddenFor(Model => Model.CategoryID)
                             <div class="row">
-                                <div class='col-md-6'>     
+                                <div class='col-md-6'>
                                     <h6><b>@Model.InvoiceName</b> - Thi công</h6>
                                 </div>
                                 <div class='col-md-1'>
@@ -140,13 +141,13 @@
                                     <div class='form-group'>
                                         <label for='IsXuatHoaDon'>Xuất hóa đơn</label>
                                         <br />
-                                        @(Html.CheckBoxFor(Model => Model.IsXuatHoaDon.Value))
+                                        @(Html.CheckBoxFor(Model => Model.IsXuatHoaDon))
                                     </div>
 
                                     <div class='form-group'>
                                         <label for='IsHoanThanh'>Hoàn thành</label>
                                         <br />
-                                        @(Html.CheckBoxFor(Model => Model.IsHoanThanh.Value))
+                                        @(Html.CheckBoxFor(Model => Model.IsHoanThanh))
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -173,17 +174,17 @@
                                     <div class='form-group'>
                                         <label for='IsChaoGia'>Chào giá</label>
                                         <br />
-                                        @(Html.CheckBoxFor(Model => Model.IsChaoGia.Value))
+                                        @(Html.CheckBoxFor(Model => Model.IsChaoGia))
                                     </div>
                                     <div class='form-group'>
                                         <label for='IsHopDong'>Hợp đồng</label>
                                         <br />
-                                        @(Html.CheckBoxFor(Model => Model.IsHopDong.Value))
+                                        @(Html.CheckBoxFor(Model => Model.IsHopDong))
                                     </div>
                                     <div class='form-group'>
                                         <label for='IsThiCong'>Thi công</label>
                                         <br />
-                                        @(Html.CheckBoxFor(Model => Model.IsThiCong.Value))
+                                        @(Html.CheckBoxFor(Model => Model.IsThiCong))
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +193,7 @@
                 </div>
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Thi công</h3>
+                        <h3 class="card-title">Thi công - Sắp xếp theo ngày xuất</h3>
                     </div>
                     <div class="card-body">
                         @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
@@ -206,16 +207,16 @@
                     }).Width(150).Locked(true);
                     columns.Bound(t => t.DateTrack).Title("Ngày").Width(120).HtmlAttributes(new { style = "text-align: right;" }).Locked(true);
                     columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
-                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.PriceInput).Title("Giá nhập").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Discount).Title("Chiết khấu (%)").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Thành tiền").Width(120).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.Parent.TextName).Title("Dự toán").EditorTemplateName("Project_ChiTietDuToan").Width(500);
+                    columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Employee.TextName).Title("Người nhận").EditorTemplateName("Membership_Employee").Width(200);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Template(@"<a target='_blank' href='/Product/Detail?ID=#=ProductID#' class='btn btn-success' style='color:white;'><i class='fas fa-box-open'></i></a>").Title("&nbsp;").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
@@ -241,6 +242,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
+                .HtmlAttributes(new { style = "height: 600px;" })
                 .Search(search => { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
@@ -270,6 +272,70 @@
                 </div>
                 <div class="card card-primary">
                     <div class="card-header">
+                        <h3 class="card-title">Thi công - Sắp xếp theo nghiệm thu</h3>
+                    </div>
+                    <div class="card-body">
+                        @(Html.Kendo().Grid<SOHU.Data.DataTransferObject.InvoiceDetailDataTransfer>()
+                .Name("ProjectThiCongNghiemThu")
+                .Columns(columns =>
+                {
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
+                    }).Width(150).Locked(true);
+                    columns.Bound(t => t.ProductTitle).Title("Hàng hóa").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
+                    columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Width(120).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.UnitName).Title("Đơn vị").Width(100).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(160).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(160).HtmlAttributes(new { style = "text-align: right;" });
+                })
+                .ToolBar(toolBar => toolBar.Search())
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                .Sortable()
+                .Scrollable()
+                .Reorderable(r => r.Columns(true))
+                .Resizable(r => r.Columns(true))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(10))
+                .Excel(excel => excel
+                .FileName("CauHinh.xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("ExportExcel", "Config")))
+                .Pdf(pdf => pdf
+                .AllPages()
+                .AvoidLinks()
+                .PaperSize("A4")
+                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Landscape()
+                .RepeatHeaders()
+                .FileName("Config.pdf"))
+                .HtmlAttributes(new { style = "height: 600px;" })
+                .Search(search => { search.Field(f => f.ProductTitle); search.Field(f => f.UnitName); search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
+                .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(1000)
+                .Model(model =>
+                {
+                    model.Id(t => t.ProductID);
+                    model.Field(t => t.ProductTitle).Editable(false);
+                    model.Field(t => t.Total).Editable(false);
+                    model.Field(t => t.UnitName).Editable(false);
+                    model.Field(t => t.ManufacturingCode).Editable(false);
+                    model.Field(t => t.ProductCode).Editable(false);
+                })
+                .Events(t => { t.RequestEnd("onGridRequestEndProjectThiCongNghiemThu"); })
+                .Read(t => t.Action("GetProjectThiCongByInvoiceIDAndCategoryIDSUMProductToList", "Project").Data("filterProjectThiCong"))
+                .Update(t => t.Action("UpdateProjectThiCongNghiemThu", "Project"))
+                )
+                )
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
                         <h3 class="card-title">Lịch sử thanh toán</h3>
                     </div>
                     <div class="card-body">
@@ -284,7 +350,6 @@
                     }).Width(150);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.TotalPayment).Title("Thành tiền").Width(200).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.ID).Title("ID").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                 })
                 .ToolBar(toolBar => toolBar.Create().Text("&nbsp").IconClass("fas fa-plus").HtmlAttributes(new { style = "border-radius: 6px; font-weight:bold; background-color:#009966; color:#ffffff; padding-left:16px;" }))
                 .ToolBar(toolBar => toolBar.Search())
@@ -309,6 +374,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
+                .HtmlAttributes(new { style = "height: 600px;" })
                 .Search(search=> {
                 })
                 .DataSource(dataSource => dataSource
@@ -339,6 +405,18 @@
     .Width(400)
 )
 <script>
+    function onGridRequestEndProjectThiCongNghiemThu(e) {
+        if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
+            var response = e.response;
+            var messageType = response.split('-')[0];
+            var note = response.split('-')[1];
+            var notification = $("#Notification").data("kendoNotification");
+            notification.show(note, messageType);
+            $("#ProjectThiCongNghiemThu").data("kendoGrid").dataSource.read();
+            $("#ProjectThiCong").data("kendoGrid").dataSource.read();
+            setInvoice();
+        }
+    }
     function onGridRequestEndProjectThiCong(e) {
         if ((e.type == "create") || (e.type == "update") || (e.type == "destroy")) {
             var response = e.response;

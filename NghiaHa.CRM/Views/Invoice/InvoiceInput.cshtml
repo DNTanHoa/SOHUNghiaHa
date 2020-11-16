@@ -67,19 +67,39 @@
                             Thành tiền:
                         </div>
                         <div class='col-sm-2'>
-                            <input class="form-control" type="text" id="Total" disabled style="border-width:0px; color:blue; font-weight:bold; text-align:right;"/>                           
+                            <input class="form-control" type="text" id="Total" disabled style="border-width:0px; color:blue; font-weight:bold; text-align:right;" />
                         </div>
                         <div class='col-sm-2'>
                             Thanh toán
                         </div>
                         <div class='col-sm-2'>
-                            <input class="form-control" type="text" id="TotalPaid" disabled style="border-width:0px; color:green; font-weight:bold; text-align:right;"/>                            
+                            <input class="form-control" type="text" id="TotalPaid" disabled style="border-width:0px; color:green; font-weight:bold; text-align:right;" />
                         </div>
                         <div class='col-sm-2'>
                             Dư nợ
                         </div>
                         <div class='col-sm-2'>
-                            <input class="form-control" type="text" id="TotalDebt" disabled style="border-width:0px; color:red; font-weight:bold; text-align:right;"/>                            
+                            <input class="form-control" type="text" id="TotalDebt" disabled style="border-width:0px; color:red; font-weight:bold; text-align:right;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-sm-2'>
+                            Thành tiền:
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="Total01" disabled style="border-width:0px; color:blue; font-weight:bold; text-align:right;" />
+                        </div>
+                        <div class='col-sm-2'>
+                            Thanh toán
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="TotalPaid01" disabled style="border-width:0px; color:green; font-weight:bold; text-align:right;" />
+                        </div>
+                        <div class='col-sm-2'>
+                            Dư nợ
+                        </div>
+                        <div class='col-sm-2'>
+                            <input class="form-control" type="text" id="TotalDebt01" disabled style="border-width:0px; color:red; font-weight:bold; text-align:right;" />
                         </div>
                     </div>
                 </div>
@@ -96,10 +116,12 @@
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(300);
                     columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; color: blue;" });
-                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; color: green;" });
-                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Format("{0:N0}").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
-
+                    columns.Bound(t => t.Total).Title("Sau thuế").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.TotalPaid).Title("Thanh toán").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: green;" });
+                    columns.Bound(t => t.TotalDebt).Title("Dư nợ").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
+                    columns.Bound(t => t.Total01).Title("Sau thuế (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.TotalPaid01).Title("Thanh toán (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: green;" });
+                    columns.Bound(t => t.TotalDebt01).Title("Dư nợ (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
                 })
                 .ToolBar(toolBar => toolBar.Search())
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -191,16 +213,24 @@
                 year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue
             },
              success: function (item) {              
-                 
+                 let Total01 = Math.round(item.Total01);
+                 var Total01String = Total01.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                 let TotalPaid01 = Math.round(item.TotalPaid01);
+                 var TotalPaid01String = TotalPaid01.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                 let TotalDebt01 = Math.round(item.TotalDebt01);
+                 var TotalDebt01String = TotalDebt01.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");  
                  let Total = Math.round(item.Total);
                  var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                  let TotalPaid = Math.round(item.TotalPaid);
                  var TotalPaidString = TotalPaid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"); 
                  let TotalDebt = Math.round(item.TotalDebt);
-                 var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");                                 
+                 var TotalDebtString = TotalDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");  
+                 $("#Total01").val(Total01String);
+                 $("#TotalPaid01").val(TotalPaid01String);
+                 $("#TotalDebt01").val(TotalDebt01String);
                  $("#Total").val(TotalString);
                  $("#TotalPaid").val(TotalPaidString);
-                 $("#TotalDebt").val(TotalDebtString);                  
+                 $("#TotalDebt").val(TotalDebtString);               
             }
          }).done(() => {
             

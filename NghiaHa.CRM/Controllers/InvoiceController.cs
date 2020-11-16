@@ -12,15 +12,18 @@ using SOHU.Data.Enum;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace NghiaHa.CRM.Web.Controllers
 {
     public class InvoiceController : BaseController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInvoicePropertyRepository _invoicePropertyRepository;
         private readonly IMembershipRepository _membershipRepository;
-        public InvoiceController(IInvoiceRepository invoiceRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
+        public InvoiceController(IWebHostEnvironment hostingEnvironment, IInvoiceRepository invoiceRepository, IInvoicePropertyRepository invoicePropertyRepository, IMembershipRepository membershipRepository)
         {
             _invoiceRepository = invoiceRepository;
             _invoicePropertyRepository = invoicePropertyRepository;
@@ -140,6 +143,23 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
+                List<InvoiceProperty> listInvoiceProperty = _invoicePropertyRepository.GetByInvoiceIDToList(ID);
+                StringBuilder txt = new StringBuilder();
+                foreach (InvoiceProperty item in listInvoiceProperty)
+                {
+                    switch (item.Note)
+                    {
+                        case ".pdf":
+                            txt.AppendLine("<iframe src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' width='100%' height='1000px'></iframe>");
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".jpeg":
+                            txt.AppendLine("<img src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' class='img-thumbnail' />");
+                            break;
+                    }
+                }
+                model.Note = txt.ToString();
             }
             model.CategoryID = AppGlobal.InvoiceOutputID;
             return View(model);
@@ -232,7 +252,7 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult SaveInvoiceInput(Invoice model)
         {
             model.SellName = _membershipRepository.GetByID(model.SellID.Value).FullName;
-            model.BuyID = AppGlobal.NghiaHaID;           
+            model.BuyID = AppGlobal.NghiaHaID;
             if (model.ID > 0)
             {
                 Initialization(model);
@@ -243,10 +263,7 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Initialization(model);
                 model.Initialization(InitType.Insert, RequestUserID);
-                if (_invoiceRepository.IsValidBySoHoaDon(model.SoHoaDon) == true)
-                {
-                    _invoiceRepository.Create(model);
-                }
+                _invoiceRepository.Create(model);
             }
             return RedirectToAction("InvoiceInputDetail", new { ID = model.ID });
         }
@@ -301,6 +318,90 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             string note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
             return Json(note);
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveInvoiceInputFiles(InvoiceProperty model)
+        {
+            try
+            {
+                if (Request.Form.Files.Count > 0)
+                {
+                    List<InvoiceProperty> list = new List<InvoiceProperty>();
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
+                    {
+                        var file = Request.Form.Files[i];
+                        if (file != null)
+                        {
+                            string fileExtension = Path.GetExtension(file.FileName);
+                            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+                            fileName = AppGlobal.SetName(fileName);
+                            fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
+                            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, AppGlobal.URLImagesCustomer, fileName);
+                            using (var stream = new FileStream(physicalPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                                InvoiceProperty membershipPermission = new InvoiceProperty();
+                                membershipPermission.Initialization(InitType.Insert, RequestUserID);
+                                membershipPermission.Code = "File";
+                                membershipPermission.InvoiceID = model.InvoiceID;
+                                membershipPermission.Title = model.Title;
+                                membershipPermission.FileName = fileName;
+                                membershipPermission.Note = fileExtension;
+                                list.Add(membershipPermission);
+                            }
+                        }
+                    }
+                    _invoicePropertyRepository.Range(list);
+                }
+            }
+            catch (Exception e)
+            {
+                string mes = e.Message;
+            }
+            return RedirectToAction("DetailFiles", "Invoice", new { ID = model.InvoiceID });
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveInvoiceOutputFiles(InvoiceProperty model)
+        {
+            try
+            {
+                if (Request.Form.Files.Count > 0)
+                {
+                    List<InvoiceProperty> list = new List<InvoiceProperty>();
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
+                    {
+                        var file = Request.Form.Files[i];
+                        if (file != null)
+                        {
+                            string fileExtension = Path.GetExtension(file.FileName);
+                            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+                            fileName = AppGlobal.SetName(fileName);
+                            fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
+                            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, AppGlobal.URLImagesCustomer, fileName);
+                            using (var stream = new FileStream(physicalPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                                InvoiceProperty membershipPermission = new InvoiceProperty();
+                                membershipPermission.Initialization(InitType.Insert, RequestUserID);
+                                membershipPermission.Code = "File";
+                                membershipPermission.InvoiceID = model.InvoiceID;
+                                membershipPermission.Title = model.Title;
+                                membershipPermission.FileName = fileName;
+                                membershipPermission.Note = fileExtension;
+                                list.Add(membershipPermission);
+                            }
+                        }
+                    }
+                    _invoicePropertyRepository.Range(list);
+                }
+            }
+            catch (Exception e)
+            {
+                string mes = e.Message;
+            }
+            return RedirectToAction("InvoiceOutputDetailFiles", "Invoice", new { ID = model.InvoiceID });
         }
     }
 }

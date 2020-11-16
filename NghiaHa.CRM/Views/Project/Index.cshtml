@@ -84,12 +84,13 @@
                     columns.Command(command =>
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(70);
-                    columns.Template(@"<a href='/Project/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Template(@"<a href='/Project/DetailThiCongBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Template(@"<a href='/Project/DetailPrint?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    }).Width(70).Locked(true);
+                    columns.Template(@"<a href='/Project/Detail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a href='/Project/DetailThiCongBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a href='/Project/DetailPrint?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-print'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.ManageCode).Title("Liên hệ").Width(300);
                     columns.Bound(t => t.BuyPhone).Title("Điện thoại").Width(120).HtmlAttributes(new { style = "text-align: right;" });
+                    columns.Bound(t => t.BuyAddress).Title("Địa chỉ").Width(200);
                     columns.Bound(t => t.InvoiceCode).Title("Số hợp đồng").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(150).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Total).Title("Sau thuế").Width(150).HtmlAttributes(new { style = "text-align: right;" });

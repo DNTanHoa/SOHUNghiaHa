@@ -94,5 +94,10 @@ namespace SOHU.Data.Repositories
             DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductSelectAllItems001");
             return SQLHelper.ToList<Product>(table);
         }
+        public List<Product> GetProductTonKhoToList()
+        {
+            DataTable table = SQLHelper.Fill(AppGlobal.ConectionString, "sprocProductTonKho");
+            return SQLHelper.ToList<Product>(table);
+        }
     }
 }
