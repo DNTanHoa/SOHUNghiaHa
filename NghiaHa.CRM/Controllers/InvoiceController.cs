@@ -28,6 +28,7 @@ namespace NghiaHa.CRM.Web.Controllers
             _invoiceRepository = invoiceRepository;
             _invoicePropertyRepository = invoicePropertyRepository;
             _membershipRepository = membershipRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
         private void Initialization(Invoice model)
         {
