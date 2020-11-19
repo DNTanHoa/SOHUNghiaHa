@@ -279,15 +279,15 @@ namespace NghiaHa.CRM.Web.Controllers
                     }
                     txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
                     txt.AppendLine(@"<td style='text-align:left;'>");
-                    txt.AppendLine(@"<a title='" + item.Title + "' href='/Product/Detail?ID=" + item.ID + "' target='_blank'>" + item.Title + "</a>");
+                    txt.AppendLine(@"<a style='color: #000000;' title='" + item.Title + "' href='/Product/Detail?ID=" + item.ID + "' target='_blank'>" + item.Title + "</a>");
                     txt.AppendLine(@"</td>");
-                    txt.AppendLine(@"<td style='text-align:right;'>" + item.QuantityInStockRoot.Value.ToString("N0") + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right; color: blue;'>" + item.QuantityInput.Value.ToString("N0") + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.QuantityOutput.Value.ToString("N0") + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right; color: green;'>" + item.QuantityInStock.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.QuantityInStockRoot.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: #000000;'>" + item.QuantityInput.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: #000000;'>" + item.QuantityOutput.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.QuantityInStock.Value.ToString("N0") + "</td>");
                     txt.AppendLine(@"<td style='text-align:right; color: blue;'>" + item.QuantityInput001.Value.ToString("N0") + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.QuantityOutput001.Value.ToString("N0") + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right; color: green;'>" + item.QuantityInStock001.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: blue;'>" + item.QuantityOutput001.Value.ToString("N0") + "</td>");
+                    txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.QuantityInStock001.Value.ToString("N0") + "</td>");
                     string invoiceInputString = "";
                     string invoiceOutputString = "";
                     string thiCongString = "";
@@ -295,26 +295,26 @@ namespace NghiaHa.CRM.Web.Controllers
                     {
                         if (invoice.CategoryID == AppGlobal.InvoiceInputID)
                         {
-                            invoiceInputString = invoiceInputString + "<a title='" + invoice.SoHoaDon + "' href='/Invoice/InvoiceInputDetail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
+                            invoiceInputString = invoiceInputString + "<a style='color: #000000;' title='" + invoice.SoHoaDon + "' href='/Invoice/InvoiceInputDetail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
                         }
                     }
                     foreach (Invoice invoice in listInvoice)
                     {
                         if (invoice.CategoryID == AppGlobal.InvoiceOutputID)
                         {
-                            invoiceOutputString = invoiceOutputString + "<a title='" + invoice.SoHoaDon + "' href='/Invoice/InvoiceOutputDetail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
+                            invoiceOutputString = invoiceOutputString + "<a style='color: #000000;' title='" + invoice.SoHoaDon + "' href='/Invoice/InvoiceOutputDetail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
                         }
                     }
                     foreach (Invoice invoice in listInvoice)
                     {
                         if (invoice.CategoryID == AppGlobal.ThiCongID)
                         {
-                            thiCongString = thiCongString + "<a title='" + invoice.SoHoaDon + "' href='/Project/Detail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
+                            thiCongString = thiCongString + "<a style='color: #000000;' title='" + invoice.SoHoaDon + "' href='/Project/Detail?ID=" + invoice.ID + "' target='_blank'>" + invoice.SoHoaDon + "</a><br/>";
                         }
                     }
-                    txt.AppendLine(@"<td style='text-align:right;'>" + invoiceInputString + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right;'>" + invoiceOutputString + "</td>");
-                    txt.AppendLine(@"<td style='text-align:right;'>" + thiCongString + "</td>");
+                    txt.AppendLine(@"<td style='text-align:left;'>" + invoiceInputString + "</td>");
+                    txt.AppendLine(@"<td style='text-align:left;'>" + invoiceOutputString + "</td>");
+                    txt.AppendLine(@"<td style='text-align:left;'>" + thiCongString + "</td>");
                     txt.AppendLine(@"</tr>");
                 }
                 txt.AppendLine(@"</tbody>");
