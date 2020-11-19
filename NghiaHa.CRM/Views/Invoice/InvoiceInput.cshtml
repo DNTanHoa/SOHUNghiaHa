@@ -110,9 +110,9 @@
                     columns.Command(command =>
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(70);
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    }).Width(70).Locked(true);
+                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(300);
                     columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });

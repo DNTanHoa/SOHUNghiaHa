@@ -57,6 +57,10 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && (item.SellID.Value == sellID || item.BuyID.Value == sellID)).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetByCategoryIDAndSellIDToList(int categoryID, int sellID)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
         public List<Invoice> GetByCategoryIDAndSearchStringToList(int categoryID, string searchString)
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.SoHoaDon.Contains(searchString)).OrderByDescending(item => item.InvoiceCreated).ToList();
@@ -72,7 +76,7 @@ namespace SOHU.Data.Repositories
             {
                 if (sellID > 0)
                 {
-                    list = GetByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                    list = GetByCategoryIDAndSellIDToList(categoryID, sellID);
                 }
                 else
                 {
@@ -93,7 +97,7 @@ namespace SOHU.Data.Repositories
             {
                 if (sellID > 0)
                 {
-                    list = GetByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                    list = GetByCategoryIDAndSellIDToList(categoryID, sellID);
                 }
                 else
                 {

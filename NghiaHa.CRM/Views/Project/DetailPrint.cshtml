@@ -34,7 +34,7 @@
                                 <h6><b>@Model.InvoiceName</b> - In biểu mẫu</h6>
                             </div>
                             <div class='col-md-1'>
-                                <a asp-action="Index" asp-controller="Project" title="Danh sách" style="width:100%;" class="btn btn-info">
+                                <a  asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Chi tiết" style="width:100%;" class="btn btn-info">
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
                             </div>                            
