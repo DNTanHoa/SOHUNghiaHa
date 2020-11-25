@@ -44,29 +44,29 @@ namespace SOHU.Data.Repositories
             {
                 if ((isChaoGia == false) && (isThiCong == false) && (isHoanThanh == false) && (isXuatHoaDon == false))
                 {
-                    list = GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia, isThiCong, isHoanThanh, isXuatHoaDon);
+                    list = GetByCategoryIDAndDatePublishBeginAndDatePublishEndToList(categoryID, datePublishBegin001, datePublishEnd001);
                 }
                 else
                 {
-                    if (isChaoGia == true)
+                    if (isThiCong == true)
                     {
                         list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia));
                     }
                     else
                     {
-                        if (isThiCong == true)
+                        if (isHoanThanh == true)
                         {
                             list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
                         }
                         else
                         {
-                            if (isHoanThanh == true)
+                            if (isXuatHoaDon == true)
                             {
                                 list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
                             }
                             else
                             {
-                                if (isXuatHoaDon == true)
+                                if (isChaoGia == true)
                                 {
                                     list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
                                 }
@@ -75,6 +75,12 @@ namespace SOHU.Data.Repositories
                     }
                 }
             }
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd).OrderByDescending(item => item.InvoiceCreated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon)

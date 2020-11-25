@@ -122,6 +122,8 @@
                 .FileName("Config.pdf"))
                 .Search(search=> {
                     search.Field(f => f.InvoiceCode);
+                    search.Field(f => f.ManageCode);
+                    search.Field(f => f.BuyAddress);
                     search.Field(f => f.BuyPhone);
                 })
                 .DataSource(dataSource => dataSource
