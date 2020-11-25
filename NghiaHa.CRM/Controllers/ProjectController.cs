@@ -71,6 +71,36 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.Tax = 0;
             }
         }
+        private void InitializationInvoiceDetail(InvoiceDetail model)
+        {
+            Invoice invoice = _invoiceRepository.GetByID(model.InvoiceID.Value);
+            if (model.UnitPrice == null)
+            {
+                model.UnitPrice = 0;
+            }
+            if (model.Quantity == null)
+            {
+                model.Quantity = 0;
+            }
+            if (model.Discount == null)
+            {
+                model.Discount = 0;
+            }
+            if (model.Quantity01 == null)
+            {
+                model.Quantity01 = model.Quantity;
+            }
+
+            model.Tax = 0;
+            model.TotalNoTax = model.UnitPrice * model.Quantity;
+            model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
+            model.TotalTax = (model.TotalNoTax - model.TotalDiscount) * model.Tax / 100;
+            model.Total = model.TotalNoTax - model.TotalDiscount + model.TotalTax;
+            if (model.Total01 == null)
+            {
+                model.Total01 = model.Total;
+            }
+        }
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
             Invoice invoice = _invoiceRepository.GetByID(model.InvoiceID.Value);
@@ -1311,6 +1341,21 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return Json(note);
         }
+        public IActionResult DeleteDuToanDetail(int ID)
+        {
+            string note = AppGlobal.InitString;
+            _invoiceDetailRepository.DeleteIDAndCategoryID(ID, AppGlobal.ChaoGiaID);
+            int result = _invoiceDetailRepository.Delete(ID);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+            }
+            return Json(note);
+        }
         [AcceptVerbs("Post")]
         public IActionResult SaveProject(Invoice model)
         {
@@ -1540,6 +1585,18 @@ namespace NghiaHa.CRM.Web.Controllers
             InitializationInvoiceDetailDataTransfer(model);
             model.Initialization(InitType.Update, RequestUserID);
             int result = _invoiceDetailRepository.Update(model.ID, model);
+            InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByInvoiceIDAndProductIDAndCategoryID(model.InvoiceID.Value, model.ProductID.Value, AppGlobal.ChaoGiaID);
+            if (invoiceDetail != null)
+            {
+                invoiceDetail.UnitID = model.UnitID;
+                invoiceDetail.Quantity = model.Quantity;
+                invoiceDetail.UnitPrice = model.UnitPrice;
+                invoiceDetail.Discount = model.Discount;
+                invoiceDetail.ManufacturingCode = model.ManufacturingCode;
+                InitializationInvoiceDetail(invoiceDetail);
+                invoiceDetail.Initialization(InitType.Update, RequestUserID);
+                _invoiceDetailRepository.Update(invoiceDetail.ID, invoiceDetail);
+            }
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;

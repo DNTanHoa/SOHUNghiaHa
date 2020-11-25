@@ -204,9 +204,9 @@
                     {
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(150).Locked(true);
-                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(200).HtmlAttributes(new { style = "text-align: right;" }).Locked(true);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
+                    }).Width(150).Locked(true);                    
+                    columns.Bound(t => t.ProductTitle).Title("Hàng hóa").Width(300).HtmlAttributes(new { style = "font-weight: bold;" }).Locked(true);
+                    columns.Bound(t => t.DateTrack).Title("Ngày").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Số lượng").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.PriceInput).Title("Giá nhập").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Giá xuất").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
@@ -250,12 +250,12 @@
                 .Model(model =>
                 {
                     model.Id(t => t.ID);
+                    model.Field(t => t.ProductTitle).Editable(false);
                     model.Field(t => t.Total).Editable(false);
                     model.Field(t => t.PriceInput).Editable(false);
                     model.Field(t => t.ID).Editable(false);
                     model.Field(t => t.Employee).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
-                    model.Field(t => t.Product).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
+                    model.Field(t => t.Parent).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());                    
                     model.Field(t => t.Unit).DefaultValue(new SOHU.Data.DataTransferObject.ModelTemplate());
                     model.Field(t => t.DateTrack).DefaultValue(DateTime.Now);
                     model.Field(t => t.Quantity).DefaultValue(1);
