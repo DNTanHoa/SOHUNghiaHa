@@ -38,16 +38,13 @@ namespace SOHU.Data.Repositories
             List<Invoice> list = new List<Invoice>();
             if (membershipID > 0)
             {
-                list = _context.Invoice.Where(item => item.SellID == membershipID).OrderByDescending(item => item.InvoiceCreated).ToList();
+                list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.BuyID == membershipID).OrderByDescending(item => item.InvoiceCreated).ToList();
             }
             else
             {
                 if ((isChaoGia == false) && (isThiCong == false) && (isHoanThanh == false) && (isXuatHoaDon == false))
                 {
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
+                    list = GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia, isThiCong, isHoanThanh, isXuatHoaDon);
                 }
                 else
                 {
@@ -55,17 +52,26 @@ namespace SOHU.Data.Repositories
                     {
                         list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia));
                     }
-                    if (isThiCong == true)
+                    else
                     {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
-                    }
-                    if (isHoanThanh == true)
-                    {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
-                    }
-                    if (isXuatHoaDon == true)
-                    {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
+                        if (isThiCong == true)
+                        {
+                            list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
+                        }
+                        else
+                        {
+                            if (isHoanThanh == true)
+                            {
+                                list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
+                            }
+                            else
+                            {
+                                if (isXuatHoaDon == true)
+                                {
+                                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
+                                }
+                            }
+                        }
                     }
                 }
             }
