@@ -84,19 +84,19 @@
                     </div>
                     <div class="row">
                         <div class='col-sm-2'>
-                            Thành tiền:
+                            Thành tiền (HĐ)
                         </div>
                         <div class='col-sm-2'>
                             <input class="form-control" type="text" id="Total01" disabled style="border-width:0px; color:blue; font-weight:bold; text-align:right;" />
                         </div>
                         <div class='col-sm-2'>
-                            Thanh toán
+                            Thanh toán (HĐ)
                         </div>
                         <div class='col-sm-2'>
                             <input class="form-control" type="text" id="TotalPaid01" disabled style="border-width:0px; color:green; font-weight:bold; text-align:right;" />
                         </div>
                         <div class='col-sm-2'>
-                            Dư nợ
+                            Dư nợ (HĐ)
                         </div>
                         <div class='col-sm-2'>
                             <input class="form-control" type="text" id="TotalDebt01" disabled style="border-width:0px; color:red; font-weight:bold; text-align:right;" />
@@ -110,8 +110,8 @@
                     columns.Command(command =>
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
-                    }).Width(70);
-                    columns.Template(@"<a href='/Invoice/InvoiceOutputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    }).Width(70).Locked(true);
+                    columns.Template(@"<a href='/Invoice/InvoiceOutputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.BuyName).Title("Khách hàng").Width(300);
                     columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });

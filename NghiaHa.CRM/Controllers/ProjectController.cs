@@ -66,6 +66,10 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 model.HopDongTitleSub = model.HopDongTitleSub.Trim();
             }
+            if (model.Tax == null)
+            {
+                model.Tax = 0;
+            }
         }
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
@@ -103,11 +107,8 @@ namespace NghiaHa.CRM.Web.Controllers
                     model.UnitID = product.PriceUnitID;
                 }
             }
+
             model.Tax = 0;
-            if (invoice != null)
-            {
-                model.Tax = invoice.Tax;
-            }
             model.TotalNoTax = model.UnitPrice * model.Quantity;
             model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
             model.TotalTax = (model.TotalNoTax - model.TotalDiscount) * model.Tax / 100;
@@ -428,10 +429,13 @@ namespace NghiaHa.CRM.Web.Controllers
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>");
                             txt.AppendLine(@"" + item.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "");
-                            if (item.Discount.Value > 0)
+                            if (item.Discount != null)
                             {
-                                txt.AppendLine(@"<br/>");
-                                txt.AppendLine(@"Giảm " + item.Discount.Value.ToString("N0").Replace(@",", @".") + "%");
+                                if (item.Discount.Value > 0)
+                                {
+                                    txt.AppendLine(@"<br/>");
+                                    txt.AppendLine(@"Giảm " + item.Discount.Value.ToString("N0").Replace(@",", @".") + "%");
+                                }
                             }
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"</tr>");
@@ -693,13 +697,14 @@ namespace NghiaHa.CRM.Web.Controllers
                 if (list.Count > 0)
                 {
                     int no = 0;
+                    int no01 = 0;
                     StringBuilder txt = new StringBuilder();
                     txt.AppendLine(@"<table class='border' style='width: 100%; font-size:14px; line-height:20px;'>");
                     txt.AppendLine(@"<thead>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>No</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hàng hóa</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Ngày xuất</a></th>");
@@ -707,31 +712,34 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
                     {
-                        no = no + 1;
                         if (item.DateTrack.Value.Year > 2019)
                         {
+                            no = no + 1;
                             txt.AppendLine(@"<tr>");
-                        }
-                        else
-                        {
-                            txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
-
-                        }
-                        txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
-                        txt.AppendLine(@"<td style='text-align:left;'>");
-                        txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
-                        txt.AppendLine(@"</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.ProductCode + "</td>");
-                        if (item.DateTrack.Value.Year > 2019)
-                        {
+                            txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
+                            txt.AppendLine(@"<td style='text-align:left;'>");
+                            txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
+                            txt.AppendLine(@"</td>");
+                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
+                            txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
+                            txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
+                            txt.AppendLine(@"<td style='text-align:right;'>" + item.ProductCode + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
                         }
                         else
                         {
+                            no01 = no01 + 1;
+                            txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
+                            txt.AppendLine(@"<td style='text-align:center; color: red;'>" + no01 + "</td>");
+                            txt.AppendLine(@"<td style='text-align:left; color: red; font-weight: bold;'>");
+                            txt.AppendLine(@"" + item.ProductTitle + "");
+                            txt.AppendLine(@"</td>");
+                            txt.AppendLine(@"<td style='text-align:right; color: red; font-weight: bold;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                            txt.AppendLine(@"<td style='text-align:center color: red;'>" + item.UnitName + "</td>");
+                            txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ManufacturingCode + "</td>");
+                            txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ProductCode + "</td>");
                             txt.AppendLine(@"<td style='text-align:right;'></td>");
+
                         }
                         txt.AppendLine(@"</tr>");
                     }
@@ -975,7 +983,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");                       
+                        txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                         txt.AppendLine(@"</tr>");
                     }
                     txt.AppendLine(@"<tr>");
@@ -984,7 +992,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'><b>" + model.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
@@ -992,7 +1000,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'><b>" + model.TotalTax.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
@@ -1000,7 +1008,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: blue;'>" + model.Total.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
-                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
@@ -1008,7 +1016,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: green;'>" + model.TotalPaid.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
-                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
@@ -1016,7 +1024,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<td style='text-align:center;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"<td style='text-align:right;'><div style='font-weight: bold; color: red;'>" + model.TotalDebt.Value.ToString("N0").Replace(@",", @".") + "</div></td>");
-                    txt.AppendLine(@"<td style='text-align:right;'></td>");                    
+                    txt.AppendLine(@"<td style='text-align:right;'></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"</tbody>");
                     txt.AppendLine(@"</table>");
@@ -1324,16 +1332,16 @@ namespace NghiaHa.CRM.Web.Controllers
                     model.ManageCode = membership.ContactFullName;
                 }
             }
+            Initialization(model);
             if (model.ID > 0)
             {
-                Initialization(model);
+
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
                 _invoiceRepository.InitializationByIDAndCategoryID(model.ID, model.CategoryID.Value);
             }
             else
             {
-                Initialization(model);
                 model.Initialization(InitType.Insert, RequestUserID);
                 _invoiceRepository.Create(model);
             }
