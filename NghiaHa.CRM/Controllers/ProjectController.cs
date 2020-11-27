@@ -478,12 +478,16 @@ namespace NghiaHa.CRM.Web.Controllers
                     totalTax = totalNoTaxAndDiscount * model.Tax.Value / 100;
                     total = totalNoTaxAndDiscount + totalTax;
                     txt.AppendLine(@"<tr>");
-                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tổng cộng</div></td>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tạm tính</div></td>");
                     txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalNoTax.ToString("N0").Replace(@",", @".") + "</div></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Giảm</div></td>");
                     txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalDiscount.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tổng cộng</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalNoTaxAndDiscount.ToString("N0").Replace(@",", @".") + "</div></td>");
                     txt.AppendLine(@"</tr>");
                     txt.AppendLine(@"<tr>");
                     txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>VAT (" + model.Tax.Value.ToString("N0").Replace(@",", @".") + " %)</div></td>");
