@@ -1318,8 +1318,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(invoiceID, categoryID);
-                _productRepository.InitializationByIDAndCategoryID(productID, categoryID);
+                _invoiceRepository.InitializationByID(invoiceID);
+                _productRepository.InitializationByID(productID);
             }
             else
             {
@@ -1342,13 +1342,13 @@ namespace NghiaHa.CRM.Web.Controllers
             return Json(note);
         }
         public IActionResult DeleteDuToanDetail(int ID)
-        {
+        {            
             string note = AppGlobal.InitString;
             _invoiceDetailRepository.DeleteIDAndCategoryID(ID, AppGlobal.ChaoGiaID);
             int result = _invoiceDetailRepository.Delete(ID);
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;               
             }
             else
             {
@@ -1383,7 +1383,7 @@ namespace NghiaHa.CRM.Web.Controllers
 
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
-                _invoiceRepository.InitializationByIDAndCategoryID(model.ID, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.ID);
             }
             else
             {
@@ -1503,8 +1503,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -1616,8 +1616,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -1632,8 +1632,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result == "-1")
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
