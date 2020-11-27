@@ -393,11 +393,15 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
                 chaoGia = chaoGia.Replace(@"[ManageCode]", model.ManageCode);
                 chaoGia = chaoGia.Replace(@"[BuyPhone]", model.BuyPhone);
+                if (model.TotalDiscount == null)
+                {
+                    model.TotalDiscount = 0;
+                }
                 List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ChaoGiaID);
                 if (list.Count > 0)
                 {
                     int no = 0;
-                    decimal totalDiscount = 0;
+                    decimal totalDiscount = model.TotalDiscount.Value;
                     decimal total = 0;
                     decimal totalNoTax = 0;
                     decimal totalTax = 0;
@@ -1342,13 +1346,13 @@ namespace NghiaHa.CRM.Web.Controllers
             return Json(note);
         }
         public IActionResult DeleteDuToanDetail(int ID)
-        {            
+        {
             string note = AppGlobal.InitString;
             _invoiceDetailRepository.DeleteIDAndCategoryID(ID, AppGlobal.ChaoGiaID);
             int result = _invoiceDetailRepository.Delete(ID);
             if (result > 0)
             {
-                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;               
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
             }
             else
             {
@@ -1424,6 +1428,8 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.ChaoGia = model.ChaoGia;
+                invoice.Tax = model.Tax;
+                invoice.TotalDiscount = model.TotalDiscount;
                 Initialization(invoice);
                 invoice.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(invoice.ID, invoice);
