@@ -71,7 +71,22 @@
                                     </a>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='Tax'>Thuế VAT (%)</label>
+                                        @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class='form-group'>
+                                        <label for='TotalDiscount'>Tiền giảm</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalDiscount, "{0:N0}", new { placeholder = "Tiền giảm", @class = "form-control", style = "text-align:right; font-weight: bold;" }))
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row mt-1">
+
                                 <div class="col-md-12" style="width:100%;">
                                     @Html.TextAreaFor(Model => Model.ChaoGia)
 

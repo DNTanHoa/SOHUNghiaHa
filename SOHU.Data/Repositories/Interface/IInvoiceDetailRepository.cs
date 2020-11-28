@@ -33,5 +33,8 @@ namespace SOHU.Data.Repositories
         public string UpdateItemsByProductIDAndInvoiceIDAndCategoryIDAndQuantityAndTotalAndManufacturingCode(int productID, int invoiceID, int categoryID, decimal quantity, decimal unitPrice, decimal total, string manufacturingCode);
         public List<InvoiceDetailDataTransfer> GetProjectThiCongByInvoiceIDAndCategoryIDSUMProductNotManufacturingCodeToList(int invoiceID, int categoryID);
 
+        public InvoiceDetail GetByInvoiceIDAndProductIDAndCategoryID(int invoiceID, int productID, int categoryID);
+        public string DeleteIDAndCategoryID(int ID, int categoryID);
+
     }
 }

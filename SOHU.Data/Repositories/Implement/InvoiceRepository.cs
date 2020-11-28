@@ -38,43 +38,79 @@ namespace SOHU.Data.Repositories
             List<Invoice> list = new List<Invoice>();
             if (membershipID > 0)
             {
-                list = _context.Invoice.Where(item => item.SellID == membershipID).OrderByDescending(item => item.InvoiceCreated).ToList();
+                list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.BuyID == membershipID).OrderByDescending(item => item.InvoiceCreated).ToList();
             }
             else
             {
                 if ((isChaoGia == false) && (isThiCong == false) && (isHoanThanh == false) && (isXuatHoaDon == false))
                 {
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
-                    list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
+                    list = GetByCategoryIDAndDatePublishBeginAndDatePublishEndToList(categoryID, datePublishBegin001, datePublishEnd001);
                 }
                 else
                 {
-                    if (isChaoGia == true)
-                    {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(categoryID, datePublishBegin001, datePublishEnd001, isChaoGia));
-                    }
                     if (isThiCong == true)
                     {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsThiCongToList(categoryID, datePublishBegin001, datePublishEnd001, isThiCong));
+                        list.AddRange(GetByCategoryIDAndIsThiCongToList(categoryID, isChaoGia));
                     }
-                    if (isHoanThanh == true)
+                    else
                     {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsHoanThanhToList(categoryID, datePublishBegin001, datePublishEnd001, isHoanThanh));
-                    }
-                    if (isXuatHoaDon == true)
-                    {
-                        list.AddRange(GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsXuatHoaDonToList(categoryID, datePublishBegin001, datePublishEnd001, isXuatHoaDon));
+                        if (isHoanThanh == true)
+                        {
+                            list.AddRange(GetByCategoryIDAndIsHoanThanhToList(categoryID, isThiCong));
+                        }
+                        else
+                        {
+                            if (isXuatHoaDon == true)
+                            {
+                                list.AddRange(GetByCategoryIDAndIsXuatHoaDonToList(categoryID, isHoanThanh));
+                            }
+                            else
+                            {
+                                if (isChaoGia == true)
+                                {
+                                    list.AddRange(GetByCategoryIDAndIsChaoGiaToList(categoryID, isXuatHoaDon));
+                                }
+                            }
+                        }
                     }
                 }
             }
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd).OrderByDescending(item => item.InvoiceCreated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon)
         {
             List<Invoice> list = new List<Invoice>();
             list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd && (item.IsChaoGia == isChaoGia || item.IsThiCong == isThiCong || item.IsHoanThanh == isHoanThanh || item.IsXuatHoaDon == isXuatHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndIsChaoGiaToList(int categoryID, bool isChaoGia)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsChaoGia == isChaoGia).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndIsThiCongToList(int categoryID, bool isThiCong)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsThiCong == isThiCong).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndIsHoanThanhToList(int categoryID, bool isHoanThanh)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsHoanThanh == isHoanThanh).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return list;
+        }
+        public List<Invoice> GetByCategoryIDAndIsXuatHoaDonToList(int categoryID, bool isXuatHoaDon)
+        {
+            List<Invoice> list = new List<Invoice>();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsXuatHoaDon == isXuatHoaDon).OrderByDescending(item => item.InvoiceCreated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia)

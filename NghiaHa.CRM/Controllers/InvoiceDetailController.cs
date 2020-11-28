@@ -35,10 +35,10 @@ namespace NghiaHa.CRM.Web.Controllers
             Product product = _productRepository.GetByID(model.ProductID.Value);
             if (product != null)
             {
-                if(model.UnitID==null)
+                if (model.UnitID == null)
                 {
                     model.UnitID = product.PriceUnitID;
-                }                
+                }
             }
             model.Total = model.UnitPrice * model.Quantity;
             model.Total01 = model.UnitPrice * model.Quantity01;
@@ -61,7 +61,10 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult GetOutputByProductIDAndCategoryIDToList([DataSourceRequest] DataSourceRequest request, int productID)
         {
-            return Json(_invoiceDetailRepository.GetByProductIDAndCategoryIDToList(productID, AppGlobal.ThiCongID).ToDataSourceResult(request));
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            list.AddRange(_invoiceDetailRepository.GetByProductIDAndCategoryIDToList(productID, AppGlobal.ThiCongID));
+            list.AddRange(_invoiceDetailRepository.GetByProductIDAndCategoryIDToList(productID, AppGlobal.InvoiceOutputID));
+            return Json(list.ToDataSourceResult(request));
         }
         public IActionResult GetOutputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
         {

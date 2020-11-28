@@ -71,6 +71,36 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.Tax = 0;
             }
         }
+        private void InitializationInvoiceDetail(InvoiceDetail model)
+        {
+            Invoice invoice = _invoiceRepository.GetByID(model.InvoiceID.Value);
+            if (model.UnitPrice == null)
+            {
+                model.UnitPrice = 0;
+            }
+            if (model.Quantity == null)
+            {
+                model.Quantity = 0;
+            }
+            if (model.Discount == null)
+            {
+                model.Discount = 0;
+            }
+            if (model.Quantity01 == null)
+            {
+                model.Quantity01 = model.Quantity;
+            }
+
+            model.Tax = 0;
+            model.TotalNoTax = model.UnitPrice * model.Quantity;
+            model.TotalDiscount = model.TotalNoTax * model.Discount / 100;
+            model.TotalTax = (model.TotalNoTax - model.TotalDiscount) * model.Tax / 100;
+            model.Total = model.TotalNoTax - model.TotalDiscount + model.TotalTax;
+            if (model.Total01 == null)
+            {
+                model.Total01 = model.Total;
+            }
+        }
         private void InitializationInvoiceDetailDataTransfer(InvoiceDetailDataTransfer model)
         {
             Invoice invoice = _invoiceRepository.GetByID(model.InvoiceID.Value);
@@ -326,147 +356,155 @@ namespace NghiaHa.CRM.Web.Controllers
             if (ID > 0)
             {
                 model = _invoiceRepository.GetByID(ID);
-                if (string.IsNullOrEmpty(model.ChaoGia))
+                //if (string.IsNullOrEmpty(model.ChaoGia))
+                //{
+                string chaoGia = "";
+                var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "ChaoGia.html");
+                using (var stream = new FileStream(physicalPath, FileMode.Open))
                 {
-                    string chaoGia = "";
-                    var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, "html", "ChaoGia.html");
-                    using (var stream = new FileStream(physicalPath, FileMode.Open))
+                    using (StreamReader reader = new StreamReader(stream))
                     {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            chaoGia = reader.ReadToEnd();
-                        }
+                        chaoGia = reader.ReadToEnd();
                     }
-                    DateTime now = DateTime.Now;
-                    chaoGia = chaoGia.Replace(@"[Day]", now.Day.ToString());
-                    chaoGia = chaoGia.Replace(@"[Month]", now.Month.ToString());
-                    chaoGia = chaoGia.Replace(@"[Year]", now.Year.ToString());
-                    chaoGia = chaoGia.Replace(@"[InvoiceName]", model.InvoiceName);
-                    chaoGia = chaoGia.Replace(@"[BuyAddress]", model.BuyAddress);
-                    Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
-                    if (buyer != null)
-                    {
-                        chaoGia = chaoGia.Replace(@"[BuyName]", buyer.FullName);
-                        if (string.IsNullOrEmpty(model.BuyAddress))
-                        {
-                            chaoGia = chaoGia.Replace(@"[BuyAddress]", buyer.Address);
-                        }
-                    }
-                    Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
-                    if (seller != null)
-                    {
-                        chaoGia = chaoGia.Replace(@"[SellFullName]", seller.FullName);
-                        chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
-                        chaoGia = chaoGia.Replace(@"[SellEmail]", seller.Email);
-                        chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
-                        chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
-                    }
-                    chaoGia = chaoGia.Replace(@"[ManageCode]", model.ManageCode);
-                    chaoGia = chaoGia.Replace(@"[BuyPhone]", model.BuyPhone);
-                    List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ChaoGiaID);
-                    if (list.Count > 0)
-                    {
-                        int no = 0;
-                        decimal totalDiscount = 0;
-                        decimal total = 0;
-                        decimal totalNoTax = 0;
-                        decimal totalTax = 0;
-                        decimal totalNoTaxAndDiscount = 0;
-                        StringBuilder txt = new StringBuilder();
-                        txt.AppendLine(@"<table class='border' style='width: 100%; font-size:24px; line-height:24px;'>");
-
-                        txt.AppendLine(@"<thead>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer; color: blue;'>Hàng hóa</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer; color: blue;'>Thông số kỹ thuật</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer; color: blue;'>Số lượng</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer; color: blue;'>Đơn giá</a></th>");
-                        txt.AppendLine(@"<th style='text-align:center; width: 120px;'><a style='cursor:pointer; color: blue;'>Tổng cộng</a></th>");
-                        txt.AppendLine(@"</thead>");
-                        txt.AppendLine(@"<tbody>");
-                        foreach (InvoiceDetailDataTransfer item in list)
-                        {
-                            if (item.TotalDiscount != null)
-                            {
-                                totalDiscount = totalDiscount + item.TotalDiscount.Value;
-                            }
-                            if (item.TotalNoTax != null)
-                            {
-                                totalNoTax = totalNoTax + item.TotalNoTax.Value;
-                            }
-                            decimal totalNoTaxItem = 0;
-                            decimal discountItem = 0;
-                            decimal totalDiscountItem = 0;
-                            decimal totalItem = 0;
-                            if (item.TotalNoTax != null)
-                            {
-                                totalNoTaxItem = item.TotalNoTax.Value;
-                            }
-                            if (item.Discount != null)
-                            {
-                                discountItem = item.Discount.Value;
-                            }
-                            if (item.TotalDiscount != null)
-                            {
-                                totalDiscountItem = item.TotalDiscount.Value;
-                            }
-                            if (item.Total != null)
-                            {
-                                totalItem = item.Total.Value;
-                            }
-                            no = no + 1;
-                            txt.AppendLine(@"<tr>");
-                            txt.AppendLine(@"<td style='text-align:center;'>");
-                            if (!string.IsNullOrEmpty(item.Image))
-                            {
-                                txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='150px' height='100px' />");
-                            }
-                            txt.AppendLine(@"<br/>");
-                            txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>" + item.ProductTitle + "</div>");
-                            txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>[" + item.MetaTitle + "]</div>");
-                            txt.AppendLine(@"</td>");
-                            txt.AppendLine(@"<td style='text-align:left;'>" + item.ContentMain + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + " (" + item.UnitName + ")</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>");
-                            txt.AppendLine(@"" + item.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "");
-                            if (item.Discount != null)
-                            {
-                                if (item.Discount.Value > 0)
-                                {
-                                    txt.AppendLine(@"<br/>");
-                                    txt.AppendLine(@"Giảm " + item.Discount.Value.ToString("N0").Replace(@",", @".") + "%");
-                                }
-                            }
-                            txt.AppendLine(@"</td>");
-                            txt.AppendLine(@"</tr>");
-                        }
-                        totalNoTaxAndDiscount = totalNoTax - totalDiscount;
-                        totalTax = totalNoTaxAndDiscount * model.Tax.Value / 100;
-                        total = totalNoTaxAndDiscount + totalTax;
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tổng cộng</div></td>");
-                        txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalNoTax.ToString("N0").Replace(@",", @".") + "</div></td>");
-                        txt.AppendLine(@"</tr>");
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Giảm</div></td>");
-                        txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalDiscount.ToString("N0").Replace(@",", @".") + "</div></td>");
-                        txt.AppendLine(@"</tr>");
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>VAT (" + model.Tax.Value.ToString("N0").Replace(@",", @".") + " %)</div></td>");
-                        txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalTax.ToString("N0").Replace(@",", @".") + "</div></td>");
-                        txt.AppendLine(@"</tr>");
-                        txt.AppendLine(@"<tr>");
-                        txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Thành tiền</div></td>");
-                        txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + total.ToString("N0").Replace(@",", @".") + "</div></td>");
-                        txt.AppendLine(@"</tr>");
-                        txt.AppendLine(@"</tbody>");
-                        txt.AppendLine(@"</table>");
-                        chaoGia = chaoGia.Replace(@"[ChaoGia]", txt.ToString());
-                    }
-                    model.ChaoGia = chaoGia;
-                    _invoiceRepository.Update(model.ID, model);
                 }
+                DateTime now = DateTime.Now;
+                chaoGia = chaoGia.Replace(@"[Day]", now.Day.ToString());
+                chaoGia = chaoGia.Replace(@"[Month]", now.Month.ToString());
+                chaoGia = chaoGia.Replace(@"[Year]", now.Year.ToString());
+                chaoGia = chaoGia.Replace(@"[InvoiceName]", model.InvoiceName);
+                chaoGia = chaoGia.Replace(@"[BuyAddress]", model.BuyAddress);
+                Membership buyer = _membershipRepository.GetByID(model.BuyID.Value);
+                if (buyer != null)
+                {
+                    chaoGia = chaoGia.Replace(@"[BuyName]", buyer.FullName);
+                    if (string.IsNullOrEmpty(model.BuyAddress))
+                    {
+                        chaoGia = chaoGia.Replace(@"[BuyAddress]", buyer.Address);
+                    }
+                }
+                Membership seller = _membershipRepository.GetByID(AppGlobal.NghiaHaID);
+                if (seller != null)
+                {
+                    chaoGia = chaoGia.Replace(@"[SellFullName]", seller.FullName);
+                    chaoGia = chaoGia.Replace(@"[SellAddress]", seller.Address);
+                    chaoGia = chaoGia.Replace(@"[SellEmail]", seller.Email);
+                    chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
+                    chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
+                }
+                chaoGia = chaoGia.Replace(@"[ManageCode]", model.ManageCode);
+                chaoGia = chaoGia.Replace(@"[BuyPhone]", model.BuyPhone);
+                if (model.TotalDiscount == null)
+                {
+                    model.TotalDiscount = 0;
+                }
+                List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectChaoGiaByInvoiceIDAndCategoryIDToList(model.ID, AppGlobal.ChaoGiaID);
+                if (list.Count > 0)
+                {
+                    int no = 0;
+                    decimal totalDiscount = model.TotalDiscount.Value;
+                    decimal total = 0;
+                    decimal totalNoTax = 0;
+                    decimal totalTax = 0;
+                    decimal totalNoTaxAndDiscount = 0;
+                    StringBuilder txt = new StringBuilder();
+                    txt.AppendLine(@"<table class='border' style='width: 100%; font-size:24px; line-height:24px;'>");
+
+                    txt.AppendLine(@"<thead>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer; color: blue;'>Hàng hóa</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer; color: blue;'>Thông số kỹ thuật</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer; color: blue;'>Số lượng</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center; width: 100px;'><a style='cursor:pointer; color: blue;'>Đơn giá</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center; width: 120px;'><a style='cursor:pointer; color: blue;'>Tổng cộng</a></th>");
+                    txt.AppendLine(@"</thead>");
+                    txt.AppendLine(@"<tbody>");
+                    foreach (InvoiceDetailDataTransfer item in list)
+                    {
+                        if (item.TotalDiscount != null)
+                        {
+                            totalDiscount = totalDiscount + item.TotalDiscount.Value;
+                        }
+                        if (item.TotalNoTax != null)
+                        {
+                            totalNoTax = totalNoTax + item.TotalNoTax.Value;
+                        }
+                        decimal totalNoTaxItem = 0;
+                        decimal discountItem = 0;
+                        decimal totalDiscountItem = 0;
+                        decimal totalItem = 0;
+                        if (item.TotalNoTax != null)
+                        {
+                            totalNoTaxItem = item.TotalNoTax.Value;
+                        }
+                        if (item.Discount != null)
+                        {
+                            discountItem = item.Discount.Value;
+                        }
+                        if (item.TotalDiscount != null)
+                        {
+                            totalDiscountItem = item.TotalDiscount.Value;
+                        }
+                        if (item.Total != null)
+                        {
+                            totalItem = item.Total.Value;
+                        }
+                        no = no + 1;
+                        txt.AppendLine(@"<tr>");
+                        txt.AppendLine(@"<td style='text-align:center;'>");
+                        if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='150px' height='100px' />");
+                        }
+                        txt.AppendLine(@"<br/>");
+                        txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>" + item.ProductTitle + "</div>");
+                        txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>[" + item.MetaTitle + "]</div>");
+                        txt.AppendLine(@"</td>");
+                        txt.AppendLine(@"<td style='text-align:left;'>" + item.ContentMain + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + " (" + item.UnitName + ")</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.UnitPrice.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>");
+                        txt.AppendLine(@"" + item.TotalNoTax.Value.ToString("N0").Replace(@",", @".") + "");
+                        if (item.Discount != null)
+                        {
+                            if (item.Discount.Value > 0)
+                            {
+                                txt.AppendLine(@"<br/>");
+                                txt.AppendLine(@"Giảm " + item.Discount.Value.ToString("N0").Replace(@",", @".") + "%");
+                            }
+                        }
+                        txt.AppendLine(@"</td>");
+                        txt.AppendLine(@"</tr>");
+                    }
+                    totalNoTaxAndDiscount = totalNoTax - totalDiscount;
+                    totalTax = totalNoTaxAndDiscount * model.Tax.Value / 100;
+                    total = totalNoTaxAndDiscount + totalTax;
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tạm tính</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalNoTax.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Giảm</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalDiscount.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Tổng cộng</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalNoTaxAndDiscount.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>VAT (" + model.Tax.Value.ToString("N0").Replace(@",", @".") + " %)</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + totalTax.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"<tr>");
+                    txt.AppendLine(@"<td colspan='4'><div style='text-align:left; color: red; font-size:30px;'>Thành tiền</div></td>");
+                    txt.AppendLine(@"<td><div style='text-align:right; color: red; font-size:30px;'>" + total.ToString("N0").Replace(@",", @".") + "</div></td>");
+                    txt.AppendLine(@"</tr>");
+                    txt.AppendLine(@"</tbody>");
+                    txt.AppendLine(@"</table>");
+                    chaoGia = chaoGia.Replace(@"[ChaoGia]", txt.ToString());
+                }
+                model.ChaoGia = chaoGia;
+                _invoiceRepository.Update(model.ID, model);
             }
+            //}
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
@@ -1288,8 +1326,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(invoiceID, categoryID);
-                _productRepository.InitializationByIDAndCategoryID(productID, categoryID);
+                _invoiceRepository.InitializationByID(invoiceID);
+                _productRepository.InitializationByID(productID);
             }
             else
             {
@@ -1300,6 +1338,21 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult DeleteDetail(int ID)
         {
             string note = AppGlobal.InitString;
+            int result = _invoiceDetailRepository.Delete(ID);
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.DeleteSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.DeleteFail;
+            }
+            return Json(note);
+        }
+        public IActionResult DeleteDuToanDetail(int ID)
+        {
+            string note = AppGlobal.InitString;
+            _invoiceDetailRepository.DeleteIDAndCategoryID(ID, AppGlobal.ChaoGiaID);
             int result = _invoiceDetailRepository.Delete(ID);
             if (result > 0)
             {
@@ -1338,7 +1391,7 @@ namespace NghiaHa.CRM.Web.Controllers
 
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
-                _invoiceRepository.InitializationByIDAndCategoryID(model.ID, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.ID);
             }
             else
             {
@@ -1379,6 +1432,8 @@ namespace NghiaHa.CRM.Web.Controllers
             {
                 Invoice invoice = _invoiceRepository.GetByID(model.ID);
                 invoice.ChaoGia = model.ChaoGia;
+                invoice.Tax = model.Tax;
+                invoice.TotalDiscount = model.TotalDiscount;
                 Initialization(invoice);
                 invoice.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(invoice.ID, invoice);
@@ -1458,8 +1513,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -1540,6 +1595,18 @@ namespace NghiaHa.CRM.Web.Controllers
             InitializationInvoiceDetailDataTransfer(model);
             model.Initialization(InitType.Update, RequestUserID);
             int result = _invoiceDetailRepository.Update(model.ID, model);
+            InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByInvoiceIDAndProductIDAndCategoryID(model.InvoiceID.Value, model.ProductID.Value, AppGlobal.ChaoGiaID);
+            if (invoiceDetail != null)
+            {
+                invoiceDetail.UnitID = model.UnitID;
+                invoiceDetail.Quantity = model.Quantity;
+                invoiceDetail.UnitPrice = model.UnitPrice;
+                invoiceDetail.Discount = model.Discount;
+                invoiceDetail.ManufacturingCode = model.ManufacturingCode;
+                InitializationInvoiceDetail(invoiceDetail);
+                invoiceDetail.Initialization(InitType.Update, RequestUserID);
+                _invoiceDetailRepository.Update(invoiceDetail.ID, invoiceDetail);
+            }
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
@@ -1559,8 +1626,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result > 0)
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {
@@ -1575,8 +1642,8 @@ namespace NghiaHa.CRM.Web.Controllers
             if (result == "-1")
             {
                 note = AppGlobal.Success + " - " + AppGlobal.EditSuccess;
-                _invoiceRepository.InitializationByIDAndCategoryID(model.InvoiceID.Value, model.CategoryID.Value);
-                _productRepository.InitializationByIDAndCategoryID(model.ProductID.Value, model.CategoryID.Value);
+                _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                _productRepository.InitializationByID(model.ProductID.Value);
             }
             else
             {

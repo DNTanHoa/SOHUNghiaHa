@@ -195,7 +195,7 @@ namespace NghiaHa.CRM.Web.Controllers
             return View(model);
         }
         public IActionResult Delete(int ID)
-        {
+        {            
             string note = AppGlobal.InitString;
             int result = _invoiceRepository.Delete(ID);
             if (result > 0)
@@ -259,6 +259,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
+                _invoiceRepository.InitializationByID(model.ID);
             }
             else
             {
@@ -278,6 +279,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 Initialization(model);
                 model.Initialization(InitType.Update, RequestUserID);
                 _invoiceRepository.Update(model.ID, model);
+                _invoiceRepository.InitializationByID(model.ID);
             }
             else
             {
