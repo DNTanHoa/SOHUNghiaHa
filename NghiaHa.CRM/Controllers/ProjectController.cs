@@ -122,8 +122,8 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             DateTime now = DateTime.Now;
             BaseViewModel viewModel = new BaseViewModel();
-            viewModel.DatePublishBegin = new DateTime(now.Year, now.Month, 1);
-            viewModel.DatePublishEnd = now;
+            viewModel.DatePublishBegin = new DateTime(now.Year, 1, 1);
+            viewModel.DatePublishEnd = new DateTime(now.Year, 12, 1);
             return View(viewModel);
         }
         public IActionResult DetailChamCong(int ID)
