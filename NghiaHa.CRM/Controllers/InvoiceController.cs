@@ -195,7 +195,7 @@ namespace NghiaHa.CRM.Web.Controllers
             return View(model);
         }
         public IActionResult Delete(int ID)
-        {            
+        {
             string note = AppGlobal.InitString;
             int result = _invoiceRepository.Delete(ID);
             if (result > 0)
@@ -248,6 +248,16 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult GetInvoiceOutputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
         {
             return Json(_invoiceRepository.GetInvoiceOutputByProductIDToList(productID).ToDataSourceResult(request));
+        }
+        public List<Invoice> GetSUMSQLByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = _invoiceRepository.GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceInputID, year, month, sellID, searchString);            
+            return list;
+        }
+        public List<Invoice> GetSUMSQLByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = _invoiceRepository.GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, month, sellID, searchString);
+            return list;
         }
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInput(Invoice model)

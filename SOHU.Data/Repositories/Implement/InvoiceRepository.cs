@@ -220,6 +220,65 @@ namespace SOHU.Data.Repositories
             invoice.TotalDebt01 = invoice.Total01 - invoice.TotalPaid01;
             return invoice;
         }
+        public List<Invoice> GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = GetSQLByCategoryIDAndSearchStringToList(categoryID, searchString);
+            }
+            else
+            {
+                if (sellID > 0)
+                {
+                    list = GetSQLByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                }
+                else
+                {
+                    list = GetSQLByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                }
+            }
+            return list;
+        }
+        public List<Invoice> GetSQLByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month)
+        {
+            List<Invoice> list = new List<Invoice>();
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@Year",year),
+                new SqlParameter("@Month",month),
+            };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectByCategoryIDAndYearAndMonth", parameters);
+            list = SQLHelper.ToList<Invoice>(dt);
+            return list;
+        }
+        public List<Invoice> GetSQLByCategoryIDAndYearAndMonthAndSellIDToList(int categoryID, int year, int month, int sellID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@Year",year),
+                new SqlParameter("@Month",month),
+                new SqlParameter("@SellID",sellID),
+            };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectByCategoryIDAndYearAndMonthAndSellID", parameters);
+            list = SQLHelper.ToList<Invoice>(dt);
+            return list;
+        }
+        public List<Invoice> GetSQLByCategoryIDAndSearchStringToList(int categoryID, string searchString)
+        {
+            List<Invoice> list = new List<Invoice>();
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@SearchString",searchString),
+            };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectByCategoryIDAndSearchString", parameters);
+            list = SQLHelper.ToList<Invoice>(dt);
+            return list;
+        }
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndActiveToList(int categoryID, int year, int month, bool active)
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month && item.Active == active).OrderByDescending(item => item.InvoiceCreated).ToList();
