@@ -452,7 +452,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:center;'>");
                         if (!string.IsNullOrEmpty(item.Image))
                         {
-                            txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='150px' height='100px' />");
+                            txt.AppendLine(@"<img src='" + item.ImageURLFull + "' width='30%' height='30%' />");
                         }
                         txt.AppendLine(@"<br/>");
                         txt.AppendLine(@"<div style='color: blue; font-weight:bold;'>" + item.ProductTitle + "</div>");
