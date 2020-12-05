@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using NghiaHa.CRM.Controllers;
@@ -153,12 +154,25 @@ namespace NghiaHa.CRM.Web.Controllers
             string note = AppGlobal.InitString;
             if (!string.IsNullOrEmpty(manufacturingCode))
             {
+                var CookieExpires = new CookieOptions();
+                CookieExpires.Expires = DateTime.Now.AddDays(1);
+                string manufacturingCode001 = Request.Cookies["ManufacturingCode"];
+                if (string.IsNullOrEmpty(manufacturingCode001))
+                {
+                    Response.Cookies.Append("ManufacturingCode", manufacturingCode, CookieExpires);
+                }
+                else
+                {
+                    _invoiceDetailRepository.UpdateSingleItemByProductCodeAndManufacturingCode(manufacturingCode, manufacturingCode001);
+                    manufacturingCode = manufacturingCode001;
+                }
                 InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByCategoryIDAndManufacturingCode(AppGlobal.InvoiceInputID, manufacturingCode);
                 if (invoiceDetail != null)
                 {
                     Product product = _productRepository.GetByID(invoiceDetail.ProductID.Value);
                     if (product != null)
                     {
+                        Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
                         InvoiceDetail model = new InvoiceDetail();
                         model.DateTrack = DateTime.Now;
                         model.CategoryID = AppGlobal.ThiCongID;
