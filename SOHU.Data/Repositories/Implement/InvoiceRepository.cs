@@ -31,6 +31,10 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && item.InvoiceCreated.Value.Month == month).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetByCategoryIDAndYearToList(int categoryID, int year)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon, int membershipID)
         {
             DateTime datePublishBegin001 = new DateTime(datePublishBegin.Year, datePublishBegin.Month, datePublishBegin.Day, 0, 0, 0);
@@ -164,7 +168,7 @@ namespace SOHU.Data.Repositories
                 }
                 else
                 {
-                    list = GetByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                    list = GetByCategoryIDAndYearToList(categoryID, year);
                 }
             }
             return list;
@@ -185,7 +189,7 @@ namespace SOHU.Data.Repositories
                 }
                 else
                 {
-                    list = GetByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                    list = GetByCategoryIDAndYearToList(categoryID, year);
                 }
             }
             invoice.Total = 0;

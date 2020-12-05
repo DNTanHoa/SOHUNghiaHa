@@ -32,15 +32,15 @@
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetYearFinanceToList", "AppGlobal")))
                             )
                         </div>
-                        <div class='col-sm-2'>
+                        @*<div class='col-sm-2'>
                             @(Html.Kendo().DropDownListFor(Model => Model.MonthFinance)
                      .DataValueField("Display")
                      .DataTextField("Display")
                      .HtmlAttributes(new { @class = "form-control" })
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMonthFinanceToList", "AppGlobal")))
                             )
-                        </div>
-                        <div class='col-sm-4'>
+                        </div>*@
+                        <div class='col-sm-6'>
                             @(Html.Kendo().DropDownList()
                         .Name("Membership")
                      .DataValueField("ID")
@@ -190,7 +190,7 @@
         
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
        
-        var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
+        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
         
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
        
@@ -198,19 +198,19 @@
         
         onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM();
         
-        return { year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue };
+        return { year: yearValue, sellID: sellIDValue, searchString: searchStringValue };
     }
     function onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM() {
        
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-        var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
+        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
         var searchStringValue = $("#SearchString").val();
          $.ajax({
             type: 'GET',
             url: "@Url.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM", "Invoice")",
             data: {
-                year: yearValue, month: monthValue, sellID: sellIDValue, searchString: searchStringValue
+                year: yearValue, sellID: sellIDValue, searchString: searchStringValue
             },
              success: function (item) {              
                  let Total01 = Math.round(item.Total01);
