@@ -79,6 +79,20 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return View(model);
         }
+        public IActionResult BanLeDetailFiles(int ID)
+        {
+            InvoiceProperty model = new InvoiceProperty();
+            if (ID > 0)
+            {
+                Invoice invoice = _invoiceRepository.GetByID(ID);
+                if (invoice != null)
+                {
+                    model.Title = invoice.BuyName;
+                    model.InvoiceID = ID;
+                }
+            }
+            return View(model);
+        }
         public IActionResult InvoiceInput()
         {
             BaseViewModel viewModel = new BaseViewModel();
@@ -87,6 +101,13 @@ namespace NghiaHa.CRM.Web.Controllers
             return View(viewModel);
         }
         public IActionResult InvoiceOutput()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
+        }
+        public IActionResult BanLe()
         {
             BaseViewModel viewModel = new BaseViewModel();
             viewModel.YearFinance = DateTime.Now.Year;
@@ -130,6 +151,42 @@ namespace NghiaHa.CRM.Web.Controllers
             return View(model);
         }
         public IActionResult InvoiceOutputDetail(int ID)
+        {
+            Invoice model = new Invoice();
+            model.InvoiceCreated = DateTime.Now;
+            model.Tax = AppGlobal.Tax;
+            model.TotalNoTax = 0;
+            model.TotalTax = 0;
+            model.Total = 0;
+            model.TotalPaid = 0;
+            model.TotalDebt = 0;
+            model.IsXuatHoaDon = false;
+            model.IsNhanHoaDon = false;
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+                List<InvoiceProperty> listInvoiceProperty = _invoicePropertyRepository.GetByInvoiceIDToList(ID);
+                StringBuilder txt = new StringBuilder();
+                foreach (InvoiceProperty item in listInvoiceProperty)
+                {
+                    switch (item.Note)
+                    {
+                        case ".pdf":
+                            txt.AppendLine("<iframe src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' width='100%' height='1000px'></iframe>");
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".jpeg":
+                            txt.AppendLine("<img src='" + AppGlobal.Domain + "Images/Project/" + item.FileName + "' class='img-thumbnail' />");
+                            break;
+                    }
+                }
+                model.Note = txt.ToString();
+            }
+            model.CategoryID = AppGlobal.InvoiceOutputID;
+            return View(model);
+        }
+        public IActionResult BanLeDetail(int ID)
         {
             Invoice model = new Invoice();
             model.InvoiceCreated = DateTime.Now;
@@ -233,6 +290,22 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, month, sellID, searchString).ToDataSourceResult(request));
         }
+        public IActionResult GetHoaDonByInvoiceOutputAndYearAndSellIDAndSearchStringToList([DataSourceRequest] DataSourceRequest request, int year, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, sellID, searchString).ToDataSourceResult(request));
+        }
+        public IActionResult GetHoaDonByInvoiceInputAndYearAndSellIDAndSearchStringToList([DataSourceRequest] DataSourceRequest request, int year, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToList(AppGlobal.InvoiceInputID, year, sellID, searchString).ToDataSourceResult(request));
+        }
+        public IActionResult GetBanLeByInvoiceOutputAndYearAndSellIDToList([DataSourceRequest] DataSourceRequest request, int year, int sellID)
+        {
+            return Json(_invoiceRepository.GetBanLeByCategoryIDAndYearAndSellIDToList(AppGlobal.InvoiceOutputID, year, sellID).ToDataSourceResult(request));
+        }
+        public IActionResult GetBanLeByCategoryIDAndYearAndSellIDToSUM(int year, int sellID)
+        {
+            return Json(_invoiceRepository.GetBanLeByCategoryIDAndYearAndSellIDToSUM(AppGlobal.InvoiceOutputID, year, sellID));
+        }
         public IActionResult GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM(int year, int month, int sellID, string searchString)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceInputID, year, month, sellID, searchString));
@@ -240,6 +313,14 @@ namespace NghiaHa.CRM.Web.Controllers
         public IActionResult GetByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToSUM(int year, int month, int sellID, string searchString)
         {
             return Json(_invoiceRepository.GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceOutputID, year, month, sellID, searchString));
+        }
+        public IActionResult GetHoaDonByInvoiceOutputAndYearAndSellIDAndSearchStringToSUM(int year, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceOutputID, year, sellID, searchString));
+        }
+        public IActionResult GetHoaDonByInvoiceInputAndYearAndSellIDAndSearchStringToSUM(int year, int sellID, string searchString)
+        {
+            return Json(_invoiceRepository.GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToSUM(AppGlobal.InvoiceInputID, year, sellID, searchString));
         }
         public IActionResult GetInvoiceInputByProductIDToList([DataSourceRequest] DataSourceRequest request, int productID)
         {
@@ -257,6 +338,11 @@ namespace NghiaHa.CRM.Web.Controllers
         public List<Invoice> GetSUMSQLByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
         {
             List<Invoice> list = _invoiceRepository.GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, month, sellID, searchString);
+            return list;
+        }
+        public List<Invoice> GetSUMSQLBanLeByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = _invoiceRepository.GetSUMSQLBanLeByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceOutputID, year, month, sellID, searchString);
             return list;
         }
         [AcceptVerbs("Post")]

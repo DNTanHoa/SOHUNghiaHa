@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Chứng từ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Bán lẻ</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceOutput" asp-controller="Invoice">Hóa đơn nhập hàng</a></li>
                 </ol>
             </div>
@@ -115,6 +115,7 @@
                             html = html + '<tr style="background-color:#f1f1f1;">';
                          }            
                          var url = "<a target='_blank' href='/Invoice/InvoiceInputDetail?ID=" + item.ID + "' title='" + item.SoHoaDon + "'><b>" + item.SoHoaDon + "</b></a>";
+                         var urlMembership = "<a target='_blank' href='/Membership/CustomerDetail?ID=" + item.BuyID + "' title='" + item.BuyName + "'>" + item.BuyName + "</a>";
                          let Total = Math.round(item.Total);
                          var TotalString = Total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                          let TotalPaid = Math.round(item.TotalPaid);
@@ -128,7 +129,7 @@
                          let TotalDebt01 = Math.round(item.TotalDebt01);
                          var TotalDebt01String = TotalDebt01.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                          html = html + '<td class="text-center">' + no + '</td>';
-                         html = html + '<td class="text-left">' + item.BuyName + '</td>';
+                         html = html + '<td class="text-left">' + urlMembership + '</td>';
                          html = html + '<td class="text-right">' + item.Note + '</td>';
                          html = html + '<td class="text-left">' + url + '</td>';
                          html = html + '<td class="text-right" style="font-weight: bold; color: #000000;">' + TotalString + '</td>';                         

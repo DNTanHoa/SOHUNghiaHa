@@ -327,5 +327,12 @@ namespace NghiaHa.CRM.Web.Controllers
             viewModel.MonthFinance = DateTime.Now.Month;
             return View(viewModel);
         }
+        public IActionResult BanLe()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
+        }
     }
 }

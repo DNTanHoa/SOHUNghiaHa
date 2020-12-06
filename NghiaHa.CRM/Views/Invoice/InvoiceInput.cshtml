@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Chứng từ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Bán lẻ</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Hóa đơn nhập hàng</a></li>
                 </ol>
             </div>
@@ -32,14 +32,7 @@
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetYearFinanceToList", "AppGlobal")))
                             )
                         </div>
-                        @*<div class='col-sm-2'>
-                            @(Html.Kendo().DropDownListFor(Model => Model.MonthFinance)
-                     .DataValueField("Display")
-                     .DataTextField("Display")
-                     .HtmlAttributes(new { @class = "form-control" })
-                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMonthFinanceToList", "AppGlobal")))
-                            )
-                        </div>*@
+                       
                         <div class='col-sm-6'>
                             @(Html.Kendo().DropDownList()
                         .Name("Membership")
@@ -158,7 +151,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetHoaDonByInvoiceOutputAndYearAndSellIDAndSearchStringToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>
@@ -189,8 +182,6 @@
     function filterInvoice(e) {
         
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-       
-        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
         
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
        
@@ -202,13 +193,12 @@
     }
     function onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM() {
        
-        var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
+        var yearValue = $("#YearFinance").data("kendoDropDownList").value();        
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
         var searchStringValue = $("#SearchString").val();
          $.ajax({
             type: 'GET',
-            url: "@Url.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM", "Invoice")",
+            url: "@Url.Action("GetHoaDonByInvoiceInputAndYearAndSellIDAndSearchStringToSUM", "Invoice")",
             data: {
                 year: yearValue, sellID: sellIDValue, searchString: searchStringValue
             },

@@ -35,6 +35,14 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetBanLeByCategoryIDAndYearToList(int categoryID, int year)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
+        public List<Invoice> GetHoaDonByCategoryIDAndYearToList(int categoryID, int year)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && !string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonAndMembershipIDToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon, int membershipID)
         {
             DateTime datePublishBegin001 = new DateTime(datePublishBegin.Year, datePublishBegin.Month, datePublishBegin.Day, 0, 0, 0);
@@ -42,7 +50,7 @@ namespace SOHU.Data.Repositories
             List<Invoice> list = new List<Invoice>();
             if (membershipID > 0)
             {
-                list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.BuyID == membershipID).OrderByDescending(item => item.InvoiceCreated).ToList();
+                list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.BuyID == membershipID).OrderByDescending(item => item.DateUpdated).ToList();
             }
             else
             {
@@ -84,37 +92,37 @@ namespace SOHU.Data.Repositories
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaAndIsThiCongAndIsHoanThanhAndIsXuatHoaDonToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia, bool isThiCong, bool isHoanThanh, bool isXuatHoaDon)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd && (item.IsChaoGia == isChaoGia || item.IsThiCong == isThiCong || item.IsHoanThanh == isHoanThanh || item.IsXuatHoaDon == isXuatHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated >= datePublishBegin && item.InvoiceCreated <= datePublishEnd && (item.IsChaoGia == isChaoGia || item.IsThiCong == isThiCong || item.IsHoanThanh == isHoanThanh || item.IsXuatHoaDon == isXuatHoaDon)).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndIsChaoGiaToList(int categoryID, bool isChaoGia)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsChaoGia == isChaoGia).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsChaoGia == isChaoGia).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndIsThiCongToList(int categoryID, bool isThiCong)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsThiCong == isThiCong).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsThiCong == isThiCong).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndIsHoanThanhToList(int categoryID, bool isHoanThanh)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsHoanThanh == isHoanThanh).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsHoanThanh == isHoanThanh).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndIsXuatHoaDonToList(int categoryID, bool isXuatHoaDon)
         {
             List<Invoice> list = new List<Invoice>();
-            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsXuatHoaDon == isXuatHoaDon).OrderByDescending(item => item.InvoiceCreated).ToList();
+            list = _context.Invoice.Where(item => item.CategoryID == categoryID && item.IsXuatHoaDon == isXuatHoaDon).OrderByDescending(item => item.DateUpdated).ToList();
             return list;
         }
         public List<Invoice> GetByCategoryIDAndDatePublishBeginAndDatePublishEndAndIsChaoGiaToList(int categoryID, DateTime datePublishBegin, DateTime datePublishEnd, bool isChaoGia)
@@ -149,9 +157,21 @@ namespace SOHU.Data.Repositories
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID)).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
+        public List<Invoice> GetHoaDonByCategoryIDAndSellIDToList(int categoryID, int sellID)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID) && !string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
+        public List<Invoice> GetBanLeByCategoryIDAndSellIDToList(int categoryID, int sellID)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID) && string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
         public List<Invoice> GetByCategoryIDAndSearchStringToList(int categoryID, string searchString)
         {
             return _context.Invoice.Where(item => item.CategoryID == categoryID && item.SoHoaDon.Contains(searchString)).OrderByDescending(item => item.InvoiceCreated).ToList();
+        }
+        public List<Invoice> GetHoaDonByCategoryIDAndSearchStringToList(int categoryID, string searchString)
+        {
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && !string.IsNullOrEmpty(item.SoHoaDon) && item.SoHoaDon.Contains(searchString)).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
         public List<Invoice> GetByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString)
         {
@@ -170,6 +190,40 @@ namespace SOHU.Data.Repositories
                 {
                     list = GetByCategoryIDAndYearToList(categoryID, year);
                 }
+            }
+            return list;
+        }
+        public List<Invoice> GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToList(int categoryID, int year, int sellID, string searchString)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = GetHoaDonByCategoryIDAndSearchStringToList(categoryID, searchString);
+            }
+            else
+            {
+                if (sellID > 0)
+                {
+                    list = GetHoaDonByCategoryIDAndSellIDToList(categoryID, sellID);
+                }
+                else
+                {
+                    list = GetHoaDonByCategoryIDAndYearToList(categoryID, year);
+                }
+            }
+            return list;
+        }
+        public List<Invoice> GetBanLeByCategoryIDAndYearAndSellIDToList(int categoryID, int year, int sellID)
+        {
+            List<Invoice> list = new List<Invoice>();
+
+            if (sellID > 0)
+            {
+                list = GetBanLeByCategoryIDAndSellIDToList(categoryID, sellID);
+            }
+            else
+            {
+                list = GetBanLeByCategoryIDAndYearToList(categoryID, year);
             }
             return list;
         }
@@ -220,6 +274,65 @@ namespace SOHU.Data.Repositories
             invoice.TotalDebt01 = invoice.Total01 - invoice.TotalPaid01;
             return invoice;
         }
+        public Invoice GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToSUM(int categoryID, int year, int sellID, string searchString)
+        {
+            Invoice invoice = new Invoice();
+            List<Invoice> list = GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToList(categoryID, year, sellID, searchString);
+           
+            invoice.Total = 0;
+            invoice.TotalPaid = 0;
+            invoice.TotalDebt = 0;
+            invoice.Total01 = 0;
+
+            foreach (Invoice item in list)
+            {
+                if (item.Total != null)
+                {
+                    invoice.Total = invoice.Total + item.Total;
+                }
+                if (item.TotalPaid != null)
+                {
+                    invoice.TotalPaid = invoice.TotalPaid + item.TotalPaid;
+                }
+                if (item.TotalDebt != null)
+                {
+                    invoice.TotalDebt = invoice.TotalDebt + item.TotalDebt;
+                }
+                if (item.Total01 != null)
+                {
+                    invoice.Total01 = invoice.Total01 + item.Total01;
+                }
+            }
+            invoice.TotalPaid01 = invoice.TotalPaid;
+            invoice.TotalDebt01 = invoice.Total01 - invoice.TotalPaid01;
+            return invoice;
+        }
+        public Invoice GetBanLeByCategoryIDAndYearAndSellIDToSUM(int categoryID, int year, int sellID)
+        {
+            Invoice invoice = new Invoice();
+            List<Invoice> list = GetBanLeByCategoryIDAndYearAndSellIDToList(categoryID, year, sellID);
+            invoice.Total = 0;
+            invoice.TotalPaid = 0;
+            invoice.TotalDebt = 0;
+            invoice.Total01 = 0;
+
+            foreach (Invoice item in list)
+            {
+                if (item.Total != null)
+                {
+                    invoice.Total = invoice.Total + item.Total;
+                }
+                if (item.TotalPaid != null)
+                {
+                    invoice.TotalPaid = invoice.TotalPaid + item.TotalPaid;
+                }
+                if (item.TotalDebt != null)
+                {
+                    invoice.TotalDebt = invoice.TotalDebt + item.TotalDebt;
+                }
+            }
+            return invoice;
+        }
         public List<Invoice> GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString)
         {
             List<Invoice> list = new List<Invoice>();
@@ -240,6 +353,26 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<Invoice> GetSUMSQLBanLeByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString)
+        {
+            List<Invoice> list = new List<Invoice>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                
+            }
+            else
+            {
+                if (sellID > 0)
+                {
+                    list = GetSQLBanLeByCategoryIDAndYearAndMonthAndSellIDToList(categoryID, year, month, sellID);
+                }
+                else
+                {
+                    list = GetSQLBanLeByCategoryIDAndYearAndMonthToList(categoryID, year, month);
+                }
+            }
+            return list;
+        }
         public List<Invoice> GetSQLByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month)
         {
             List<Invoice> list = new List<Invoice>();
@@ -250,6 +383,19 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@Month",month),
             };
             DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectByCategoryIDAndYearAndMonth", parameters);
+            list = SQLHelper.ToList<Invoice>(dt);
+            return list;
+        }
+        public List<Invoice> GetSQLBanLeByCategoryIDAndYearAndMonthToList(int categoryID, int year, int month)
+        {
+            List<Invoice> list = new List<Invoice>();
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@Year",year),
+                new SqlParameter("@Month",month),
+            };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectBanLeByCategoryIDAndYearAndMonth", parameters);
             list = SQLHelper.ToList<Invoice>(dt);
             return list;
         }
@@ -264,6 +410,20 @@ namespace SOHU.Data.Repositories
                 new SqlParameter("@SellID",sellID),
             };
             DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectByCategoryIDAndYearAndMonthAndSellID", parameters);
+            list = SQLHelper.ToList<Invoice>(dt);
+            return list;
+        }
+        public List<Invoice> GetSQLBanLeByCategoryIDAndYearAndMonthAndSellIDToList(int categoryID, int year, int month, int sellID)
+        {
+            List<Invoice> list = new List<Invoice>();
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@CategoryID",categoryID),
+                new SqlParameter("@Year",year),
+                new SqlParameter("@Month",month),
+                new SqlParameter("@SellID",sellID),
+            };
+            DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocInvoiceSelectBanLeByCategoryIDAndYearAndMonthAndSellID", parameters);
             list = SQLHelper.ToList<Invoice>(dt);
             return list;
         }

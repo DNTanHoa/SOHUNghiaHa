@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = Model.SoHoaDon + " - Thông tin"; }
+﻿@{ ViewData["Title"] = Model.BuyName + " - Bán lẻ"; }
 
 @using Kendo.Mvc.UI
 @model SOHU.Data.Models.Invoice
@@ -6,12 +6,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>@Model.SoHoaDon - Thông tin</h1>
+                <h1>@Model.BuyName - Bán lẻ</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Hóa đơn xuất hàng</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceOutput" asp-controller="Invoice">Danh sách</a></li>
+                    <li class="breadcrumb-item"><a href="#">Xuất hàng</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="BanLe" asp-controller="Invoice">Danh sách</a></li>
                 </ol>
             </div>
         </div>
@@ -33,19 +33,14 @@
                                     <button style="width:100%;" type="submit" title="Save" class="btn btn-primary">
                                         <span class="fas fa-save"></span>
                                     </button>
-                                </div>
-                                @*<div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="InvoiceInputDetailBarcode" asp-controller="Invoice" title="Barcode" style="width:100%;" class="btn btn-success">
-                                        <span class="fas fa-qrcode"></span>
-                                    </a>
-                                </div>*@
+                                </div>                               
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="InvoiceOutputDetailFiles" asp-controller="Invoice" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="BanLeDetailFiles" asp-controller="Invoice" title="Files" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-paperclip"></span>
                                     </a>
                                 </div>
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="0" asp-action="InvoiceOutputDetail" asp-controller="Invoice" title="Tạo mới" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="0" asp-action="BanLeDetail" asp-controller="Invoice" title="Tạo mới" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-plus"></span>
                                     </a>
                                 </div>
@@ -57,18 +52,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class='form-group'>
-                                        <label for='InvoiceCode'>Số hóa đơn</label>
-                                        @(Html.TextBoxFor(Model => Model.SoHoaDon, new { placeholder = "Số hóa đơn", @class = "form-control" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='MakeCode'>Mẫu số</label>
-                                        @(Html.TextBoxFor(Model => Model.MauSo, new { placeholder = "Mẫu số", @class = "form-control" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='ManageCode'>Ký hiệu</label>
-                                        @(Html.TextBoxFor(Model => Model.KyHieu, new { placeholder = "Ký hiệu", @class = "form-control" }))
-                                    </div>
+
                                     <div class='form-group'>
                                         <label for='InvoiceCreated'>Ngày lập</label>
                                         @(Html.TextBoxFor(Model => Model.InvoiceCreated, "{0:MM/dd/yyyy}", new { placeholder = "Ngày lập", @class = "form-control", style = "text-align:right;" }))
@@ -76,6 +60,10 @@
                                     <div class='form-group'>
                                         <label for='Tax'>Thuế VAT (%)</label>
                                         @(Html.TextBoxFor(Model => Model.Tax, "{0:N0}", new { placeholder = "Thuế VAT (%)", @class = "form-control", style = "text-align:right;" }))
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='Total'>Sau thuế (Thực tế)</label>
+                                        @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế (Thực tế)", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:blue; font-weight: bold;" }))
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -100,16 +88,8 @@
                                     )
                                     </div>
                                     <div class='form-group'>
-                                        <label for='TotalNoTax'>Trước thuế (Hóa đơn)</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalNoTax01, "{0:N0}", new { placeholder = "Trước thuế (Hóa đơn)", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='TotalTax'>Tiền thuế VAT (Hóa đơn)</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalTax01, "{0:N0}", new { placeholder = "Tiền thuế VAT (Hóa đơn)", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='Total'>Sau thuế (Hóa đơn)</label>
-                                        @(Html.TextBoxFor(Model => Model.Total01, "{0:N0}", new { placeholder = "Sau thuế (Hóa đơn)", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:blue; font-weight: bold;" }))
+                                        <label for='TotalPaid'>Thanh toán</label>
+                                        @(Html.TextBoxFor(Model => Model.TotalPaid, "{0:N0}", new { placeholder = "Thanh toán", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:green; font-weight: bold;" }))
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -121,14 +101,8 @@
                                         <label for='TotalTax'>Tiền thuế VAT (Thực tế)</label>
                                         @(Html.TextBoxFor(Model => Model.TotalTax, "{0:N0}", new { placeholder = "Tiền thuế VAT (Thực tế)", @class = "form-control", @readonly = "readonly", style = "text-align:right; font-weight: bold;" }))
                                     </div>
-                                    <div class='form-group'>
-                                        <label for='Total'>Sau thuế (Thực tế)</label>
-                                        @(Html.TextBoxFor(Model => Model.Total, "{0:N0}", new { placeholder = "Sau thuế (Thực tế)", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:blue; font-weight: bold;" }))
-                                    </div>
-                                    <div class='form-group'>
-                                        <label for='TotalPaid'>Thanh toán</label>
-                                        @(Html.TextBoxFor(Model => Model.TotalPaid, "{0:N0}", new { placeholder = "Thanh toán", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:green; font-weight: bold;" }))
-                                    </div>
+                                   
+                                   
                                     <div class='form-group'>
                                         <label for='TotalDebt'>Dư nợ</label>
                                         @(Html.TextBoxFor(Model => Model.TotalDebt, "{0:N0}", new { placeholder = "Dư nợ", @class = "form-control", @readonly = "readonly", style = "text-align:right; color:red; font-weight: bold;" }))
