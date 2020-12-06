@@ -332,7 +332,7 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public List<Invoice> GetSUMSQLByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
         {
-            List<Invoice> list = _invoiceRepository.GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceInputID, year, month, sellID, searchString);            
+            List<Invoice> list = _invoiceRepository.GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(AppGlobal.InvoiceInputID, year, month, sellID, searchString);
             return list;
         }
         public List<Invoice> GetSUMSQLByInvoiceOutputAndYearAndMonthAndSellIDAndSearchStringToListToJSON(int year, int month, int sellID, string searchString)
@@ -387,6 +387,26 @@ namespace NghiaHa.CRM.Web.Controllers
                 }
             }
             return RedirectToAction("InvoiceOutputDetail", new { ID = model.ID });
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveBanLe(Invoice model)
+        {
+            model.BuyName = _membershipRepository.GetByID(model.BuyID.Value).FullName;
+            model.SellID = AppGlobal.NghiaHaID;
+            if (model.ID > 0)
+            {
+                Initialization(model);
+                model.Initialization(InitType.Update, RequestUserID);
+                _invoiceRepository.Update(model.ID, model);
+                _invoiceRepository.InitializationByID(model.ID);
+            }
+            else
+            {
+                Initialization(model);
+                model.Initialization(InitType.Insert, RequestUserID);
+                _invoiceRepository.Create(model);
+            }
+            return RedirectToAction("BanLeDetail", new { ID = model.ID });
         }
         [AcceptVerbs("Post")]
         public IActionResult SaveInvoiceInputWindow(Invoice model)
@@ -501,6 +521,48 @@ namespace NghiaHa.CRM.Web.Controllers
                 string mes = e.Message;
             }
             return RedirectToAction("InvoiceOutputDetailFiles", "Invoice", new { ID = model.InvoiceID });
+        }
+        [AcceptVerbs("Post")]
+        public IActionResult SaveBanLeDetailFiles(InvoiceProperty model)
+        {
+            try
+            {
+                if (Request.Form.Files.Count > 0)
+                {
+                    List<InvoiceProperty> list = new List<InvoiceProperty>();
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
+                    {
+                        var file = Request.Form.Files[i];
+                        if (file != null)
+                        {
+                            string fileExtension = Path.GetExtension(file.FileName);
+                            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+                            fileName = AppGlobal.SetName(fileName);
+                            fileName = fileName + "-" + AppGlobal.DateTimeCode + fileExtension;
+                            var physicalPath = Path.Combine(_hostingEnvironment.WebRootPath, AppGlobal.URLImagesCustomer, fileName);
+                            using (var stream = new FileStream(physicalPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                                InvoiceProperty membershipPermission = new InvoiceProperty();
+                                membershipPermission.Initialization(InitType.Insert, RequestUserID);
+                                membershipPermission.Code = "File";
+                                membershipPermission.InvoiceID = model.InvoiceID;
+                                membershipPermission.Title = model.Title;
+                                membershipPermission.FileName = fileName;
+                                membershipPermission.Note = fileExtension;
+                                list.Add(membershipPermission);
+                            }
+                        }
+                    }
+                    _invoicePropertyRepository.Range(list);
+                }
+            }
+            catch (Exception e)
+            {
+                string mes = e.Message;
+            }
+            return RedirectToAction("BanLeDetailFiles", "Invoice", new { ID = model.InvoiceID });
         }
     }
 }
