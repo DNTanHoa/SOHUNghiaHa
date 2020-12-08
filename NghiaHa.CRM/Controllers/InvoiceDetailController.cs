@@ -173,7 +173,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
                         InvoiceDetail model = new InvoiceDetail();
                         model.DateTrack = DateTime.Now;
-                        model.CategoryID = AppGlobal.ThiCongID;
+                        model.CategoryID = AppGlobal.InvoiceInputID;
                         model.InvoiceID = invoiceID;
                         model.ProductID = product.ID;
                         model.UnitPrice = product.Price;

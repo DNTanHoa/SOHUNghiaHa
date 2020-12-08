@@ -93,6 +93,17 @@ namespace NghiaHa.CRM.Web.Controllers
             }
             return View(model);
         }
+        public IActionResult DetailBanLeBarcode(int ID)
+        {
+            Invoice model = new Invoice();
+            if (ID > 0)
+            {
+                model = _invoiceRepository.GetByID(ID);
+            }
+            model.ManageCode = "";
+            model.TotalDiscount = 1;
+            return View(model);
+        }
         public IActionResult InvoiceInput()
         {
             BaseViewModel viewModel = new BaseViewModel();

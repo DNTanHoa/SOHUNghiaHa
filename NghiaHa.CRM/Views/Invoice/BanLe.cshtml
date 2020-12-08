@@ -81,9 +81,11 @@
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70).Locked(true);
                     columns.Template(@"<a target='_blank' href='/Invoice/BanLeDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a target='_blank' href='/Invoice/DetailBanLeBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.BuyName).Title("Khách hàng").Width(300);                    
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.Total).Title("Tổng cộng").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });                    
+                    columns.Bound(t => t.Total).Title("Thành tiền").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
                     columns.Bound(t => t.TotalPaid).Title("Thanh toán").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: green;" });
                     columns.Bound(t => t.TotalDebt).Title("Dư nợ").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });                    
                 })
