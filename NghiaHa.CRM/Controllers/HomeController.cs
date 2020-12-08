@@ -171,7 +171,7 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"<a class='nav-link' href='/BaoCaoThongKe/InvoiceOutput'>");
             txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
             txt.AppendLine(@"<p>");
-            txt.AppendLine(@"Hóa đơn xuất - Tháng");
+            txt.AppendLine(@"Tồn xuất - Tháng");
             txt.AppendLine(@"</p>");
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"</li>");
@@ -179,7 +179,7 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"<a class='nav-link' href='/BaoCaoThongKe/InvoiceInput'>");
             txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
             txt.AppendLine(@"<p>");
-            txt.AppendLine(@"Hóa đơn nhập - Tháng");
+            txt.AppendLine(@"Tồn nhập - Tháng");
             txt.AppendLine(@"</p>");
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"</li>");
