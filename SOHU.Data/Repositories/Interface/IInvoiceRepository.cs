@@ -24,6 +24,11 @@ namespace SOHU.Data.Repositories
         public List<Invoice> GetInvoiceXuatHangCongNoByCategoryIDToList(int categoryID);
         public List<Invoice> GetInvoiceNhapHangCongNoByCategoryIDToList(int categoryID);
         public List<Invoice> GetInvoiceTonKhoSelectByProductIDToList(int productID);
-
+        public List<Invoice> GetSUMSQLByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString);
+        public List<Invoice> GetBanLeByCategoryIDAndYearAndSellIDToList(int categoryID, int year, int sellID);
+        public Invoice GetBanLeByCategoryIDAndYearAndSellIDToSUM(int categoryID, int year, int sellID);
+        public List<Invoice> GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToList(int categoryID, int year, int sellID, string searchString);
+        public Invoice GetHoaDonByCategoryIDAndYearAndSellIDAndSearchStringToSUM(int categoryID, int year, int sellID, string searchString);
+        public List<Invoice> GetSUMSQLBanLeByCategoryIDAndYearAndMonthAndSellIDAndSearchStringToList(int categoryID, int year, int month, int sellID, string searchString);
     }
 }

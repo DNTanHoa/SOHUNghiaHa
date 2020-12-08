@@ -399,6 +399,15 @@ namespace SOHU.Data.Repositories
                 };
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateItemsByInvoiceIDAndEmployeeIDAndCategoryIDAndDateTrack", parameters);
         }
+        public string UpdateSingleItemByProductCodeAndManufacturingCode(string productCode, string manufacturingCode)
+        {
+            SqlParameter[] parameters =
+                    {            
+                new SqlParameter("@ProductCode",productCode),
+                new SqlParameter("@ManufacturingCode",manufacturingCode),
+                };
+            return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailUpdateSingleItemByProductCodeAndManufacturingCode", parameters);
+        }
         public string InitializationUnitPrice()
         {
             return SQLHelper.ExecuteNonQuery(AppGlobal.ConectionString, "sprocInvoiceDetailInitializationUnitPrice");

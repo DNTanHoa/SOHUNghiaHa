@@ -177,7 +177,7 @@
                 .Name("InvoiceDetailDataTransferInput")
                 .Columns(columns =>
                 {
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=InvoiceID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a target='_blank' href='/Invoice/InvoiceInputDetail?ID=#=InvoiceID#' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Format("{0: MM/dd/yyyy}").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Số hóa đơn").Width(100);
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
@@ -233,7 +233,7 @@
                 .Name("InvoiceDetailDataTransferOutput")
                 .Columns(columns =>
                 {
-                    columns.Template(@"<a onclick='javascript:OpenWindowByURL(""/Invoice/InvoiceInputDetailWindow?ID=#=InvoiceID#"");' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
+                    columns.Template(@"<a target='_blank' href='/Invoice/InvoiceOutputDetail?ID=#=InvoiceID#' class='btn btn-success' style='color: white; cursor: pointer;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Format("{0: MM/dd/yyyy}").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.InvoiceCode).Title("Mã dự án").Width(100);
                     columns.Bound(t => t.InvoiceName).Title("Dự án").Width(100);

@@ -35,6 +35,7 @@ namespace SOHU.Data.Repositories
 
         public InvoiceDetail GetByInvoiceIDAndProductIDAndCategoryID(int invoiceID, int productID, int categoryID);
         public string DeleteIDAndCategoryID(int ID, int categoryID);
+        public string UpdateSingleItemByProductCodeAndManufacturingCode(string productCode, string manufacturingCode);
 
     }
 }

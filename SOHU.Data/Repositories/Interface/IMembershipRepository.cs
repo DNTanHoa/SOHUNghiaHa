@@ -18,5 +18,6 @@ namespace SOHU.Data.Repositories
 
         public void InitBeforeSave(Membership model, InitType initType);
         public List<MembershipDataTransfer001> GetMembershipDataTransfer001ByParentIDToList(int parentID);
+        public List<MembershipDataTransfer001> GetMembershipDataTransfer001ByParentID001ToList(int parentID);
     }
 }

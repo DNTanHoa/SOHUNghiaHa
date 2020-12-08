@@ -78,5 +78,19 @@ namespace SOHU.Data.Repositories
             }
             return list;
         }
+        public List<MembershipDataTransfer001> GetMembershipDataTransfer001ByParentID001ToList(int parentID)
+        {
+            List<MembershipDataTransfer001> list = new List<MembershipDataTransfer001>();
+            if (parentID > 0)
+            {
+                SqlParameter[] parameters =
+                       {
+                new SqlParameter("@ParentID",parentID),
+            };
+                DataTable dt = SQLHelper.Fill(AppGlobal.ConectionString, "sprocMembershipSelectMembershipDataTransfer001ByParentID001", parameters);
+                list = SQLHelper.ToList<MembershipDataTransfer001>(dt);
+            }
+            return list;
+        }
     }
 }

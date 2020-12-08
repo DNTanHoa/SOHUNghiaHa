@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Chứng từ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Hóa đơn - Bán lẻ</a></li>
                     <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Hóa đơn nhập hàng</a></li>
                 </ol>
             </div>
@@ -32,14 +32,7 @@
                      .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetYearFinanceToList", "AppGlobal")))
                             )
                         </div>
-                        @*<div class='col-sm-2'>
-                            @(Html.Kendo().DropDownListFor(Model => Model.MonthFinance)
-                     .DataValueField("Display")
-                     .DataTextField("Display")
-                     .HtmlAttributes(new { @class = "form-control" })
-                     .DataSource(dataSource => dataSource.Ajax().Read(t => t.Action("GetMonthFinanceToList", "AppGlobal")))
-                            )
-                        </div>*@
+                       
                         <div class='col-sm-6'>
                             @(Html.Kendo().DropDownList()
                         .Name("Membership")
@@ -111,8 +104,8 @@
                     {
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(70).Locked(true);
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
-                    columns.Template(@"<a href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a target='_blank' href='/Invoice/InvoiceInputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
+                    columns.Template(@"<a target='_blank' href='/Invoice/InvoiceInputDetailBarcode?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-qrcode'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.SellName).Title("Nhà cung cấp").Width(300);
                     columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
@@ -158,7 +151,7 @@
                     model.Field(t => t.ID).Editable(false);
                 })
                 .Events(t => { t.RequestEnd("onGridRequestEnd"); })
-                .Read(t => t.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToList", "Invoice").Data("filterInvoice"))
+                .Read(t => t.Action("GetHoaDonByInvoiceOutputAndYearAndSellIDAndSearchStringToList", "Invoice").Data("filterInvoice"))
                 .Destroy(t => t.Action("Delete", "Invoice"))
                 .Update(t => t.Action("Update", "Invoice"))))
             </div>
@@ -189,8 +182,6 @@
     function filterInvoice(e) {
         
         var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-       
-        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
         
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
        
@@ -202,13 +193,12 @@
     }
     function onGetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM() {
        
-        var yearValue = $("#YearFinance").data("kendoDropDownList").value();
-        //var monthValue = $("#MonthFinance").data("kendoDropDownList").value();
+        var yearValue = $("#YearFinance").data("kendoDropDownList").value();        
         var sellIDValue = $("#Membership").data("kendoDropDownList").value();
         var searchStringValue = $("#SearchString").val();
          $.ajax({
             type: 'GET',
-            url: "@Url.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM", "Invoice")",
+            url: "@Url.Action("GetHoaDonByInvoiceInputAndYearAndSellIDAndSearchStringToSUM", "Invoice")",
             data: {
                 year: yearValue, sellID: sellIDValue, searchString: searchStringValue
             },

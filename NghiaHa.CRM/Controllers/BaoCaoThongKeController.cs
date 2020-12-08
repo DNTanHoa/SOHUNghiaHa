@@ -108,7 +108,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 int no = 0;
                 StringBuilder txt = new StringBuilder();
                 txt.AppendLine(@"<table class='border' style='width: 100%; font-size:16px; line-height:30px;'>");
-                txt.AppendLine(@"<thead>");                
+                txt.AppendLine(@"<thead>");
                 txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Hóa đơn / Nhà cung cấp</a></th>");
                 txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Tổng cộng</a></th>");
                 txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Thuế</a></th>");
@@ -124,7 +124,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         if (item.InvoiceName.Contains(@"SUM") == true)
                         {
                             txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
-                            txt.AppendLine(@"<td style='text-align:left;'>");                            
+                            txt.AppendLine(@"<td style='text-align:left;'>");
                             txt.AppendLine(@"<b>" + item.SellName + "</b>");
                             txt.AppendLine(@"</td>");
                             txt.AppendLine(@"<td style='text-align:right;'>" + item.TotalNoTax.Value.ToString("N0") + "</td>");
@@ -138,14 +138,14 @@ namespace NghiaHa.CRM.Web.Controllers
                     {
                         txt.AppendLine(@"<tr style='background-color:#ffffff;'>");
                         txt.AppendLine(@"<td style='text-align:left;'>");
-                        txt.AppendLine(@"<a title='" + item.SoHoaDon + "' href='/Invoice/InvoiceInputDetail?ID=" + item.ID + "' target='_blank'> Số hóa đơn: " + item.SoHoaDon + "</a>");                        
+                        txt.AppendLine(@"<a title='" + item.SoHoaDon + "' href='/Invoice/InvoiceInputDetail?ID=" + item.ID + "' target='_blank'> Số hóa đơn: " + item.SoHoaDon + "</a>");
                         txt.AppendLine(@"</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.TotalNoTax.Value.ToString("N0") + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.TotalTax.Value.ToString("N0") + " (" + item.Tax.Value.ToString("N0") + "%)</td>");
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Total.Value.ToString("N0") + "<b></td>");
                         txt.AppendLine(@"<td style='text-align:right; color: green;'><b>" + item.TotalPaid.Value.ToString("N0") + "</b></td>");
                         txt.AppendLine(@"<td style='text-align:right; color: red;'><b>" + item.TotalDebt.Value.ToString("N0") + "</b></td>");
-                    }                   
+                    }
                     txt.AppendLine(@"</tr>");
                 }
                 txt.AppendLine(@"</tbody>");
@@ -311,6 +311,28 @@ namespace NghiaHa.CRM.Web.Controllers
                 model.ProjectCongNo = txt.ToString();
             }
             return View(model);
+        }
+
+        public IActionResult InvoiceInput()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
+        }
+        public IActionResult InvoiceOutput()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
+        }
+        public IActionResult BanLe()
+        {
+            BaseViewModel viewModel = new BaseViewModel();
+            viewModel.YearFinance = DateTime.Now.Year;
+            viewModel.MonthFinance = DateTime.Now.Month;
+            return View(viewModel);
         }
     }
 }

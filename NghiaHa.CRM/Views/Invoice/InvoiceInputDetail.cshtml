@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Hóa đơn xuất hàng</a></li>
-                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Hóa đơn nhập</a></li>
+                    <li class="breadcrumb-item active"><a class="text-primary" asp-action="InvoiceInput" asp-controller="Invoice">Danh sách</a></li>
                 </ol>
             </div>
         </div>
@@ -149,8 +149,8 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150).Locked(true);
-                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(400).HtmlAttributes(new { style = "font-weight:bold;" }).Locked(true);                    
-                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200).HtmlAttributes(new { style = "text-align: right;" });                    
+                    columns.Bound(t => t.Product.TextName).Title("Hàng hóa").EditorTemplateName("Product").Width(400).HtmlAttributes(new { style = "font-weight:bold;" }).Locked(true);
+                    columns.Bound(t => t.ManufacturingCode).Title("Mã sản xuất").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Unit.TextName).Title("Đơn vị").EditorTemplateName("Config_Unit").Width(100).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity).Title("Thực tế").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity01).Title("Hóa đơn").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
@@ -183,7 +183,7 @@
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("Config.pdf"))
-                .Search(search=> { search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
+                .Search(search=> { search.Field(f => f.ProductTitle); search.Field(f => f.ProductCode); search.Field(f => f.ManufacturingCode); })
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .PageSize(1000)

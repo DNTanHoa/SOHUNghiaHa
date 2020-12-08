@@ -131,6 +131,11 @@ namespace NghiaHa.CRM.Controllers
             var data = _membershipRepository.GetByParentIDToList(AppGlobal.EmployeeParentID);
             return Json(data.ToDataSourceResult(request));
         }
+        public ActionResult GetByEmployeeParentIDT001oList([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _membershipRepository.GetMembershipDataTransfer001ByParentID001ToList(AppGlobal.EmployeeParentID);
+            return Json(data.ToDataSourceResult(request));
+        }
         public IActionResult SaveCustomer(Membership model)
         {
             if (model.ID > 0)
