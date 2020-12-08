@@ -40,9 +40,7 @@ namespace NghiaHa.CRM.Web.Controllers
                 {
                     model.UnitID = product.PriceUnitID;
                 }
-            }
-            model.Total = model.UnitPrice * model.Quantity;
-            model.Total01 = model.UnitPrice * model.Quantity01;
+            }           
         }
         public IActionResult GetDataTransferByInvoiceIDToList([DataSourceRequest] DataSourceRequest request, int invoiceID)
         {
