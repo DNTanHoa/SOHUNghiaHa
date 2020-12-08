@@ -198,7 +198,7 @@
         var searchStringValue = $("#SearchString").val();
          $.ajax({
             type: 'GET',
-            url: "@Url.Action("GetHoaDonByInvoiceInputAndYearAndSellIDAndSearchStringToSUM", "Invoice")",
+            url: "@Url.Action("GetByInvoiceInputAndYearAndMonthAndSellIDAndSearchStringToSUM", "Invoice")",
             data: {
                 year: yearValue, sellID: sellIDValue, searchString: searchStringValue
             },
