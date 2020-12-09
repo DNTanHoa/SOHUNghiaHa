@@ -202,12 +202,11 @@
             {
                 type: "POST",
                 datatype: "JSON",
-                url: '@Url.Action("CreateByInvoiceIDAndManufacturingCodeAndQuantityAndEmployeeID", "InvoiceDetail")',
+                url: '@Url.Action("CreateBanLeByInvoiceIDAndManufacturingCodeAndQuantity", "InvoiceDetail")',
                 data: {
                     invoiceID: ID,
                     manufacturingCode: manufacturingCodeValue,
-                    quantity: quantityValue,
-                    employeeID: employeeIDValue
+                    quantity: quantityValue                   
                 },
                 success: function (result) {
                     $("#InvoiceDetail").data("kendoGrid").dataSource.read();

@@ -173,7 +173,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
                         InvoiceDetail model = new InvoiceDetail();
                         model.DateTrack = DateTime.Now;
-                        model.CategoryID = AppGlobal.InvoiceInputID;
+                        model.CategoryID = AppGlobal.ThiCongID;
                         model.InvoiceID = invoiceID;
                         model.ProductID = product.ID;
                         model.UnitPrice = product.Price;
@@ -183,6 +183,62 @@ namespace NghiaHa.CRM.Web.Controllers
                         model.UnitID = product.PriceUnitID;
                         model.Total = model.UnitPrice * model.Quantity;
                         model.EmployeeID = employeeID;
+                        model.Initialization(InitType.Insert, RequestUserID);
+                        if ((model.ProductID > 0) && (model.InvoiceID > 0))
+                        {
+                            result = _invoiceDetailRepository.Create(model);
+                        }
+                        if (result > 0)
+                        {
+                            note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+                            _invoiceRepository.InitializationByID(model.InvoiceID.Value);
+                            _productRepository.InitializationByID(model.ProductID.Value);
+                        }
+                        else
+                        {
+                            note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+                        }
+                    }
+                }
+            }
+            return Json(_invoiceRepository.GetByID(invoiceID));
+        }
+        public IActionResult CreateBanLeByInvoiceIDAndManufacturingCodeAndQuantity(int invoiceID, string manufacturingCode, int quantity)
+        {
+            int result = 0;
+            string note = AppGlobal.InitString;
+            if (!string.IsNullOrEmpty(manufacturingCode))
+            {
+                var CookieExpires = new CookieOptions();
+                CookieExpires.Expires = DateTime.Now.AddDays(1);
+                string manufacturingCode001 = Request.Cookies["ManufacturingCode"];
+                if (string.IsNullOrEmpty(manufacturingCode001))
+                {
+                    Response.Cookies.Append("ManufacturingCode", manufacturingCode, CookieExpires);
+                }
+                else
+                {
+                    _invoiceDetailRepository.UpdateSingleItemByProductCodeAndManufacturingCode(manufacturingCode, manufacturingCode001);
+                    manufacturingCode = manufacturingCode001;
+                }
+                InvoiceDetail invoiceDetail = _invoiceDetailRepository.GetByCategoryIDAndManufacturingCode(AppGlobal.InvoiceInputID, manufacturingCode);
+                if (invoiceDetail != null)
+                {
+                    Product product = _productRepository.GetByID(invoiceDetail.ProductID.Value);
+                    if (product != null)
+                    {
+                        Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
+                        InvoiceDetail model = new InvoiceDetail();
+                        model.DateTrack = DateTime.Now;
+                        model.CategoryID = AppGlobal.InvoiceOutputID;
+                        model.InvoiceID = invoiceID;
+                        model.ProductID = product.ID;
+                        model.UnitPrice = product.Price;
+                        model.ProductCode = invoiceDetail.ProductCode;
+                        model.ManufacturingCode = manufacturingCode;
+                        model.Quantity = quantity;
+                        model.UnitID = product.PriceUnitID;
+                        model.Total = model.UnitPrice * model.Quantity;                        
                         model.Initialization(InitType.Insert, RequestUserID);
                         if ((model.ProductID > 0) && (model.InvoiceID > 0))
                         {
