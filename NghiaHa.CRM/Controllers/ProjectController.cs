@@ -16,6 +16,7 @@ using SOHU.Data.Extensions;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace NghiaHa.CRM.Web.Controllers
 {
@@ -216,6 +217,9 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult DetailThiCongBarcode(int ID)
         {
+            var CookieExpires = new CookieOptions();
+            CookieExpires.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
             Invoice model = new Invoice();
             if (ID > 0)
             {
