@@ -257,8 +257,7 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Số lượng</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Đơn vị tính</a></th>");
                     txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã sản xuất</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");
-                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Ngày xuất</a></th>");
+                    txt.AppendLine(@"<th style='text-align:center;'><a style='cursor:pointer;'>Mã vạch</a></th>");                    
                     txt.AppendLine(@"</thead>");
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
@@ -272,8 +271,7 @@ namespace NghiaHa.CRM.Web.Controllers
                         txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
                         txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
                         txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.MetaTitle + "</td>");
-                        txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'>" + item.MetaTitle + "</td>");                        
                         txt.AppendLine(@"</tr>");
                     }
                     txt.AppendLine(@"</tbody>");
@@ -349,35 +347,17 @@ namespace NghiaHa.CRM.Web.Controllers
                     txt.AppendLine(@"<tbody>");
                     foreach (InvoiceDetailDataTransfer item in list)
                     {
-                        if (item.DateTrack.Value.Year > 2019)
-                        {
-                            no = no + 1;
-                            txt.AppendLine(@"<tr>");
-                            txt.AppendLine(@"<td style='text-align:center;'>" + no + "</td>");
-                            txt.AppendLine(@"<td style='text-align:left;'>");
-                            txt.AppendLine(@"<b>" + item.ProductTitle + "</b>");
-                            txt.AppendLine(@"</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'><b>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</b></td>");
-                            txt.AppendLine(@"<td style='text-align:center;'>" + item.UnitName + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.ManufacturingCode + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.ProductCode + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'>" + item.DateTrack.Value.ToString("dd/MM/yyyy") + "</td>");
-                        }
-                        else
-                        {
-                            no01 = no01 + 1;
-                            txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
-                            txt.AppendLine(@"<td style='text-align:center; color: red;'>" + no01 + "</td>");
-                            txt.AppendLine(@"<td style='text-align:left; color: red; font-weight: bold;'>");
-                            txt.AppendLine(@"" + item.ProductTitle + "");
-                            txt.AppendLine(@"</td>");
-                            txt.AppendLine(@"<td style='text-align:right; color: red; font-weight: bold;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
-                            txt.AppendLine(@"<td style='text-align:center color: red;'>" + item.UnitName + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ManufacturingCode + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ProductCode + "</td>");
-                            txt.AppendLine(@"<td style='text-align:right;'></td>");
-
-                        }
+                        no01 = no01 + 1;
+                        txt.AppendLine(@"<tr style='background-color:#f1f1f1;'>");
+                        txt.AppendLine(@"<td style='text-align:center; color: red;'>" + no01 + "</td>");
+                        txt.AppendLine(@"<td style='text-align:left; color: red; font-weight: bold;'>");
+                        txt.AppendLine(@"" + item.ProductTitle + "");
+                        txt.AppendLine(@"</td>");
+                        txt.AppendLine(@"<td style='text-align:right; color: red; font-weight: bold;'>" + item.Quantity.Value.ToString("N0").Replace(@",", @".") + "</td>");
+                        txt.AppendLine(@"<td style='text-align:center color: red;'>" + item.UnitName + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ManufacturingCode + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right; color: red;'>" + item.ProductCode + "</td>");
+                        txt.AppendLine(@"<td style='text-align:right;'></td>");                        
                         txt.AppendLine(@"</tr>");
                     }
                     txt.AppendLine(@"</tbody>");
