@@ -16,6 +16,7 @@ using SOHU.Data.Extensions;
 using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace NghiaHa.CRM.Web.Controllers
 {
@@ -153,7 +154,7 @@ namespace NghiaHa.CRM.Web.Controllers
             DateTime now = DateTime.Now;
             BaseViewModel viewModel = new BaseViewModel();
             viewModel.DatePublishBegin = new DateTime(now.Year, 1, 1);
-            viewModel.DatePublishEnd = new DateTime(now.Year, 12, 1);
+            viewModel.DatePublishEnd = new DateTime(now.Year, 12, 31);
             return View(viewModel);
         }
         public IActionResult DetailChamCong(int ID)
@@ -216,6 +217,9 @@ namespace NghiaHa.CRM.Web.Controllers
         }
         public IActionResult DetailThiCongBarcode(int ID)
         {
+            var CookieExpires = new CookieOptions();
+            CookieExpires.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Append("ManufacturingCode", "", CookieExpires);
             Invoice model = new Invoice();
             if (ID > 0)
             {

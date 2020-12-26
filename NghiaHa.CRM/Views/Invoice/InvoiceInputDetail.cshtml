@@ -155,8 +155,8 @@
                     columns.Bound(t => t.Quantity).Title("Thực tế").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.Quantity01).Title("Hóa đơn").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.UnitPrice).Title("Đơn giá").Width(100).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.TotalNoTax).Title("Thực tế").Width(150).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
-                    columns.Bound(t => t.TotalNoTax01).Title("Hóa đơn").Width(150).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.Total).Title("Thực tế").Width(150).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.Total01).Title("Hóa đơn").Width(150).Format("{0:N0}").HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.ProductCode).Title("Mã vạch").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(t => t.DateUpdated).Title("Ngày nhập").Width(200).Format("{0:dd/MM/yyyy}").HtmlAttributes(new { style = "text-align: right;" });
                 })

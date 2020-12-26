@@ -113,12 +113,12 @@
                     }).Width(70).Locked(true);
                     columns.Template(@"<a target='_blank' href='/Invoice/InvoiceOutputDetail?ID=#=ID#' class='btn btn-success' style='color:white;'><i class='fas fa-edit'></i></a>").Title("").Width(70).HtmlAttributes(new { style = "text-align:center;" }).Locked(true);
                     columns.Bound(t => t.BuyName).Title("Khách hàng").Width(300);
-                    columns.Bound(t => t.SoHoaDon).Title("Số hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
+                    columns.Bound(t => t.SoHoaDon).Title("Hóa đơn").Width(100).HtmlAttributes(new { style = "text-align: right; font-weight: bold;" });
                     columns.Bound(t => t.InvoiceCreated).Title("Ngày lập").Width(120).HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(t => t.Total).Title("Sau thuế").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.Total).Title("Thành tiền").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
                     columns.Bound(t => t.TotalPaid).Title("Thanh toán").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: green;" });
                     columns.Bound(t => t.TotalDebt).Title("Dư nợ").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
-                    columns.Bound(t => t.Total01).Title("Sau thuế (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
+                    columns.Bound(t => t.Total01).Title("Thành tiền (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: blue;" });
                     columns.Bound(t => t.TotalPaid01).Title("Thanh toán (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; color: green;" });
                     columns.Bound(t => t.TotalDebt01).Title("Dư nợ (Hóa đơn)").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right; font-weight: bold; color: red;" });
                 })

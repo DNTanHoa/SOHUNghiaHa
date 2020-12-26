@@ -46,7 +46,7 @@
                                 </div>
 
                                 <div class='col-md-1'>
-                                    <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
+                                    <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Mã vạch" style="width:100%;" class="btn btn-success">
                                         <span class="fas fa-qrcode"></span>
                                     </a>
                                 </div>
@@ -77,11 +77,11 @@
                                         @(Html.TextBoxFor(Model => Model.ManageCode, new { placeholder = "Người liên hệ", @class = "form-control", style = "text-align:right;" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='BuyPhone'>Điện thoại (Theo khách hàng)</label>
+                                        <label for='BuyPhone'>Điện thoại</label>
                                         @(Html.TextBoxFor(Model => Model.BuyPhone, new { placeholder = "Điện thoại", @class = "form-control", style = "text-align:right;" }))
                                     </div>
                                     <div class='form-group'>
-                                        <label for='BuyAddress'>Địa chỉ thi công (Theo khách hàng)</label>
+                                        <label for='BuyAddress'>Địa chỉ thi công</label>
                                         @(Html.TextBoxFor(Model => Model.BuyAddress, new { placeholder = "Địa chỉ thi công", @class = "form-control", style = "text-align:right;" }))
                                     </div>
                                     <div class='form-group'>

@@ -37,7 +37,7 @@ namespace SOHU.Data.Repositories
         }
         public List<Invoice> GetBanLeByCategoryIDAndYearToList(int categoryID, int year)
         {
-            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && item.InvoiceCreated.Value.Year == year && (string.IsNullOrEmpty(item.SoHoaDon) || string.IsNullOrEmpty(item.MauSo) || string.IsNullOrEmpty(item.KyHieu))).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
         public List<Invoice> GetHoaDonByCategoryIDAndYearToList(int categoryID, int year)
         {
@@ -163,7 +163,7 @@ namespace SOHU.Data.Repositories
         }
         public List<Invoice> GetBanLeByCategoryIDAndSellIDToList(int categoryID, int sellID)
         {
-            return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID) && string.IsNullOrEmpty(item.SoHoaDon)).OrderByDescending(item => item.InvoiceCreated).ToList();
+            return _context.Invoice.Where(item => item.CategoryID == categoryID && (item.SellID.Value == sellID || item.BuyID.Value == sellID) && (string.IsNullOrEmpty(item.SoHoaDon) || string.IsNullOrEmpty(item.MauSo) || string.IsNullOrEmpty(item.KyHieu))).OrderByDescending(item => item.InvoiceCreated).ToList();
         }
         public List<Invoice> GetByCategoryIDAndSearchStringToList(int categoryID, string searchString)
         {
