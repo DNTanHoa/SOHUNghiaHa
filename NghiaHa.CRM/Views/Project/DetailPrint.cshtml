@@ -34,10 +34,10 @@
                                 <h6><b>@Model.InvoiceName</b> - In biểu mẫu</h6>
                             </div>
                             <div class='col-md-1'>
-                                <a  asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Chi tiết" style="width:100%;" class="btn btn-info">
+                                <a asp-route-ID="@Model.ID" asp-action="Detail" asp-controller="Project" title="Chi tiết" style="width:100%;" class="btn btn-info">
                                     <span class="fas fa-arrow-left"></span>
                                 </a>
-                            </div>                            
+                            </div>
                             <div class='col-md-1'>
                                 <a asp-route-ID="@Model.ID" asp-action="DetailThiCongBarcode" asp-controller="Project" title="Files" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-qrcode"></span>
@@ -60,32 +60,45 @@
                             </div>
                         </div>
                         <br />
-                        <div class="row">                            
-                            <div class='col-sm-3'>
+                        <div class="row">
+                            <div class='col-sm-5'>
                                 @(Html.Kendo().DatePickerFor(Model => Model.DateBegin)
                                      .Format("dd/MM/yyyy")
                                      .HtmlAttributes(new { @class = "form-control text-right", title = "Ngày xuất" })
                                      .DateInput()
                                 )
                             </div>
-                            <div class='col-sm-3'>
+                            <div class='col-sm-5'>
                                 <button type="button" class="btn btn-success" title="Search" onclick="onPrint()" style="width:100%;">
                                     <span class="fas fa-print"></span> Phiếu xuất kho
                                 </button>
                             </div>
-                            <div class='col-md-3'>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class='col-md-5'>
                                 <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCong" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-print"></span> Bảng thống kê theo ngày
                                 </a>
                             </div>
-                            <div class='col-md-3'>
+                            <div class='col-md-5'>
+                                <button style="width:100%;" type="button" class="btn btn-success" title="Bảng thống kê theo ngày" onclick="onExcelBangThongKeVatTuThiCong()">
+                                    <span class="fas fa-file-download"></span> Excel: Bảng thống kê theo ngày
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class='col-md-5'>
                                 <a target="_blank" asp-route-ID="@Model.ID" asp-action="PrintPreviewBangThongKeVatTuThiCongSUM" asp-controller="Project" title="Bảng thống kê vật tư thi công" style="width:100%;" class="btn btn-success">
                                     <span class="fas fa-print"></span> Bảng thống kê SUM
                                 </a>
                             </div>
-                        </div>
-                        <div class="row">
-
+                            <div class='col-md-5'>
+                                <button style="width:100%;" type="button" class="btn btn-success" title="Bảng thống kê theo ngày SUM" onclick="onExcelBangThongKeVatTuThiCongSUM()">
+                                    <span class="fas fa-file-download"></span> Excel: Bảng thống kê theo ngày SUM
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,5 +121,19 @@
         dateTrackStringValue = dateTrackStringValue.replace("-", "_");
         var url = '/Project/PrintPreviewPhieuXuatKho?ID=' + IDValue + '&dateTrackString=' + dateTrackStringValue;
         window.open(url, '_blank');
+    }
+    function onExcelBangThongKeVatTuThiCong() {
+        BeginRequestHandler();
+        var IDValue = $("#ID").val();       
+        var url = "/Project/ExcelBangThongKeVatTuThiCong?ID=" + IDValue + "&action=0";
+        window.location.replace(url);
+        EndRequestHandler();
+    }
+    function onExcelBangThongKeVatTuThiCongSUM() {
+        BeginRequestHandler();
+        var IDValue = $("#ID").val();        
+        var url = "/Project/ExcelBangThongKeVatTuThiCongSUM?ID=" + IDValue + "&action=1";        
+        window.location.replace(url);
+        EndRequestHandler();
     }
 </script>

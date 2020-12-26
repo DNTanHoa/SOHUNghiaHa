@@ -17,6 +17,10 @@ using SOHU.Data.Helpers;
 using SOHU.Data.Models;
 using SOHU.Data.Repositories;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
+using System.Drawing;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace NghiaHa.CRM.Web.Controllers
 {
@@ -604,6 +608,221 @@ namespace NghiaHa.CRM.Web.Controllers
             model.CategoryID = AppGlobal.DuAnID;
             return View(model);
         }
+        public IActionResult ExcelBangThongKeVatTuThiCong(CancellationToken cancellationToken, int ID, int action)
+        {
+            List<InvoiceDetailDataTransfer> list = new List<InvoiceDetailDataTransfer>();
+            switch (action)
+            {
+                case 0:
+                    list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDToList(ID, AppGlobal.ThiCongID).OrderByDescending(item => item.DateTrack).ToList();
+                    break;
+                case 1:
+                    list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDSUMToList(ID, AppGlobal.ThiCongID);
+                    break;
+            }
+            string excelName = @"BangThongKeVatTuThiCong_" + AppGlobal.DateTimeCode + ".xlsx";
+            var stream = new MemoryStream();
+            Color color = Color.FromArgb(int.Parse("#c00000".Replace("#", ""), System.Globalization.NumberStyles.AllowHexSpecifier));
+            Color colorTitle = Color.FromArgb(int.Parse("#ed7d31".Replace("#", ""), System.Globalization.NumberStyles.AllowHexSpecifier));
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("BangThongKeVatTuThiCong");
+                int rowExcel = 1;
+                int columnExcel = 1;
+                if (list.Count > 0)
+                {
+                    workSheet.Cells[rowExcel, columnExcel].Value = "No";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Hàng hóa";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Đơn vị tính";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Mã sản xuất";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Mã vạch";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Ngày xuất";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Đơn giá";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Số lượng";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Thành tiền";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Ghi chú";
+                    columnExcel = columnExcel + 1;
+                    for (int i = 1; i < columnExcel; i++)
+                    {
+                        workSheet.Cells[rowExcel, i].Style.Font.Bold = true;
+                        workSheet.Cells[rowExcel, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        workSheet.Cells[rowExcel, i].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                        workSheet.Cells[rowExcel, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[rowExcel, i].Style.Fill.BackgroundColor.SetColor(color);
+                        workSheet.Cells[rowExcel, i].Style.Font.Name = "Times New Roman";
+                        workSheet.Cells[rowExcel, i].Style.Font.Size = 11;
+                        workSheet.Cells[rowExcel, i].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Bottom.Color.SetColor(Color.Black);
+                    }
+                    int index = 0;
+                    int no = 1;
+                    rowExcel = rowExcel + 1;
+                    for (int row = rowExcel; row <= list.Count + rowExcel - 1; row++)
+                    {
+                        workSheet.Cells[row, 1].Value = no.ToString();
+                        workSheet.Cells[row, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        workSheet.Cells[row, 2].Value = list[index].ProductTitle;
+                        workSheet.Cells[row, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 3].Value = list[index].UnitName;
+                        workSheet.Cells[row, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 4].Value = list[index].ManufacturingCode;
+                        workSheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 5].Value = list[index].MetaTitle;
+                        workSheet.Cells[row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 6].Value = list[index].DateTrack.Value.ToString("dd/MM/yyyy");
+                        workSheet.Cells[row, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 7].Value = list[index].UnitPrice.Value.ToString("N0");
+                        workSheet.Cells[row, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 8].Value = list[index].Quantity.Value.ToString("N0");
+                        workSheet.Cells[row, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 9].Value = list[index].Total.Value.ToString("N0");
+                        workSheet.Cells[row, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 10].Value = "";
+                        workSheet.Cells[row, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        for (int i = 1; i < columnExcel; i++)
+                        {
+                            workSheet.Cells[row, i].Style.Font.Name = "Times New Roman";
+                            workSheet.Cells[row, i].Style.Font.Size = 11;
+                            workSheet.Cells[row, i].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Top.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Left.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Right.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        }
+                        index = index + 1;
+                        no = no + 1;
+                    }
+                    for (int i = 1; i < columnExcel; i++)
+                    {
+                        workSheet.Column(i).AutoFit();
+                    }
+                }
+                package.Save();
+            }
+            stream.Position = 0;
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+        public IActionResult ExcelBangThongKeVatTuThiCongSUM(CancellationToken cancellationToken, int ID)
+        {
+            List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDSUMToList(ID, AppGlobal.ThiCongID);
+            string excelName = @"BangThongKeVatTuThiCongSUM_" + AppGlobal.DateTimeCode + ".xlsx";
+            var stream = new MemoryStream();
+            Color color = Color.FromArgb(int.Parse("#c00000".Replace("#", ""), System.Globalization.NumberStyles.AllowHexSpecifier));
+            Color colorTitle = Color.FromArgb(int.Parse("#ed7d31".Replace("#", ""), System.Globalization.NumberStyles.AllowHexSpecifier));
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("BangThongKeVatTuThiCong");
+                int rowExcel = 1;
+                int columnExcel = 1;
+                if (list.Count > 0)
+                {
+                    workSheet.Cells[rowExcel, columnExcel].Value = "No";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Hàng hóa";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Đơn vị tính";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Mã sản xuất";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Mã vạch";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Ngày xuất";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Đơn giá";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Số lượng";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Thành tiền";
+                    columnExcel = columnExcel + 1;
+                    workSheet.Cells[rowExcel, columnExcel].Value = "Ghi chú";
+                    columnExcel = columnExcel + 1;
+                    for (int i = 1; i < columnExcel; i++)
+                    {
+                        workSheet.Cells[rowExcel, i].Style.Font.Bold = true;
+                        workSheet.Cells[rowExcel, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        workSheet.Cells[rowExcel, i].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                        workSheet.Cells[rowExcel, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[rowExcel, i].Style.Fill.BackgroundColor.SetColor(color);
+                        workSheet.Cells[rowExcel, i].Style.Font.Name = "Times New Roman";
+                        workSheet.Cells[rowExcel, i].Style.Font.Size = 11;
+                        workSheet.Cells[rowExcel, i].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[rowExcel, i].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[rowExcel, i].Style.Border.Bottom.Color.SetColor(Color.Black);
+                    }
+                    int index = 0;
+                    int no = 1;
+                    rowExcel = rowExcel + 1;
+                    for (int row = rowExcel; row <= list.Count + rowExcel - 1; row++)
+                    {
+                        workSheet.Cells[row, 1].Value = no.ToString();
+                        workSheet.Cells[row, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        workSheet.Cells[row, 2].Value = list[index].ProductTitle;
+                        workSheet.Cells[row, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 3].Value = list[index].UnitName;
+                        workSheet.Cells[row, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 4].Value = list[index].ManufacturingCode;
+                        workSheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 5].Value = list[index].MetaTitle;
+                        workSheet.Cells[row, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row, 6].Value = list[index].DateTrack.Value.ToString("dd/MM/yyyy");
+                        workSheet.Cells[row, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 7].Value = list[index].UnitPrice.Value.ToString("N0");
+                        workSheet.Cells[row, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 8].Value = list[index].Quantity.Value.ToString("N0");
+                        workSheet.Cells[row, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 9].Value = list[index].Total.Value.ToString("N0");
+                        workSheet.Cells[row, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[row, 10].Value = "";
+                        workSheet.Cells[row, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        for (int i = 1; i < columnExcel; i++)
+                        {
+                            workSheet.Cells[row, i].Style.Font.Name = "Times New Roman";
+                            workSheet.Cells[row, i].Style.Font.Size = 11;
+                            workSheet.Cells[row, i].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Top.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Left.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Right.Color.SetColor(Color.Black);
+                            workSheet.Cells[row, i].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            workSheet.Cells[row, i].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        }
+                        index = index + 1;
+                        no = no + 1;
+                    }
+                    for (int i = 1; i < columnExcel; i++)
+                    {
+                        workSheet.Column(i).AutoFit();
+                    }
+                }
+                package.Save();
+            }
+            stream.Position = 0;
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
         public IActionResult PrintPreviewBangThongKeVatTuThiCong(int ID)
         {
             Invoice model = new Invoice();
@@ -733,8 +952,6 @@ namespace NghiaHa.CRM.Web.Controllers
                     chaoGia = chaoGia.Replace(@"[SellTaxCode]", seller.TaxCode);
                     chaoGia = chaoGia.Replace(@"[SellPhone]", seller.Phone);
                 }
-
-
                 List<InvoiceDetailDataTransfer> list = _invoiceDetailRepository.GetProjectThiCongByInvoiceIDAndCategoryIDSUMToList(model.ID, AppGlobal.ThiCongID);
                 if (list.Count > 0)
                 {
