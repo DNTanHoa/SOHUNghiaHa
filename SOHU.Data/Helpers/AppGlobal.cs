@@ -306,6 +306,14 @@ namespace SOHU.Data.Helpers
                 return builder.Build().GetSection("AppSettings").GetSection("ProductCategory").Value;
             }
         }
+        public static string ChuyenKhoan
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                return builder.Build().GetSection("AppSettings").GetSection("ChuyenKhoan").Value;
+            }
+        }
         public static string Unit
         {
             get

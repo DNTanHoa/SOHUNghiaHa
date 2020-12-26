@@ -47,6 +47,10 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             return View();
         }
+        public IActionResult ChuyenKhoan()
+        {
+            return View();
+        }
         public IActionResult ProductCategory()
         {
             return View();
@@ -74,6 +78,11 @@ namespace NghiaHa.CRM.Web.Controllers
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.Unit);
             return Json(data.ToDataSourceResult(request));
         }
+        public ActionResult GetChuyenKhoanToList([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ChuyenKhoan);
+            return Json(data.ToDataSourceResult(request));
+        }
         public ActionResult GetProductCategoryToList([DataSourceRequest] DataSourceRequest request)
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.ProductCategory);
@@ -88,6 +97,28 @@ namespace NghiaHa.CRM.Web.Controllers
         {
             var data = _configResposistory.GetByGroupNameAndCodeToList(AppGlobal.CRM, AppGlobal.InvoiceCategory);
             return Json(data.ToDataSourceResult(request));
+        }
+        public IActionResult CreateChuyenKhoan(Config model)
+        {
+            Initialization(model);
+            model.GroupName = AppGlobal.CRM;
+            model.Code = AppGlobal.ChuyenKhoan;
+            string note = AppGlobal.InitString;
+            model.Initialization(InitType.Insert, RequestUserID);
+            int result = 0;
+            if (_configResposistory.IsValidByGroupNameAndCodeAndCodeName(model.GroupName, model.Code, model.CodeName) == true)
+            {
+                result = _configResposistory.Create(model);
+            }
+            if (result > 0)
+            {
+                note = AppGlobal.Success + " - " + AppGlobal.CreateSuccess;
+            }
+            else
+            {
+                note = AppGlobal.Error + " - " + AppGlobal.CreateFail;
+            }
+            return Json(note);
         }
         public IActionResult CreateInvoiceCategory(Config model)
         {

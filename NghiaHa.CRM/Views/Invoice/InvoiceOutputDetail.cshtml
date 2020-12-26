@@ -217,6 +217,7 @@
                         command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").IconClass("fas fa-edit").HtmlAttributes(new { style = "padding-top:6px; padding-left:15px; border-radius: 6px; width:50px; font-weight:bold; color:black;" });
                         command.Destroy().Text("&nbsp;").IconClass("fas fa-trash").HtmlAttributes(new { style = "color:#ffffff; background-color:#d73925; padding-top:10px; border-radius: 6px; width:50px;", @class = "btn btn-danger" });
                     }).Width(150);
+                    columns.Bound(t => t.ChuyenKhoan).Title("Phương thức").EditorTemplateName("Config_ChuyenKhoan").Width(200);
                     columns.Bound(t => t.PaymentCreated).Title("Ngày thanh toán").Width(200);
                     columns.Bound(t => t.TotalPayment).Title("Thành tiền").Format("{0:N0}").Width(200).HtmlAttributes(new { style = "text-align: right;" });
                 })

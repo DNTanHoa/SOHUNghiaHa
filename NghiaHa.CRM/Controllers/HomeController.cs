@@ -300,6 +300,15 @@ namespace NghiaHa.CRM.Controllers
             txt.AppendLine(@"</p>");
             txt.AppendLine(@"</a>");
             txt.AppendLine(@"</li>");
+            txt.AppendLine(@"</li>");
+            txt.AppendLine(@"<li class='nav-item'>");
+            txt.AppendLine(@"<a class='nav-link' href='/Config/ChuyenKhoan'>");
+            txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");
+            txt.AppendLine(@"<p>");
+            txt.AppendLine(@"Chuyển khoản");
+            txt.AppendLine(@"</p>");
+            txt.AppendLine(@"</a>");
+            txt.AppendLine(@"</li>");
             txt.AppendLine(@"<li class='nav-item'>");
             txt.AppendLine(@"<a class='nav-link' href='/Config/Synchronized'>");
             txt.AppendLine(@"<i class='nav-icon far fa-circle'></i>");

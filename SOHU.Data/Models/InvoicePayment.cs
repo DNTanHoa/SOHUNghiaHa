@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SOHU.Data.Models
 {
     public partial class InvoicePayment : BaseModel
-    {
+    {        
         public string FullName { get; set; }
         public string Phone { get; set; }
         public int? InvoiceID { get; set; }
@@ -16,5 +16,6 @@ namespace SOHU.Data.Models
         public decimal? TotalPayment { get; set; }
         public int? CurrencyID { get; set; }
         public decimal? Gbpexchange { get; set; }
+        public string ChuyenKhoan { get; set; }
     }
 }
